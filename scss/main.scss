@@ -1,0 +1,41 @@
+// ==========================================================================
+// BD INTERNATIONAL — main.scss
+// Manifest only. No declarations belong in this file.
+// Build:  npm run build   ·   Watch:  npm run dev
+// ==========================================================================
+
+// 1 — Abstracts (no CSS output)
+@use 'abstracts/variables';
+@use 'abstracts/mixins';
+
+// 2 — Base
+@use 'base/reset';
+@use 'base/typography';
+@use 'base/utilities';
+
+// 3 — Layout
+@use 'layout/header';
+@use 'layout/mobile-shell';
+@use 'layout/footer';
+
+// 4 — Components
+@use 'components/logo';
+@use 'components/buttons';
+@use 'components/cards';
+@use 'components/forms';
+@use 'components/accordion';
+@use 'components/sliders';
+@use 'components/sheet';
+
+// 5 — Sections
+@use 'sections/hero';
+@use 'sections/about';
+@use 'sections/destinations';
+@use 'sections/services';
+@use 'sections/quiz';
+@use 'sections/process';
+@use 'sections/social-proof';
+@use 'sections/contact';
+
+// 6 — Vendor overrides (must win over library defaults)
+@use 'vendor/fancybox';

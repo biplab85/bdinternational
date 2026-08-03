@@ -1,0 +1,146 @@
+// ==========================================================================
+// TOP BAR + DESKTOP HEADER
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// --------------------------------------------------------------------------
+// Utility top bar — desktop only, hides on scroll down
+// --------------------------------------------------------------------------
+.topbar {
+  display: none;
+  font-size: $fs-xs;
+  color: rgba(255, 255, 255, .72);
+  background: $c-primary-700;
+
+  @include mq(lg) { display: block; }
+
+  &__inner {
+    @include container;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: $topbar-h;
+  }
+
+  &__group {
+    display: flex;
+    gap: $sp-6;
+    align-items: center;
+  }
+
+  a {
+    display: inline-flex;
+    gap: $sp-2;
+    align-items: center;
+    transition: color $dur-base $ease-out;
+
+    svg { width: 14px; height: 14px; color: $c-highlight; }
+
+    @include hover { color: $c-white; }
+  }
+
+  &__socials {
+    display: flex;
+    gap: $sp-3;
+
+    a svg { width: 15px; height: 15px; color: currentcolor; }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Desktop header — transparent over hero, solid after 80px
+// --------------------------------------------------------------------------
+.header {
+  position: absolute;
+  top: $topbar-h;
+  right: 0;
+  left: 0;
+  z-index: $z-header;
+  display: none;
+  transition: background-color $dur-base $ease-out, box-shadow $dur-base $ease-out,
+              transform $dur-base $ease-out;
+
+  @include mq(lg) { display: block; }
+
+  &__inner {
+    @include container;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    // Sized off the 85px logo rather than the nav: 12px of clear space above
+    // and below it. Items are centred, so the height is the only lever.
+    height: 109px;
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+
+    svg { height: 44px; width: auto; }
+  }
+
+  &__nav ul {
+    display: flex;
+    gap: $sp-7;
+    align-items: center;
+  }
+
+  &__nav a {
+    position: relative;
+    padding-block: $sp-2;
+    font-size: $fs-sm;
+    font-weight: 600;
+    color: rgba(255, 255, 255, .88);
+    transition: color $dur-base $ease-out;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: $c-highlight;
+      border-radius: 2px;
+      transition: width $dur-base $ease-out;
+    }
+
+    @include hover {
+      color: $c-white;
+      &::after { width: 100%; }
+    }
+
+    &.is-current {
+      color: $c-white;
+      &::after { width: 100%; }
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  // Scrolled state
+  // ------------------------------------------------------------------------
+  &.is-stuck {
+    position: fixed;
+    top: 0;
+    background: rgba(255, 255, 255, .9);
+    backdrop-filter: blur(14px) saturate(150%);
+    box-shadow: $shadow-sm;
+
+    // Still compacts on stick, but the logo stays 85px so the shrink now comes
+    // out of the padding: 12px of clear space drops to 8px.
+    .header__inner { height: 101px; }
+
+    .header__nav a {
+      color: $c-slate;
+
+      @include hover { color: $c-primary; }
+      &.is-current { color: $c-primary; }
+    }
+  }
+
+  &.is-hidden { transform: translateY(-100%); }
+}

@@ -1,0 +1,236 @@
+// ==========================================================================
+// DESTINATIONS + SERVICES — DESIGN-PLAN §8.7, §8.8
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.dest {
+  @include section-padding;
+
+  // `clip`, not `hidden`: overflow: hidden makes this a scroll container, which
+  // silently kills position: sticky on .dest__head. `clip` still prevents any
+  // horizontal bleed but creates no scroll container, so sticky keeps working.
+  overflow-x: clip;
+
+  &__inner {
+    @include container;
+
+    display: grid;
+    gap: clamp($sp-7, 4vw, $sp-10);
+
+    // align-items: start is what makes the sticky column possible — a stretched
+    // grid item fills the row and has nothing to stick within.
+    align-items: start;
+
+    @include mq(lg) { grid-template-columns: .84fr 1.16fr; }
+  }
+
+  // ------------------------------------------------------------------------
+  // Sticky intro column. The card column is roughly double its height, so
+  // pinning keeps the heading and CTA on screen for the whole scroll past.
+  // ------------------------------------------------------------------------
+  &__head {
+    @include mq(lg) {
+      position: sticky;
+      // clears the 101px stuck header with a little breathing room
+      top: 137px;
+    }
+  }
+
+  &__lead {
+    max-width: 46ch;
+    margin-top: $sp-5;
+    font-size: $fs-lead;
+    line-height: 1.7;
+    color: $c-slate;
+  }
+
+  &__cta { margin-top: $sp-7; }
+
+  // ------------------------------------------------------------------------
+  // Card column. Cards collapse onto each other and un-stack on scroll; the
+  // first sits on top, so the collapsed state reads as a single deck.
+  // ------------------------------------------------------------------------
+  &__stack {
+    display: grid;
+    gap: $sp-5;
+
+    @for $i from 1 through 6 {
+      > :nth-child(#{$i}) { z-index: 10 - $i; }
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  // Destination card — split layout: media panel + content panel.
+  // Text sits on the card surface rather than on the photograph, so legibility
+  // no longer depends on what happens to be behind it, and the narrow media
+  // panel suits the portrait source images instead of hard-cropping them into
+  // a letterbox.
+  // ------------------------------------------------------------------------
+  &__card {
+    @include tap;
+
+    position: relative;
+    display: grid;
+
+    // Mobile: photo as a band across the top
+    grid-template-rows: 148px auto;
+    overflow: hidden;
+    background: $c-white;
+    border: 1px solid $c-line;
+    border-radius: $r-xl;
+
+    // Two-layer shadow — a tight contact shadow plus a wide soft one. Reads
+    // more like a physical panel than a single blurred drop.
+    box-shadow:
+      0 1px 2px rgba(97, 51, 148, .05),
+      0 14px 30px -18px rgba(97, 51, 148, .20);
+    transition: transform .5s $ease-out, box-shadow .5s $ease-out,
+                border-color .5s $ease-out;
+
+    @include mq(md) {
+      grid-template-rows: none;
+      // 230px against the 288px card height is a 0.80 ratio — exactly the
+      // source images' 700x875, so the photographs fill the panel with no crop.
+      grid-template-columns: clamp(170px, 16.5vw, 230px) 1fr;
+
+      // Above the ~265px the content itself occupies, so this actually binds
+      // and adds room; below that the min-height would be inert. The extra
+      // space falls to the CTA row via its margin-top: auto.
+      min-height: 288px;
+    }
+
+    @include hover {
+      transform: translateY(-4px);
+      border-color: transparent;
+      box-shadow:
+        0 2px 4px rgba(97, 51, 148, .06),
+        0 34px 64px -28px rgba(97, 51, 148, .34);
+
+      .dest__media img { transform: scale(1.06); }
+      .dest__go { color: $c-primary; }
+
+      .dest__arrow {
+        color: $c-ink;
+        background: $c-highlight;
+        border-color: $c-highlight;
+      }
+    }
+  }
+
+  &__media {
+    position: relative;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .8s $ease-out;
+    }
+
+    // Faint brand wash so six photographs from six sources read as one set
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(140deg, rgba(97, 51, 148, .22), rgba(87, 191, 218, .12));
+      mix-blend-mode: multiply;
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $sp-4;
+    padding: clamp($sp-5, 2.2vw, $sp-7);
+  }
+
+  &__row {
+    display: flex;
+    gap: $sp-4;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &__name {
+    font-family: $font-display;
+    font-size: clamp(1.25rem, 1.5vw, 1.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    color: $c-primary;
+  }
+
+  &__tag {
+    flex: 0 0 auto;
+    padding: 5px 11px;
+    font-size: .6875rem;
+    font-weight: 700;
+    color: $c-accent-600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    white-space: nowrap;
+    background: $c-accent-100;
+    border-radius: $r-pill;
+  }
+
+  // Figure-above-label pairs instead of icon-plus-sentence: the numbers become
+  // scannable, which is what makes the row read as data rather than caption.
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $sp-4;
+    padding-top: $sp-4;
+    border-top: 1px solid $c-line;
+  }
+
+  &__stat-v {
+    display: block;
+    font-family: $font-display;
+    font-size: 1.0625rem;
+    font-weight: 800;
+    line-height: 1.2;
+    color: $c-primary;
+  }
+
+  &__stat-l {
+    display: block;
+    margin-top: 3px;
+    font-size: .625rem;
+    font-weight: 700;
+    color: $c-muted;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+
+  &__go {
+    display: flex;
+    gap: $sp-3;
+    align-items: center;
+    justify-content: space-between;
+
+    // pins the CTA row to the bottom whatever the card height
+    margin-top: auto;
+    font-size: $fs-sm;
+    font-weight: 700;
+    color: $c-slate;
+    transition: color $dur-base $ease-out;
+  }
+
+  &__arrow {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    color: $c-accent;
+    border: 1px solid $c-line;
+    border-radius: 50%;
+    transition: background-color $dur-base $ease-out, color $dur-base $ease-out,
+                border-color $dur-base $ease-out;
+
+    svg { width: 17px; height: 17px; }
+  }
+}
+
+// §8.8 — Services now lives in its own partial: sections/_services.scss

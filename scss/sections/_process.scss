@@ -1,0 +1,444 @@
+// ==========================================================================
+// PROCESS TIMELINE — DESIGN-PLAN §8.10
+// Desktop: alternating timeline with a scroll-scrubbed centre rule.
+// Mobile:  horizontal snap-rail, one step per screen.
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.process {
+  @include section-padding;
+
+  // Positioning context for the drifting icon layer; `overflow: hidden` then
+  // keeps a wandering icon from widening the page.
+  position: relative;
+  overflow: hidden;
+
+  &__inner {
+    @include container;
+
+    // Above the orbit layer, which is otherwise free to drift under the cards.
+    position: relative;
+    z-index: 1;
+  }
+
+  // ------------------------------------------------------------------------
+  // Step marks — one per row, drifting in the half the card doesn't occupy
+  //
+  // Placed by the grid rather than positioned absolutely over the section.
+  // The container caps at 1440px with a ~40px gutter, so at common desktop
+  // widths there is no page margin to float anything in — absolutely placed
+  // marks just ended up behind the opaque cards. The timeline's alternating
+  // layout always leaves one full `1fr` column empty, which is the one place
+  // a mark can never collide with content at any width.
+  //
+  // Decorative: aria-hidden in the markup and inert to the pointer.
+  // ------------------------------------------------------------------------
+  &__row-icon {
+    // Same cell as the card would occupy on the other side.
+    grid-row: 1;
+    grid-column: 3;
+    justify-self: center;
+    width: 72px;
+    height: 72px;
+    pointer-events: none;
+    will-change: transform;
+
+    // The watermark alpha lives in the stroke colour below, not in `opacity`
+    // — the reveal tween animates opacity 0 -> 1, and baking the alpha into
+    // the colour is what stops that landing on a fully opaque icon.
+  }
+
+  // `.process__rule` is the timeline's first child, so rows are children
+  // 2..6 — the odd ones are rows 2 and 4, whose cards sit in column 3. Their
+  // marks take column 1 instead, mirroring the card placement rule below.
+  &__row:nth-child(odd) &__row-icon { grid-column: 1; }
+
+  // ------------------------------------------------------------------------
+  // Mobile — snap rail
+  // ------------------------------------------------------------------------
+  &__rail {
+    @include snap-rail($sp-4);
+
+    @include mq(lg) { display: none; }
+  }
+
+  &__dots {
+    display: flex;
+    gap: $sp-2;
+    justify-content: center;
+    margin-top: $sp-6;
+
+    @include mq(lg) { display: none; }
+
+    span {
+      width: 7px;
+      height: 7px;
+      background: $c-line;
+      border-radius: 50%;
+      transition: all $dur-base $ease-out;
+
+      &.is-active {
+        width: 22px;
+        background: $c-accent;
+        border-radius: $r-pill;
+      }
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  // Desktop — alternating timeline
+  // ------------------------------------------------------------------------
+  &__timeline {
+    position: relative;
+    display: none;
+
+    @include mq(lg) { display: block; }
+
+    // The rule the nodes hang off
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      background: $c-line;
+      transform: translateX(-50%);
+    }
+  }
+
+  // Scroll-scrubbed fill
+  &__rule {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 0;
+    background: $g-accent;
+    transform: translateX(-50%);
+
+    // The head of the fill — a glowing bead that rides the growing edge as
+    // the rule scrubs. Pinned to the rule's own bottom, so it tracks the
+    // scroll for free rather than needing a second animation to keep up.
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      background: $c-accent;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 0 4px rgba(87, 191, 218, .16), 0 0 16px 3px rgba(87, 191, 218, .45);
+      animation: process-head 1.9s $ease-out infinite;
+    }
+  }
+
+  &__row {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 96px 1fr;
+    align-items: center;
+
+    & + & { margin-top: $sp-8; }
+
+    // `.process__rule` is the timeline's first child, so the rows are
+    // children 2..6 — odd children are rows 2 and 4.
+    &:nth-child(odd) {
+      .process__cardwrap { grid-column: 3; }
+    }
+  }
+
+  // The cell the card sits in. It exists so GSAP has something to animate
+  // that isn't the card: GSAP parks `translate/rotate/scale: none` inline on
+  // every target, which would outrank the card's CSS hover lift. Animating
+  // the wrapper leaves the card's own transform free.
+  &__cardwrap {
+    // Both cells are explicitly placed: grid's default sparse auto-placement
+    // would otherwise push the node down into the next row.
+    grid-column: 1;
+    grid-row: 1;
+    display: flex;
+
+    > .card,
+    > .process__card { flex: 1; }
+  }
+
+  &__node {
+    position: relative;
+    z-index: 2;
+    grid-column: 2;
+    grid-row: 1;
+    display: grid;
+    place-items: center;
+    justify-self: center;
+    width: 60px;
+    height: 60px;
+    font-family: $font-display;
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: $c-white;
+    background: $c-primary;
+    border: 4px solid $c-white;
+    border-radius: 50%;
+    box-shadow: $shadow-md;
+    transform: scale(0);
+
+    // Ring that pings outward once, at the moment the step is reached. On the
+    // pseudo-element rather than the node itself because GSAP owns the node's
+    // transform for the scale-in and would override a CSS animation on it.
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border: 2px solid $c-accent;
+      border-radius: 50%;
+      opacity: 0;
+    }
+  }
+
+  &__row.is-reached &__node {
+    background: $c-accent;
+
+    &::after { animation: process-ping 1.1s $ease-out 1 forwards; }
+  }
+
+  // ------------------------------------------------------------------------
+  // Shared card
+  // ------------------------------------------------------------------------
+  &__card {
+    padding: $sp-6;
+    background: $c-white;
+    border: 1px solid $c-line;
+    border-radius: $r-lg;
+    transition: box-shadow $dur-base $ease-out, transform $dur-base $ease-out;
+
+    // Works because the scroll animation is on `.process__cardwrap`, not
+    // here — see that rule for why the two must stay on separate elements.
+    @include hover {
+      border-color: transparent;
+      box-shadow: $shadow-lg;
+      transform: translateY(-4px);
+
+      // The duration chip fills in, and its clock ticks back a little.
+      .process__card__meta {
+        color: $c-white;
+        background: $c-accent;
+
+        svg { transform: rotate(-24deg); }
+      }
+    }
+
+    // Mobile rail variant
+    &--rail {
+      flex: 0 0 auto;
+      width: 78vw;
+      max-width: 320px;
+    }
+
+    &__step {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      margin-bottom: $sp-4;
+      font-family: $font-display;
+      font-size: 1rem;
+      font-weight: 800;
+      color: $c-white;
+      background: $c-accent;
+      border-radius: $r-sm;
+    }
+
+    h3 {
+      margin-bottom: $sp-3;
+      font-size: 1.1875rem;
+      font-weight: 800;
+    }
+
+    p {
+      font-size: $fs-sm;
+      line-height: 1.65;
+    }
+
+    &__meta {
+      display: inline-flex;
+      gap: $sp-2;
+      align-items: center;
+      margin-top: $sp-4;
+      padding: $sp-1 $sp-3;
+      font-size: 11px;
+      font-weight: 700;
+      color: $c-accent-600;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      background: $c-accent-100;
+      border-radius: $r-pill;
+      transition: color $dur-base $ease-out, background-color $dur-base $ease-out;
+
+      svg {
+        width: 13px;
+        height: 13px;
+        transition: transform $dur-base $ease-out;
+      }
+    }
+  }
+
+  &__cta {
+    margin-top: clamp($sp-8, 5vw, $sp-10);
+    text-align: center;
+  }
+}
+
+// Alternating tints so the five marks don't read as one repeated stamp.
+// Keyed by child index, not by step number: `.process__rule` is the
+// timeline's first child, so step 1 is child 2.
+//
+// Alpha is carried here rather than by `opacity` (see `&__row-icon`). Gold
+// carries a touch more than the other two — at the same alpha it reads
+// noticeably fainter against white than teal or navy do.
+$process-mark-tints: (
+  2: rgba($c-accent, .14),
+  3: rgba($c-highlight-600, .20),
+  4: rgba($c-primary, .11),
+  5: rgba($c-accent, .14),
+  6: rgba($c-highlight-600, .20)
+);
+
+@each $child, $tint in $process-mark-tints {
+  .process__row:nth-child(#{$child}) .process__row-icon { color: $tint; }
+}
+
+// Head of the scrubbed rule — a slow breath, not a blink.
+@keyframes process-head {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(87, 191, 218, .16), 0 0 16px 3px rgba(87, 191, 218, .45); }
+  50%      { box-shadow: 0 0 0 7px rgba(87, 191, 218, .08), 0 0 22px 5px rgba(87, 191, 218, .60); }
+}
+
+// One outward ping as a step is reached.
+@keyframes process-ping {
+  0%   { opacity: .9; transform: scale(.85); }
+  100% { opacity: 0;  transform: scale(1.95); }
+}
+
+// --------------------------------------------------------------------------
+// Reduced motion
+//
+// These two rest in a hidden state and rely on block 13's timeline to reach
+// their real one — the nodes at scale(0), the rule at height 0. That timeline
+// only exists in the `no-preference` branch, so without this every numbered
+// step marker on the timeline is invisible and the rule never draws.
+//
+// This changes nothing for anyone else: it is the end state the animation
+// already arrives at, just declared for the branch that never animates.
+// --------------------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+  .process__node { transform: scale(1); }
+  .process__rule { height: 100%; }
+}
+
+// ==========================================================================
+// WHY CHOOSE US + GALLERY — DESIGN-PLAN §8.11
+// ==========================================================================
+.why {
+  @include section-padding;
+
+  &__inner {
+    @include container;
+
+    display: grid;
+    gap: clamp($sp-8, 6vw, $sp-10);
+    align-items: center;
+
+    @include mq(lg) { grid-template-columns: 1fr 1fr; }
+  }
+
+  &__grid {
+    display: grid;
+
+    // One item per row on phones. The 2-up that used to start here now
+    // starts at `md`, so tablet and desktop are untouched.
+    grid-template-columns: 1fr;
+    gap: $sp-3;
+    margin-top: $sp-7;
+
+    @include mq(md) { grid-template-columns: 1fr 1fr; gap: $sp-5; }
+  }
+
+  &__item {
+    padding: $sp-5;
+    background: $c-white;
+    border: 1px solid $c-line;
+    border-radius: $r-md;
+
+    &__icon {
+      display: grid;
+      place-items: center;
+      width: 44px;
+      height: 44px;
+      margin-bottom: $sp-4;
+      color: $c-accent;
+      background: $c-accent-100;
+      border-radius: $r-sm;
+
+      svg { width: 22px; height: 22px; }
+    }
+
+    h4 {
+      margin-bottom: $sp-2;
+      font-family: $font-display;
+      font-size: 1rem;
+      color: $c-primary;
+    }
+
+    p { font-size: $fs-xs; line-height: 1.6; }
+  }
+
+  // ------------------------------------------------------------------------
+  // Fancybox gallery — one large + 2×2 thumbs with a +N overlay
+  // ------------------------------------------------------------------------
+  &__gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: $sp-3;
+  }
+
+  &__shot {
+    position: relative;
+    overflow: hidden;
+    border-radius: $r-md;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .6s $ease-out;
+    }
+
+    @include hover { img { transform: scale(1.06); } }
+
+    &--tall {
+      grid-row: span 2;
+
+      img { aspect-ratio: 3 / 4.4; }
+    }
+
+    &:not(&--tall) img { aspect-ratio: 4 / 3; }
+
+    &__more {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      font-family: $font-display;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: $c-white;
+      background: rgba(97, 51, 148, .68);
+      backdrop-filter: blur(2px);
+    }
+  }
+}

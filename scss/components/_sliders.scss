@@ -1,0 +1,89 @@
+// ==========================================================================
+// SLIDERS — Swiper overrides
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.swiper { overflow: visible; }
+
+.swiper-slide { height: auto; }
+
+// Before Swiper initialises (or if its script fails) the track still works
+// as a plain scrollable rail rather than collapsing.
+.swiper:not(.swiper-initialized) .swiper-wrapper {
+  display: flex;
+  gap: $sp-5;
+  overflow-x: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+
+  > * { flex: 0 0 78%; }
+}
+
+// --------------------------------------------------------------------------
+// Navigation arrows sit outside the track (DESIGN-PLAN §8.7)
+// --------------------------------------------------------------------------
+.slider-nav {
+  display: flex;
+  gap: $sp-3;
+
+  button {
+    @include tap;
+
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    color: $c-primary;
+    background: $c-white;
+    border: 1.5px solid $c-line;
+    border-radius: 50%;
+    transition: all $dur-base $ease-out;
+
+    svg { width: 20px; height: 20px; }
+
+    @include hover {
+      color: $c-white;
+      background: $c-primary;
+      border-color: $c-primary;
+    }
+
+    &.swiper-button-disabled {
+      pointer-events: none;
+      opacity: .35;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Progress bar instead of dots
+// --------------------------------------------------------------------------
+.slider-progress {
+  position: relative;
+  height: 3px;
+  margin-top: $sp-7;
+  overflow: hidden;
+  background: $c-line;
+  border-radius: $r-pill;
+
+  .swiper-pagination-progressbar-fill {
+    position: absolute;
+    inset: 0;
+    background: $c-accent;
+    border-radius: $r-pill;
+    transform-origin: left top;
+  }
+}
+
+.slider-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-5;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: clamp($sp-7, 4vw, $sp-10);
+
+  .sec-head { margin-bottom: 0; }
+}
+

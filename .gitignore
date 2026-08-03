@@ -1,0 +1,7 @@
+node_modules/
+.sass-cache/
+*.css.map
+.playwright-mcp/
+bdinternational.zip
+.DS_Store
+Thumbs.db

@@ -1,0 +1,438 @@
+// ==========================================================================
+// HERO + FLOATING FEATURE CARDS — DESIGN-PLAN §8.2, §8.3
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 92vh;
+  min-height: 92dvh;   // dvh avoids the mobile URL-bar jump
+  padding-top: calc(#{$appbar-h} + #{$sp-10});
+  padding-bottom: $sp-12;
+  overflow: hidden;
+  color: rgba(255, 255, 255, .84);
+  background: $c-primary-700;
+
+  @include mq(lg) {
+    // The topbar sits above the hero in flow — without subtracting it the
+    // hero's last 40px (and the scroll cue with it) fall below the fold.
+    min-height: calc(100vh - #{$topbar-h});
+    min-height: calc(100dvh - #{$topbar-h});
+
+    // Viewport-relative so a 720px-tall laptop doesn't spend half its screen
+    // on padding and push the scroll cue out of view. The 161px floor keeps
+    // content clear of the 109px header.
+    padding-top: clamp(161px, 18vh, 210px);
+    padding-bottom: clamp(84px, 12vh, #{$sp-14});
+  }
+
+  // ------------------------------------------------------------------------
+  // Background stack: photo → scrim → gradient mesh → arc → grain
+  // ------------------------------------------------------------------------
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.06);
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: $g-scrim;
+    }
+  }
+
+  &__mesh {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      radial-gradient(60% 55% at 12% 18%, rgba(87, 191, 218, .30), transparent 65%),
+      radial-gradient(50% 50% at 88% 78%, rgba(247, 222, 140, .18), transparent 62%),
+      linear-gradient(180deg, rgba(71, 36, 109, .82) 0%, rgba(71, 36, 109, .62) 45%, rgba(71, 36, 109, .92) 100%);
+  }
+
+  // The logo's 32° arc, bleeding off the right edge
+  &__arc {
+    position: absolute;
+    top: 50%;
+    right: -18%;
+    z-index: 1;
+    width: min(760px, 78vw);
+    opacity: .13;
+    transform: translateY(-50%);
+    pointer-events: none;
+
+    @include mq(lg) { right: -8%; opacity: .16; }
+  }
+
+  &__inner {
+    @include container;
+
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: $sp-9;
+    align-items: center;
+
+    @include mq(lg) {
+      grid-template-columns: 1.15fr .85fr;
+      gap: $sp-10;
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  // Copy column
+  // ------------------------------------------------------------------------
+  &__title {
+    @include display;
+
+    max-width: 15ch;
+    color: $c-white;
+  }
+
+  &__sub {
+    max-width: 46ch;
+    margin-top: clamp(#{$sp-6}, 2.4vw, #{$sp-8});
+    font-size: $fs-lead;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, .82);
+  }
+
+  &__cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $sp-3;
+    margin-top: clamp(#{$sp-7}, 3.2vw, #{$sp-10});
+  }
+
+  &__ticks {
+    margin-top: $sp-7;
+    padding-top: $sp-6;
+    border-top: 1px solid rgba(255, 255, 255, .14);
+  }
+
+  // ------------------------------------------------------------------------
+  // Media column
+  // ------------------------------------------------------------------------
+  &__media {
+    position: relative;
+  }
+
+  &__photo {
+    position: relative;
+    overflow: hidden;
+    border-radius: $r-xl;
+    box-shadow: $shadow-xl;
+
+    // A light teal wash ties the photograph to the palette. Kept subtle —
+    // anything heavier turns a warm photo muddy.
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, rgba(87, 191, 218, .10), rgba(97, 51, 148, .14));
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+
+      @include mq-down(lg) { aspect-ratio: 16 / 11; }
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  // Floating glass stat pills — they overlap the photograph's left edge
+  // ------------------------------------------------------------------------
+  &__pill {
+    position: absolute;
+    z-index: 3;
+    display: none;
+
+    @include mq(xl) { display: flex; }
+
+    // Breaks the left edge; the offset stays small enough not to clip at the
+    // 1280px breakpoint where the pill appears. The bottom-right corner is
+    // the rotating badge's now.
+    &--a {
+      top: 34px;
+      left: -72px;
+      animation: float-a 6s ease-in-out infinite;
+    }
+
+  }
+
+  // ------------------------------------------------------------------------
+  // Rotating "About us" badge — bottom-right corner of the photo.
+  // Only the text ring turns; the arrow stays upright, which is what makes it
+  // read as a button rather than a spinning graphic.
+  // ------------------------------------------------------------------------
+  &__badge {
+    position: absolute;
+    right: clamp(10px, 1.4vw, 20px);
+    bottom: clamp(10px, 1.4vw, 20px);
+    z-index: 4;
+    display: none;
+    place-items: center;
+    width: clamp(92px, 8vw, 118px);
+    aspect-ratio: 1;
+    color: $c-white;
+
+    // Dark glass disc: the photo is bright in this corner, so white ring text
+    // needs its own backing to stay legible. Deliberately not the light glass
+    // of the stat pills — this is a control, not another stat.
+    background: rgba(11, 18, 32, .42);
+    border: 1px solid rgba(255, 255, 255, .18);
+    border-radius: 50%;
+    backdrop-filter: blur(6px);
+    transition: transform $dur-base $ease-out, background-color $dur-base $ease-out;
+
+    @include mq(md) { display: grid; }
+
+    @include hover {
+      background: rgba(11, 18, 32, .55);
+      transform: scale(1.05);
+
+      .hero__badge__dot { transform: scale(1.08); }
+      .hero__badge__dot svg { transform: translate(1px, -1px); }
+    }
+
+    &__ring {
+      position: absolute;
+      inset: 0;
+      animation: badge-spin 30s linear infinite;
+
+      svg { display: block; width: 100%; height: 100%; }
+
+      text {
+        font-family: $font-body;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: .04em;
+        fill: rgba(255, 255, 255, .92);
+      }
+    }
+
+    &__dot {
+      display: grid;
+      place-items: center;
+      width: 38%;
+      aspect-ratio: 1;
+      color: $c-primary;
+      background: $c-highlight;
+      border-radius: 50%;
+      transition: transform $dur-base $ease-out;
+
+      svg {
+        width: 45%;
+        transition: transform $dur-base $ease-out;
+      }
+    }
+  }
+
+  &__form-cta {
+    @include mq(lg) { display: none; }
+  }
+}
+
+@keyframes badge-spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__badge__ring { animation: none; }
+}
+
+@keyframes float-a {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-14px); }
+}
+
+// --------------------------------------------------------------------------
+// Scroll cue
+// --------------------------------------------------------------------------
+.scroll-cue {
+  position: absolute;
+  // Clear the quick-link cards, which ride up over the hero's bottom edge
+  bottom: calc(#{$quicklinks-overlap} + #{$sp-6});
+  left: 50%;
+  z-index: 3;
+  display: none;
+  flex-direction: column;
+  gap: $sp-2;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, .5);
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  transform: translateX(-50%);
+
+  // Only when the viewport is tall enough to give it room. On a 720px laptop
+  // it would sit on top of the tick row.
+  @include mq(lg) {
+    @media (min-height: 820px) { display: flex; }
+  }
+
+  &__line {
+    width: 1px;
+    height: 44px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, .5), transparent);
+
+    &::after {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 8px;
+      margin-left: -1px;
+      background: $c-highlight;
+      border-radius: 2px;
+      animation: cue 2.2s $ease-inout infinite;
+    }
+  }
+}
+
+@keyframes cue {
+  0%       { transform: translateY(0);    opacity: 0; }
+  25%      { opacity: 1; }
+  100%     { transform: translateY(36px); opacity: 0; }
+}
+
+// ==========================================================================
+// §8.3 — Floating feature cards overlapping the hero's bottom edge
+// ==========================================================================
+.quicklinks {
+  position: relative;
+  z-index: 4;
+  margin-top: -$sp-8;
+
+  @include mq(lg) { margin-top: calc(-1 * #{$quicklinks-overlap}); }
+
+  &__inner {
+    @include container;
+  }
+
+  &__rail {
+    @include snap-rail;
+
+    // Mobile stacks the cards instead of running them as a horizontal rail.
+    // snap-rail's negative margin + matching padding are kept so the cards
+    // still line up with the page gutter; only the scrolling behaviour goes.
+    @include mq-down(md) {
+      display: block;
+      overflow-x: visible;
+      scroll-snap-type: none;
+    }
+
+    @include mq(md) {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: $sp-5;
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow: visible;
+    }
+  }
+
+  // Transform target for the scroll-driven stack. Kept separate from the card
+  // so the card's hover transform and transition stay untouched.
+  &__slot {
+    position: relative;
+    z-index: 1;
+    display: flex;
+
+    // The centre card sits on top, which is what makes the collapsed state
+    // read as a deck rather than three cards that happen to overlap.
+    &:nth-child(2) { z-index: 2; }
+
+    // Stacked on mobile, so the rail's flex `gap` no longer applies — the
+    // spacing has to come from the slots themselves.
+    @include mq-down(md) {
+      & + & { margin-top: $sp-4; }
+    }
+
+    // Card fills the slot, so the three stay equal height as before
+    > * { flex: 1 1 auto; }
+  }
+
+  &__card {
+    @include tap;
+
+    display: flex;
+    gap: $sp-4;
+    align-items: center;
+    width: 82vw;
+    max-width: 340px;
+    padding: $sp-5;
+    text-align: left;
+    background: $c-white;
+    border-radius: $r-lg;
+    box-shadow: $shadow-lg;
+    transition: transform $dur-base $ease-out, box-shadow $dur-base $ease-out;
+
+    @include mq(md) { width: auto; max-width: none; }
+
+    @include hover {
+      box-shadow: $shadow-xl;
+      transform: translateY(-6px);
+    }
+
+    &__icon {
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 52px;
+      height: 52px;
+      color: $c-white;
+      background: $g-primary;
+      border-radius: $r-md;
+
+      svg { width: 24px; height: 24px; }
+    }
+
+    &--gold .quicklinks__card__icon {
+      color: $c-ink;
+      background: $g-gold;
+    }
+
+    &--teal .quicklinks__card__icon { background: $g-accent; }
+
+    h3 {
+      font-size: 1rem;
+      font-weight: 800;
+      color: $c-primary;
+    }
+
+    p {
+      margin-top: 2px;
+      font-size: $fs-xs;
+      color: $c-slate;
+    }
+
+    &__arrow {
+      flex: 0 0 auto;
+      margin-left: auto;
+      color: $c-accent;
+
+      svg { width: 20px; height: 20px; transition: transform $dur-base $ease-out; }
+    }
+
+    @include hover {
+      .quicklinks__card__arrow svg { transform: translateX(4px); }
+    }
+  }
+}

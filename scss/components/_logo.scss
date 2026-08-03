@@ -1,0 +1,48 @@
+// ==========================================================================
+// LOGO LOCKUP — the supplied artwork, referenced as <img src>. Two files ship:
+// kd-education-ltd-white.svg for dark grounds (hero header, drawer, footer)
+// and kd-education-ltd.svg, the full-colour original, for the pale stuck bar.
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.logo {
+  display: inline-flex;
+  gap: $sp-3;
+  align-items: center;
+
+  &__mark {
+    flex: 0 0 auto;
+    width: auto;
+
+    // The KD lockup is near-square (483x360) and stacks a two-line wordmark
+    // under the mark, so it needs real height to stay legible.
+    height: 48px;
+
+    @include mq(lg) { height: 85px; }
+  }
+
+  // ------------------------------------------------------------------------
+  // Site chrome carries both artworks stacked in one grid cell so the swap on
+  // stick is a cross-fade, not a jump. The drawer and footer ship the white
+  // file alone and never use this wrapper.
+  // ------------------------------------------------------------------------
+  &__swap {
+    display: grid;
+
+    > .logo__mark {
+      grid-area: 1 / 1;
+      transition: opacity $dur-base $ease-out;
+    }
+  }
+
+  // Default — over the hero, where the bar is transparent over deep purple.
+  &__mark--on-light { opacity: 0; }
+}
+
+// Once the bar sticks it turns pale, so the full-colour artwork takes over.
+.header.is-stuck,
+.appbar.is-stuck {
+  .logo__mark--on-dark  { opacity: 0; }
+  .logo__mark--on-light { opacity: 1; }
+}

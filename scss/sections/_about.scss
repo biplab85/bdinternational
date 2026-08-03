@@ -1,0 +1,194 @@
+// ==========================================================================
+// ABOUT + STATS BAND — DESIGN-PLAN §8.5, §8.6
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// Parent of About + the stats band. The vertical rhythm lives here rather than
+// on the children so the pair reads as one block with matching space above and
+// below. Previously About supplied the top padding and Stats had none at all,
+// which left the gold card almost touching the next section.
+.story {
+  padding-block: $section-pad;
+
+  display: grid;
+  // Keeps the gap About's own bottom padding used to provide between its
+  // content and the gold card.
+  gap: $section-pad;
+
+  position: relative;
+
+  // The decor sits near the section edges. Without clipping it would widen the
+  // document and put a horizontal scrollbar on every breakpoint — the same trap
+  // .cta__arc fell into. `clip` rather than `hidden` so no scroll container is
+  // created and the children's own vertical bleed is untouched.
+  overflow-x: clip;
+
+  // Content sits above the watermarks. .stats already carries z-index 2.
+  > .about { position: relative; z-index: 1; }
+
+  &__decor {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
+    // Decoration only — below lg the columns stack and there is no spare
+    // margin for it to live in without crowding the copy.
+    display: none;
+
+    @include mq(lg) { display: block; }
+  }
+
+  &__deco {
+    position: absolute;
+    color: $c-primary;
+    opacity: .09;
+    animation: story-drift-a 16s ease-in-out infinite;
+    will-change: transform;
+
+    // Every icon stays within the top ~58% of the section, which is the About
+    // half. The gold stats band fills the bottom, and a pale icon over gold is
+    // invisible — and the band's offset moves with viewport height, so pinning
+    // icons relative to it is fragile. Staying in the About region is stable.
+    // Negative delays desync them, so they are mid-drift on arrival rather
+    // than all starting from the same pose.
+    &--cap    { top: 5%;  right: 2.5%; width: 96px; animation-duration: 15s; animation-delay: -2s; }
+    &--spark  { top: 14%; left: 16%;   width: 38px; color: $c-highlight-600; opacity: .16; animation-name: story-drift-b; animation-duration: 13s; animation-delay: -5s; }
+    &--plane  { top: 26%; left: 1.5%;  width: 82px; color: $c-accent; animation-name: story-drift-b; animation-duration: 19s; animation-delay: -7s; }
+    &--shield { top: 36%; right: 20%;  width: 74px; color: $c-accent; animation-duration: 23s; animation-delay: -9s; }
+    &--book   { top: 46%; right: 6%;   width: 64px; animation-name: story-drift-b; animation-duration: 17s; animation-delay: -4s; }
+    &--globe  { top: 58%; left: 4%;    width: 70px; color: $c-accent; animation-duration: 21s; animation-delay: -11s; }
+  }
+}
+
+// Two curves, alternated, so neighbouring icons never move in lockstep
+@keyframes story-drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%      { transform: translate3d(0, -20px, 0) rotate(5deg); }
+}
+
+@keyframes story-drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%      { transform: translate3d(14px, 14px, 0) rotate(-6deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story__deco { animation: none; }
+}
+
+.about {
+  // padding-block intentionally omitted — .story owns it now. Adding
+  // section-padding here as well would double the space above About.
+  position: relative;
+  overflow: hidden;
+
+  &__inner {
+    @include container;
+
+    display: grid;
+    gap: clamp($sp-8, 6vw, $sp-11);
+    align-items: center;
+
+    @include mq(lg) { grid-template-columns: .95fr 1.05fr; }
+  }
+
+  // ------------------------------------------------------------------------
+  // Image collage — large portrait + offset secondary + gold arc + badge
+  // ------------------------------------------------------------------------
+  &__media {
+    position: relative;
+    padding-bottom: $sp-9;
+
+    @include mq(md) { padding-bottom: $sp-10; }
+  }
+
+  &__arc {
+    position: absolute;
+    top: -6%;
+    left: -10%;
+    z-index: 0;
+    width: 62%;
+    opacity: .5;
+    pointer-events: none;
+  }
+
+  &__img-main {
+    position: relative;
+    z-index: 1;
+    width: 84%;
+    overflow: hidden;
+    border-radius: $r-xl;
+    box-shadow: $shadow-lg;
+
+    img { aspect-ratio: 4 / 5; object-fit: cover; width: 100%; }
+  }
+
+  &__img-sub {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    width: 52%;
+    overflow: hidden;
+    border: 6px solid $c-white;
+    border-radius: $r-lg;
+    box-shadow: $shadow-lg;
+
+    img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+  }
+
+  &__badge {
+    position: absolute;
+    top: 6%;
+    right: 2%;
+    z-index: 3;
+
+    @include mq(md) { top: 10%; right: 6%; }
+  }
+
+  // ------------------------------------------------------------------------
+  // Copy
+  // ------------------------------------------------------------------------
+  &__body p + p { margin-top: $sp-4; }
+
+  &__ticks { margin-top: $sp-6; }
+
+  &__progress {
+    margin-top: $sp-8;
+    padding-top: $sp-7;
+    border-top: 1px solid $c-line;
+  }
+
+  &__cta { margin-top: $sp-7; }
+}
+
+// ==========================================================================
+// §8.6 — Stats band. Gold card bridging two sections.
+// ==========================================================================
+.stats {
+  position: relative;
+  z-index: 2;
+
+  &__inner { @include container; }
+
+  &__card {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $sp-7 $sp-4;
+    padding: clamp($sp-7, 5vw, $sp-9) clamp($sp-5, 4vw, $sp-9);
+    background: $g-gold;
+    border-radius: $r-xl;
+    box-shadow: $shadow-gold;
+
+    @include mq(md) { grid-template-columns: repeat(4, 1fr); }
+  }
+
+  // Hairline dividers between cells on wide screens
+  @include mq(md) {
+    &__card .stat + .stat { border-left: 1px solid rgba(11, 18, 32, .12); }
+  }
+
+  .stat__value { color: $c-ink; }
+  .stat__label { color: rgba(11, 18, 32, .62); }
+}

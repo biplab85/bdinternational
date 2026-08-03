@@ -1,0 +1,19 @@
+{
+  "name": "BD International — Study Abroad Consultancy",
+  "short_name": "BD Intl",
+  "description": "Guiding Bangladeshi students to world-class universities in Australia, the UK, Canada, the USA and beyond.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF",
+  "theme_color": "#613394",
+  "icons": [
+    {
+      "src": "assets/img/brand/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

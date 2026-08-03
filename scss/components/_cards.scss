@@ -1,0 +1,266 @@
+// ==========================================================================
+// CARDS · BADGES · CHIPS · STATS · SKELETONS
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// --------------------------------------------------------------------------
+// Base card
+// --------------------------------------------------------------------------
+.card {
+  @include tap;
+
+  position: relative;
+  padding: $sp-6;
+  background: $c-white;
+  border: 1px solid $c-line;
+  border-radius: $r-lg;
+  transition: transform $dur-base $ease-out, box-shadow $dur-base $ease-out, border-color $dur-base $ease-out;
+
+  @include hover {
+    border-color: transparent;
+    box-shadow: $shadow-lg;
+    transform: translateY(-6px);
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: $sp-5;
+    color: $c-accent;
+    background: $c-accent-100;
+    border-radius: $r-md;
+    transition: background-color $dur-base $ease-out, color $dur-base $ease-out;
+
+    svg { width: 26px; height: 26px; }
+  }
+
+  @include hover {
+    .card__icon {
+      color: $c-white;
+      background: $c-accent;
+    }
+  }
+
+  &__title {
+    margin-bottom: $sp-3;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: $c-primary;
+  }
+
+  &__text {
+    font-size: $fs-sm;
+    line-height: 1.65;
+  }
+
+  &__more {
+    display: inline-flex;
+    gap: $sp-2;
+    align-items: center;
+    margin-top: $sp-4;
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $c-accent;
+
+    svg { width: 15px; height: 15px; transition: transform $dur-base $ease-out; }
+  }
+
+  @include hover {
+    .card__more svg { transform: translateX(4px); }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Glass card — floats over photography
+// --------------------------------------------------------------------------
+.glass-card {
+  @include glass;
+
+  display: flex;
+  gap: $sp-3;
+  align-items: center;
+  padding: $sp-4 $sp-5;
+  border-radius: $r-md;
+  box-shadow: $shadow-lg;
+
+  &__num {
+    display: block;
+    font-family: $font-display;
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1;
+    color: $c-primary;
+    letter-spacing: -.03em;
+  }
+
+  &__label {
+    display: block;
+    margin-top: 3px;
+    font-size: $fs-xs;
+    font-weight: 600;
+    line-height: 1.3;
+    color: $c-slate;
+  }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 38px;
+    height: 38px;
+    color: $c-accent;
+    background: $c-accent-100;
+    border-radius: $r-sm;
+
+    svg { width: 20px; height: 20px; }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Badges
+// --------------------------------------------------------------------------
+.badge {
+  display: inline-flex;
+  gap: $sp-2;
+  align-items: center;
+  padding: $sp-1 $sp-3;
+  font-size: $fs-xs;
+  font-weight: 700;
+  letter-spacing: .02em;
+  border-radius: $r-pill;
+
+  &--gold  { color: $c-ink;     background: $c-highlight-100; }
+  &--teal  { color: $c-accent-600; background: $c-accent-100; }
+  &--navy  { color: $c-white;   background: $c-primary; }
+  &--light { color: $c-white;   background: rgba(255, 255, 255, .16); backdrop-filter: blur(8px); }
+}
+
+// Circular "12+ Years" badge
+.year-badge {
+  display: grid;
+  place-items: center;
+  width: 116px;
+  height: 116px;
+  color: $c-ink;
+  text-align: center;
+  background: $g-gold;
+  border: 5px solid $c-white;
+  border-radius: 50%;
+  box-shadow: $shadow-lg;
+
+  b {
+    font-family: $font-display;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.03em;
+  }
+
+  span {
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Stats
+// --------------------------------------------------------------------------
+.stat {
+  text-align: center;
+
+  &__value {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    font-family: $font-display;
+    font-size: $fs-stat;
+    font-weight: 800;
+    line-height: 1;
+    color: $c-primary;
+    letter-spacing: -.04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__label {
+    margin-top: $sp-3;
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $c-slate;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Progress bars — "turn claims into data" (DESIGN-PLAN §8.5)
+// --------------------------------------------------------------------------
+.progress {
+  // One colour hook per row drives the value, the groove and the bar together,
+  // so a row can never end up with a gold track behind a teal fill. Teal is the
+  // default; the modifiers below cover the other two rows.
+  --progress-ink:   #{$c-accent-600};
+  --progress-track: #{$c-accent-100};
+  --progress-fill:  #{$g-accent};
+
+  &--gold {
+    --progress-ink:   #{$c-highlight-600};
+    --progress-track: #{$c-highlight-100};
+    --progress-fill:  #{$g-gold};
+  }
+
+  &--navy {
+    --progress-ink:   #{$c-primary};
+    --progress-track: #{$c-primary-100};
+    --progress-fill:  #{$g-primary};
+  }
+
+  & + & { margin-top: $sp-5; }
+
+  &__head {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: $sp-2;
+    font-size: $fs-sm;
+    font-weight: 700;
+
+    // Label stays navy so all three read as one list; only the value picks up
+    // the row colour, which is what ties it to the bar underneath.
+    color: $c-primary;
+
+    .num { color: var(--progress-ink); }
+  }
+
+  &__track {
+    height: 8px;
+    overflow: hidden;
+    background: var(--progress-track);
+    border-radius: $r-pill;
+  }
+
+  &__fill {
+    width: 0;
+    height: 100%;
+    background: var(--progress-fill);
+    border-radius: $r-pill;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Skeleton shimmer
+// --------------------------------------------------------------------------
+.skeleton {
+  background: linear-gradient(90deg, $c-mist 25%, #E9EDF5 37%, $c-mist 63%);
+  background-size: 400% 100%;
+  border-radius: $r-md;
+  animation: shimmer 1.4s ease infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}

@@ -1,0 +1,135 @@
+// ==========================================================================
+// MIXINS & FUNCTIONS
+// ==========================================================================
+@use 'sass:map';
+@use 'variables' as *;
+
+// --------------------------------------------------------------------------
+// Breakpoint helper — mobile first
+// --------------------------------------------------------------------------
+@mixin mq($key) {
+  $size: map.get($bp, $key);
+
+  @if $size == null {
+    @error 'Unknown breakpoint `#{$key}`. Available: #{map.keys($bp)}';
+  }
+
+  @media (min-width: $size) {
+    @content;
+  }
+}
+
+// Max-width query — reserved for the mobile app shell only
+@mixin mq-down($key) {
+  $size: map.get($bp, $key);
+
+  @media (max-width: #{$size - .02px}) {
+    @content;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Layout
+// --------------------------------------------------------------------------
+@mixin container($max: $container-max) {
+  width: 100%;
+  max-width: $max;
+  margin-inline: auto;
+  padding-inline: $gutter;
+}
+
+@mixin section-padding {
+  padding-block: $section-pad;
+}
+
+// --------------------------------------------------------------------------
+// Typography
+// --------------------------------------------------------------------------
+@mixin display($size: $fs-display, $weight: 800) {
+  font-family: $font-display;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: 1.04;
+  letter-spacing: -.035em;
+}
+
+@mixin heading($size: $fs-h2, $weight: 700) {
+  font-family: $font-display;
+  font-size: $size;
+  font-weight: $weight;
+  line-height: 1.14;
+  letter-spacing: -.025em;
+}
+
+@mixin clamp-lines($lines: 2) {
+  display: -webkit-box;
+  -webkit-line-clamp: $lines;
+  line-clamp: $lines;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+// --------------------------------------------------------------------------
+// Effects
+// --------------------------------------------------------------------------
+@mixin glass($alpha: .88) {
+  background: rgba(255, 255, 255, $alpha);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, .55);
+}
+
+@mixin focus-ring($color: $c-accent) {
+  outline: 2px solid $color;
+  outline-offset: 2px;
+}
+
+// Tap feedback — the app-like press response (DESIGN-PLAN §9.6)
+@mixin tap {
+  transition: transform $dur-fast $ease-out;
+
+  @media (hover: none) {
+    &:active { transform: scale(.97); }
+  }
+}
+
+// Fine-pointer-only hover, so touch devices never inherit hover states
+@mixin hover {
+  @media (hover: hover) and (pointer: fine) {
+    &:hover { @content; }
+  }
+}
+
+// Hide visually, keep for screen readers
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Horizontal snap rail — the mobile carousel primitive (DESIGN-PLAN §9.5)
+@mixin snap-rail($gap: $sp-4, $pad: $gutter) {
+  display: flex;
+  gap: $gap;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: $pad;
+  padding-inline: $pad;
+  margin-inline: calc(-1 * #{$pad});
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
+
+  > * {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+}

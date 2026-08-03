@@ -1,0 +1,185 @@
+// ==========================================================================
+// TYPOGRAPHY
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.display { @include display; }
+
+.h1 { @include heading($fs-h1); }
+.h2 { @include heading($fs-h2); }
+.h3 { @include heading($fs-h3, 700); }
+
+h1 { @include heading($fs-h1); }
+h2 { @include heading($fs-h2); }
+h3 { @include heading($fs-h3, 700); }
+
+h4 {
+  font-size: $fs-h4;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.lead {
+  max-width: 60ch;
+  font-size: $fs-lead;
+  line-height: 1.65;
+}
+
+p { max-width: 68ch; }
+
+// --------------------------------------------------------------------------
+// Two-tone heading — the signature device (DESIGN-PLAN §6.3)
+// --------------------------------------------------------------------------
+.tt {
+  color: $c-accent;
+
+  &--gold { color: $c-highlight; }
+}
+
+// Hand-drawn underline that draws itself on load
+.underline-swash {
+  position: relative;
+  display: inline-block;
+
+  svg {
+    position: absolute;
+    bottom: -.18em;
+    left: 0;
+    width: 100%;
+    height: .34em;
+    overflow: visible;
+  }
+
+  path {
+    fill: none;
+    stroke: $c-highlight;
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 420;
+    stroke-dashoffset: 420;
+  }
+
+  // Delay was tuned for a fixed 0.4s trigger; the typewriter now fires this
+  // once "here" has finished typing, so it no longer needs to wait.
+  &.is-drawn path {
+    animation: draw-swash 1s $ease-out .08s forwards;
+  }
+}
+
+@keyframes draw-swash {
+  to { stroke-dashoffset: 0; }
+}
+
+// --------------------------------------------------------------------------
+// Typewriter reveal
+// Every glyph is in the DOM from the first frame, hidden with `visibility`
+// (which still reserves its box) rather than being appended as it types — so
+// the heading holds its final size and line breaks throughout and the copy
+// below it never shifts. Words are inline-block so splitting into per-char
+// spans can't introduce a break opportunity mid-word.
+// If JS never runs, no spans are generated and the text renders as normal.
+// --------------------------------------------------------------------------
+.tw {
+  &__w {
+    display: inline-block;
+    white-space: nowrap;
+  }
+
+  &__c {
+    position: relative;
+    visibility: hidden;
+
+    &.is-on { visibility: visible; }
+
+    // The caret rides the last-typed glyph, so it follows the text across the
+    // line break for free. `visibility: visible` because it has to show while
+    // its own character is still hidden.
+    &.is-cursor::after {
+      content: '';
+      position: absolute;
+      top: .1em;
+      right: -.08em;
+      bottom: .14em;
+      width: .055em;
+      visibility: visible;
+      background: $c-highlight;
+      border-radius: 2px;
+      animation: tw-caret .85s steps(1, end) infinite;
+    }
+  }
+
+  &.is-done .tw__c.is-cursor::after {
+    opacity: 0;
+    animation: none;
+    transition: opacity $dur-base $ease-out;
+  }
+}
+
+@keyframes tw-caret {
+  50% { opacity: 0; }
+}
+
+// Belt and braces: if the stylesheet loads but the script is blocked, or the
+// visitor asks for less motion, show the finished heading with no caret.
+@media (prefers-reduced-motion: reduce) {
+  .tw__c {
+    visibility: visible;
+
+    &.is-cursor::after { display: none; }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Eyebrow — teal rule + tracked uppercase label above every H2
+// --------------------------------------------------------------------------
+.eyebrow {
+  display: inline-flex;
+  gap: $sp-3;
+  align-items: center;
+  margin-bottom: $sp-4;
+  font-family: $font-body;
+  font-size: $fs-eyebrow;
+  font-weight: 700;
+  color: $c-accent;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+
+  &::before {
+    content: '';
+    width: 24px;
+    height: 2px;
+    background: currentcolor;
+    border-radius: 2px;
+  }
+
+  &--center { justify-content: center; }
+
+  &--light {
+    color: $c-highlight;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Section header block
+// --------------------------------------------------------------------------
+.sec-head {
+  max-width: 720px;
+  margin-bottom: clamp($sp-8, 5vw, $sp-11);
+
+  &--center {
+    margin-inline: auto;
+    text-align: center;
+  }
+
+  &__lead {
+    margin-top: $sp-4;
+    font-size: $fs-lead;
+    line-height: 1.65;
+  }
+
+  &--center &__lead { margin-inline: auto; }
+}
+
+// Tabular numerals everywhere a number is being compared
+.num { font-variant-numeric: tabular-nums; }

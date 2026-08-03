@@ -1,0 +1,32 @@
+// ==========================================================================
+// FANCYBOX OVERRIDES
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.fancybox__container {
+  --fancybox-bg: #{rgba(11, 18, 32, .94)};
+  --fancybox-accent-color: #{$c-accent};
+
+  z-index: $z-lightbox;
+  font-family: $font-body;
+}
+
+.fancybox__caption {
+  font-family: $font-body;
+  font-size: $fs-sm;
+}
+
+.f-button {
+  --f-button-border-radius: 50%;
+  --f-button-bg: #{rgba(255, 255, 255, .12)};
+  --f-button-hover-bg: #{$c-accent};
+  --f-button-color: #{$c-white};
+  --f-button-hover-color: #{$c-white};
+}
+
+.f-carousel__nav .f-button,
+.fancybox__nav .f-button {
+  --f-button-width: 52px;
+  --f-button-height: 52px;
+}

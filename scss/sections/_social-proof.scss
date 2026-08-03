@@ -1,0 +1,375 @@
+// ==========================================================================
+// TESTIMONIALS + BLOG — DESIGN-PLAN §8.12, §8.13
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.stories {
+  @include section-padding;
+
+  overflow: hidden;
+
+  position: relative;
+
+  // #47246D — the darkest purple in the palette. The cards sit one step lighter
+  // ($c-primary) so they lift off it, as in the reference.
+  background: $c-primary-700;
+
+  .sec-head {
+    color: $c-white;
+
+    // h2 must be targeted directly — the base stylesheet sets a colour on the
+    // element itself, so it never inherits from .sec-head.
+    h2 { color: $c-white; }
+
+    // Accents shift to the lighter cyan: $c-accent (#57BFDA) is too dim
+    // against this purple, and both of these carry the section's colour.
+    .tt { color: $c-accent-300; }
+    .eyebrow { color: $c-accent-300; }
+  }
+
+  &__inner {
+    @include container;
+
+    position: relative;
+    z-index: 2;
+  }
+
+  // Arc bleeds off the right edge, behind the cards. The section already has
+  // overflow: hidden, so it cannot widen the document.
+  &__arc {
+    position: absolute;
+    top: 23%;
+    right: -14%;
+    z-index: 1;
+    width: min(680px, 68vw);
+    opacity: .16;
+    pointer-events: none;
+
+    // No translateY here: it was centring the arc on `top`, which turned
+    // top: 23% into an effective -12% and clipped the upper third away.
+    // Without it, 23% is measured from the arc's own top edge.
+
+    @include mq(lg) { right: -6%; }
+  }
+
+  // ------------------------------------------------------------------------
+  // 2 + 1 + 2 bento. Column auto-flow means each column fills top-to-bottom
+  // before moving right, so the DOM order is card, card, video, card, card and
+  // the video lands in the middle column spanning both rows.
+  // ------------------------------------------------------------------------
+  &__bento {
+    display: grid;
+    gap: clamp($sp-4, 2vw, $sp-5);
+
+    @include mq(lg) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: repeat(2, minmax(0, 1fr));
+      grid-auto-flow: column;
+    }
+  }
+
+  &__card {
+    position: relative;
+    height: 100%;
+    padding: $sp-7 $sp-6 $sp-6;
+    background: $c-primary;
+    border: 1px solid rgba(255, 255, 255, .08);
+    border-radius: $r-lg;
+    transition: background-color $dur-base $ease-out, border-color $dur-base $ease-out,
+                transform $dur-base $ease-out;
+
+    @include hover {
+      background: $c-primary-600;
+      border-color: rgba(255, 255, 255, .16);
+      transform: translateY(-5px);
+    }
+
+    // Oversized quote glyph
+    &::before {
+      content: '“';
+      position: absolute;
+      top: 6px;
+      right: $sp-5;
+      font-family: $font-display;
+      font-size: 5rem;
+      font-weight: 800;
+      line-height: 1;
+      color: rgba(255, 255, 255, .07);
+      pointer-events: none;
+    }
+  }
+
+  &__stars {
+    display: flex;
+    gap: 2px;
+    margin-bottom: $sp-4;
+    color: $c-highlight;
+
+    svg { width: 16px; height: 16px; }
+
+    // Add this class to a star to render it unfilled, for any rating below 5
+    .is-empty { color: rgba(255, 255, 255, .22); }
+  }
+
+  &__quote {
+    position: relative;
+    z-index: 1;
+    font-size: $fs-sm;
+    line-height: 1.75;
+    color: rgba(255, 255, 255, .78);
+  }
+
+  &__person {
+    display: flex;
+    gap: $sp-3;
+    align-items: center;
+    margin-top: $sp-6;
+    padding-top: $sp-5;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+  }
+
+  &__avatar {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 52px;
+    height: 52px;
+    overflow: hidden;
+    font-family: $font-display;
+    font-size: 1.0625rem;
+    font-weight: 800;
+    color: $c-white;
+
+    // Ringed circle, echoing the reference's photo avatars. Swap the initials
+    // for an <img> and it inherits the same ring.
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .2);
+    border-radius: 50%;
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+  }
+
+  &__name {
+    display: block;
+    font-family: $font-display;
+    font-size: 1rem;
+    font-weight: 800;
+    color: $c-white;
+  }
+
+  &__course {
+    display: block;
+    margin-top: 2px;
+    font-size: $fs-xs;
+    line-height: 1.4;
+    color: rgba(255, 255, 255, .62);
+  }
+
+  // Third line in gold, as in the reference — ties the author block back to
+  // the star rating above it.
+  &__place {
+    display: block;
+    margin-top: 1px;
+    font-size: $fs-xs;
+    font-weight: 700;
+    line-height: 1.4;
+    color: $c-highlight;
+  }
+
+  // ------------------------------------------------------------------------
+  // Video testimonial variant
+  // ------------------------------------------------------------------------
+  &__video {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border-radius: $r-lg;
+
+    // Stacked below lg, the 8:9 portrait at full column width would run ~915px
+    // tall on a tablet. Cap it until the bento grid takes over.
+    height: clamp(360px, 58vw, 520px);
+
+    @include mq(lg) {
+      // Centre cell of the bento — height is the two side cards plus the gap
+      height: 100%;
+      grid-row: span 2;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform .7s $ease-out;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(11, 18, 32, .1), rgba(11, 18, 32, .8));
+    }
+
+    @include hover {
+      img { transform: scale(1.06); }
+      .stories__play { transform: translate(-50%, -50%) scale(1.1); }
+    }
+  }
+
+  &__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    color: $c-ink;
+    background: $c-highlight;
+    border-radius: 50%;
+    box-shadow: $shadow-gold;
+    transform: translate(-50%, -50%);
+    transition: transform $dur-base $ease-back;
+
+    svg { width: 24px; height: 24px; margin-left: 3px; }
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border: 2px solid rgba(247, 222, 140, .6);
+      border-radius: 50%;
+      animation: pulse-ring 2.4s ease-out infinite;
+    }
+  }
+
+  &__video-cap {
+    position: absolute;
+    right: $sp-5;
+    bottom: $sp-5;
+    left: $sp-5;
+    z-index: 2;
+    color: $c-white;
+
+    b {
+      display: block;
+      font-family: $font-display;
+      font-size: 1.0625rem;
+      font-weight: 800;
+    }
+
+    span { display: block; font-size: $fs-xs; color: rgba(255, 255, 255, .78); }
+  }
+}
+
+// ==========================================================================
+// §8.13 — Blog
+// ==========================================================================
+.blog {
+  @include section-padding;
+
+  &__inner { @include container; }
+
+  &__grid {
+    display: grid;
+    gap: $sp-6;
+
+    @include mq(md) { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    background: $c-white;
+    border: 1px solid $c-line;
+    border-radius: $r-lg;
+    transition: box-shadow $dur-base $ease-out, transform $dur-base $ease-out;
+
+    @include hover {
+      border-color: transparent;
+      box-shadow: $shadow-lg;
+      transform: translateY(-6px);
+
+      .blog__img img { transform: scale(1.07); }
+      .blog__title  { color: $c-accent; }
+    }
+  }
+
+  &__img {
+    position: relative;
+    overflow: hidden;
+
+    img {
+      aspect-ratio: 16 / 9;
+      width: 100%;
+      object-fit: cover;
+      transition: transform .7s $ease-out;
+    }
+  }
+
+  &__cat {
+    position: absolute;
+    top: $sp-4;
+    left: $sp-4;
+    z-index: 1;
+  }
+
+  &__body {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    padding: $sp-5;
+  }
+
+  &__meta {
+    display: flex;
+    gap: $sp-4;
+    margin-bottom: $sp-3;
+    font-size: 11px;
+    font-weight: 600;
+    color: $c-muted;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+
+    span { display: inline-flex; gap: 5px; align-items: center; }
+    svg  { width: 13px; height: 13px; }
+  }
+
+  &__title {
+    @include clamp-lines(2);
+
+    margin-bottom: $sp-3;
+    font-family: $font-display;
+    font-size: 1.125rem;
+    font-weight: 800;
+    line-height: 1.32;
+    color: $c-primary;
+    letter-spacing: -.02em;
+    transition: color $dur-base $ease-out;
+  }
+
+  &__excerpt {
+    @include clamp-lines(2);
+
+    font-size: $fs-sm;
+    line-height: 1.65;
+  }
+
+  &__more {
+    display: inline-flex;
+    gap: $sp-2;
+    align-items: center;
+    margin-top: auto;
+    padding-top: $sp-5;
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $c-accent;
+
+    svg { width: 15px; height: 15px; transition: transform $dur-base $ease-out; }
+  }
+
+  &__card:hover &__more svg { transform: translateX(4px); }
+}

@@ -1,0 +1,332 @@
+// ==========================================================================
+// MOBILE APP SHELL — DESIGN-PLAN §9
+// Everything here applies below `lg`. This is the section that separates
+// BD International from every reference site, all of which ship a squeezed
+// desktop layout on phones.
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+// --------------------------------------------------------------------------
+// 9.2 — Top app bar
+// --------------------------------------------------------------------------
+.appbar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: $z-header;
+  height: $appbar-h;
+  transition: background-color $dur-base $ease-out, box-shadow $dur-base $ease-out,
+              transform $dur-base $ease-out;
+
+  @include mq(lg) { display: none; }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+    padding-inline: $sp-4;
+  }
+
+  &__logo .logo__mark { height: 44px; }
+
+  &__actions {
+    display: flex;
+    gap: $sp-1;
+  }
+
+  &__btn {
+    @include tap;
+
+    display: grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    color: $c-white;
+    border-radius: 50%;
+
+    svg { width: 22px; height: 22px; }
+  }
+
+  &.is-stuck {
+    background: rgba(255, 255, 255, .92);
+    backdrop-filter: blur(16px) saturate(150%);
+    box-shadow: $shadow-sm;
+
+    .appbar__btn { color: $c-primary; }
+  }
+
+  &.is-hidden { transform: translateY(-100%); }
+}
+
+// --------------------------------------------------------------------------
+// 9.2 — Drawer
+// --------------------------------------------------------------------------
+.drawer-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: $z-drawer;
+  background: rgba(11, 18, 32, .55);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity $dur-base $ease-out, visibility $dur-base;
+
+  &.is-open { opacity: 1; visibility: visible; }
+
+  @include mq(lg) { display: none; }
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $z-drawer;
+  display: flex;
+  flex-direction: column;
+  width: 88%;
+  max-width: 380px;
+  padding-bottom: env(safe-area-inset-bottom);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: $c-primary;
+  transform: translateX(-102%);
+  visibility: hidden;
+  transition: transform .4s $ease-sheet, visibility .4s;
+
+  &.is-open {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
+  @include mq(lg) { display: none; }
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $sp-5;
+    border-bottom: 1px solid rgba(255, 255, 255, .1);
+
+    .logo__mark { height: 52px; }
+  }
+
+  &__close {
+    @include tap;
+
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    color: $c-white;
+    background: rgba(255, 255, 255, .1);
+    border-radius: 50%;
+
+    svg { width: 18px; height: 18px; }
+  }
+
+  &__nav {
+    padding: $sp-5 $sp-5 $sp-3;
+
+    li { opacity: 0; transform: translateX(-18px); }
+
+    a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: $sp-4 0;
+      font-family: $font-display;
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: $c-white;
+      letter-spacing: -.02em;
+      border-bottom: 1px solid rgba(255, 255, 255, .08);
+
+      svg { width: 18px; height: 18px; color: $c-highlight; }
+    }
+  }
+
+  &.is-open &__nav li {
+    animation: drawer-in .42s $ease-out forwards;
+  }
+
+  @for $i from 1 through 8 {
+    &.is-open &__nav li:nth-child(#{$i}) { animation-delay: #{.04 * $i}s; }
+  }
+
+  &__foot {
+    margin-top: auto;
+    padding: $sp-5;
+    border-top: 1px solid rgba(255, 255, 255, .1);
+  }
+
+  &__contact {
+    display: grid;
+    gap: $sp-3;
+    margin-bottom: $sp-5;
+
+    a {
+      display: flex;
+      gap: $sp-3;
+      align-items: center;
+      font-size: $fs-sm;
+      font-weight: 600;
+      color: rgba(255, 255, 255, .82);
+
+      svg { width: 18px; height: 18px; color: $c-highlight; }
+    }
+  }
+
+  &__socials {
+    display: flex;
+    gap: $sp-3;
+
+    a {
+      display: grid;
+      place-items: center;
+      width: 40px;
+      height: 40px;
+      color: $c-white;
+      background: rgba(255, 255, 255, .1);
+      border-radius: 50%;
+
+      svg { width: 17px; height: 17px; }
+    }
+  }
+
+  &__lang {
+    display: flex;
+    gap: $sp-2;
+    margin-top: $sp-5;
+
+    button {
+      flex: 1;
+      min-height: 40px;
+      font-size: $fs-xs;
+      font-weight: 700;
+      color: rgba(255, 255, 255, .7);
+      background: rgba(255, 255, 255, .08);
+      border-radius: $r-pill;
+
+      &.is-active {
+        color: $c-ink;
+        background: $c-highlight;
+      }
+    }
+  }
+}
+
+@keyframes drawer-in {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+// --------------------------------------------------------------------------
+// 9.3 — Bottom tab bar with centre FAB
+// --------------------------------------------------------------------------
+.tabbar {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $z-tabbar;
+  padding-bottom: env(safe-area-inset-bottom);
+  background: rgba(255, 255, 255, .88);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border-top: 1px solid $c-line;
+  transition: transform $dur-base $ease-out;
+
+  @include mq(lg) { display: none; }
+
+  &.is-hidden { transform: translateY(115%); }
+
+  &__inner {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    align-items: center;
+    height: $tabbar-h;
+  }
+
+  &__tab {
+    @include tap;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 0 2px;
+    font-size: 10px;
+    font-weight: 700;
+    color: $c-muted;
+    letter-spacing: .01em;
+    transition: color $dur-base $ease-out;
+
+    svg {
+      width: 22px;
+      height: 22px;
+      transition: transform $dur-base $ease-back;
+    }
+
+    &.is-active {
+      color: $c-accent;
+
+      svg { transform: translateY(-2px) scale(1.08); }
+    }
+  }
+
+  // The FAB slot keeps the grid honest; the button itself is raised out of it
+  &__fab-slot {
+    position: relative;
+  }
+}
+
+.fab {
+  @include tap;
+
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  color: $c-ink;
+  background: $g-gold;
+  border: 4px solid $c-white;
+  border-radius: 50%;
+  box-shadow: $shadow-gold;
+  transform: translate(-50%, 0);
+
+  svg { width: 22px; height: 22px; }
+
+  span {
+    font-size: 8px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+
+  // The secondary WhatsApp FAB that used to float above the tab bar is gone.
+  // It only ever rendered below `lg`, so removing it is a phone-only change —
+  // the desktop WhatsApp float is a separate element, `.floater--wa`.
+}
+
+// The label under the FAB, sitting inside the bar
+.fab-label {
+  position: absolute;
+  bottom: 4px;
+  left: 50%;
+  font-size: 9px;
+  font-weight: 800;
+  color: $c-primary;
+  white-space: nowrap;
+  transform: translateX(-50%);
+}

@@ -1,0 +1,161 @@
+// ==========================================================================
+// BD INTERNATIONAL — DESIGN TOKENS
+// Single source of truth. See DESIGN-PLAN.md §5–§7.
+// ==========================================================================
+
+// --------------------------------------------------------------------------
+// COLOUR
+// --------------------------------------------------------------------------
+// KD brand palette — KD_Guideline.pdf §COLORS PALETTE (p.12–14).
+// Base values are the guideline's exact specs; each ramp step keeps the same
+// lightness/saturation relationship to its base that the previous palette had,
+// so contrast ratios and visual weight across the UI are unchanged.
+$c-primary:      #613394;   // Purple  · RGB 97 51 148  · CMYK 78 89 0 0
+$c-primary-700:  #47246D;
+$c-primary-600:  #7342AA;
+$c-primary-400:  #9574BA;
+$c-primary-100:  #F3EFF7;
+
+$c-accent:       #57BFDA;   // Cyan    · RGB 87 191 218 · CMYK 62 2 13 0
+$c-accent-600:   #2CA8C8;
+$c-accent-300:   #9BCAD6;
+$c-accent-100:   #F1F7F8;
+
+$c-highlight:    #F7DE8C;   // Yellow  · RGB 247 222 140 · CMYK 5 12 54 0
+$c-highlight-600:#E4C355;
+$c-highlight-100:#FEFAEC;
+
+// The four colours baked into kd-education-ltd.svg. Held as tokens so the
+// inlined artwork can be flipped to solid white over dark grounds and restored
+// exactly as supplied once the header sticks. Note $c-logo-c is the logo's own
+// cyan, which is not the guideline's #57BFDA — see $c-accent.
+$c-logo-k:       #613394;
+$c-logo-c:       #03C2DE;
+$c-logo-d:       #F7DE8C;
+$c-logo-word:    #A3B0C7;
+
+$c-ink:          #0B1220;
+$c-slate:        #4A5568;
+$c-muted:        #8A94A6;
+$c-line:         #E2E7F0;
+$c-mist:         #F4F6FA;
+$c-white:        #FFFFFF;
+
+$c-success:      #2E9E5B;
+$c-warning:      #E8A33D;
+$c-error:        #D64545;
+
+// --------------------------------------------------------------------------
+// GRADIENTS & SHADOWS
+// --------------------------------------------------------------------------
+$g-primary:  linear-gradient(135deg, #613394 0%, #7342AA 100%);
+$g-accent:   linear-gradient(135deg, #57BFDA 0%, #9BCAD6 100%);
+$g-gold:     linear-gradient(135deg, #F7DE8C 0%, #FCF1CF 100%);
+$g-scrim:    linear-gradient(180deg, rgba(11, 18, 32, .72) 0%, rgba(11, 18, 32, .35) 55%, rgba(11, 18, 32, .78) 100%);
+$g-glass:    linear-gradient(135deg, rgba(255, 255, 255, .9), rgba(255, 255, 255, .66));
+
+$shadow-sm:    0 1px 3px rgba(97, 51, 148, .08);
+$shadow-md:    0 6px 16px rgba(97, 51, 148, .10);
+$shadow-lg:    0 16px 40px rgba(97, 51, 148, .14);
+$shadow-xl:    0 28px 64px rgba(97, 51, 148, .18);
+$shadow-gold:  0 10px 30px rgba(247, 222, 140, .35);
+$shadow-sheet: 0 -8px 32px rgba(11, 18, 32, .18);
+
+// --------------------------------------------------------------------------
+// TYPOGRAPHY — KD_Guideline.pdf §TYPOGRAPHY (p.18)
+// "We have a single primary typeface, Noto Kufi Arabic, that includes both the
+// Latin and Arabic characters... Our primary typeface must be used for all of
+// our typography." Display and body therefore resolve to the same family; the
+// two tokens are kept so the existing weight split still reads clearly.
+// --------------------------------------------------------------------------
+$font-display: 'Noto Kufi Arabic', 'Segoe UI', system-ui, sans-serif;
+$font-body:    'Noto Kufi Arabic', 'Segoe UI', system-ui, -apple-system, sans-serif;
+$font-bangla:  'Hind Siliguri', 'Noto Sans Bengali', sans-serif;
+
+$fs-display: clamp(2.5rem, 6.2vw, 4.5rem);
+$fs-h1:      clamp(2rem, 4vw, 3.25rem);
+$fs-h2:      clamp(1.875rem, 3.4vw, 2.75rem);
+$fs-h3:      clamp(1.25rem, 2vw, 1.5rem);
+$fs-h4:      1.125rem;
+$fs-lead:    clamp(1.0625rem, 1.4vw, 1.25rem);
+$fs-body:    1rem;
+$fs-sm:      .875rem;
+$fs-xs:      .8125rem;
+$fs-eyebrow: .8125rem;
+$fs-stat:    clamp(2.5rem, 4.5vw, 3.5rem);
+
+// --------------------------------------------------------------------------
+// SPACING (4px base)
+// --------------------------------------------------------------------------
+$sp-1:  .25rem;   $sp-2:  .5rem;    $sp-3:  .75rem;   $sp-4:  1rem;
+$sp-5:  1.25rem;  $sp-6:  1.5rem;   $sp-7:  2rem;     $sp-8:  2.5rem;
+$sp-9:  3rem;     $sp-10: 4rem;     $sp-11: 5rem;     $sp-12: 6rem;
+$sp-13: 7.5rem;   $sp-14: 10rem;
+
+$section-pad: clamp(3.5rem, 8vw, 7.5rem);
+
+// --------------------------------------------------------------------------
+// LAYOUT
+// --------------------------------------------------------------------------
+$container-max:  1440px;
+$container-wide: 1440px;
+$gutter:         clamp(1.125rem, 4vw, 2.5rem);
+$grid-gap:       clamp(1rem, 2vw, 2rem);
+
+// --------------------------------------------------------------------------
+// RADII
+// --------------------------------------------------------------------------
+$r-sm:    8px;
+$r-md:    14px;
+$r-lg:    20px;
+$r-xl:    28px;
+$r-sheet: 24px;
+$r-pill:  999px;
+
+// --------------------------------------------------------------------------
+// MOTION
+// --------------------------------------------------------------------------
+$ease-out:   cubic-bezier(.22, 1, .36, 1);
+$ease-inout: cubic-bezier(.65, 0, .35, 1);
+$ease-back:  cubic-bezier(.34, 1.56, .64, 1);
+$ease-sheet: cubic-bezier(.32, .72, 0, 1);
+
+$dur-fast: .18s;
+$dur-base: .32s;
+$dur-slow: .6s;
+
+// --------------------------------------------------------------------------
+// Z-INDEX LADDER
+// --------------------------------------------------------------------------
+$z-base:     1;
+$z-sticky:   100;
+$z-header:   1000;
+$z-tabbar:   1050;
+$z-drawer:   1100;
+$z-sheet:    1150;
+$z-lightbox: 1200;
+$z-toast:    1300;
+
+// --------------------------------------------------------------------------
+// MOBILE SHELL
+// --------------------------------------------------------------------------
+$appbar-h: 56px;
+$tabbar-h: 64px;
+
+// Desktop utility bar. It sits above the hero in normal flow, so the hero's
+// viewport-height calculation has to subtract it.
+$topbar-h: 40px;
+
+// How far the quick-link cards ride up over the hero's bottom edge
+$quicklinks-overlap: $sp-10;
+
+// --------------------------------------------------------------------------
+// BREAKPOINTS
+// --------------------------------------------------------------------------
+$bp: (
+  sm:  480px,
+  md:  768px,
+  lg:  1024px,
+  xl:  1280px,
+  xxl: 1536px
+);

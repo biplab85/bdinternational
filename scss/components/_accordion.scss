@@ -1,0 +1,169 @@
+// ==========================================================================
+// ACCORDION — native <details>, enhanced with GSAP height tween
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.acc {
+  position: relative;
+  overflow: hidden;
+  background: $c-white;
+  border: 1px solid $c-line;
+  border-radius: $r-lg;
+  transition: box-shadow $dur-base $ease-out,
+              border-color $dur-base $ease-out,
+              transform $dur-base $ease-out;
+
+  // The lift works because the shared reveal in main.js hands its targets
+  // back to CSS once they've landed — GSAP otherwise parks
+  // `translate/rotate/scale: none` inline and outranks this rule.
+  @include hover {
+    border-color: rgba(87, 191, 218, .34);
+    box-shadow: $shadow-md;
+    transform: translateY(-2px);
+  }
+
+  // Accent rail that draws down the left edge as the answer opens — the cue
+  // that tells you which row is expanded without having to find the icon.
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    background: $g-accent;
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform $dur-slow $ease-out;
+  }
+
+  & + & { margin-top: $sp-3; }
+
+  &[open] {
+    border-color: transparent;
+    box-shadow: $shadow-lg;
+
+    &::before { transform: scaleY(1); }
+  }
+
+  &__summary {
+    display: flex;
+    gap: $sp-4;
+    align-items: center;
+    justify-content: space-between;
+    padding: $sp-5 $sp-6;
+    font-family: $font-display;
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.45;
+    color: $c-primary;
+    cursor: pointer;
+    list-style: none;
+    transition: color $dur-base $ease-out;
+
+    &::-webkit-details-marker { display: none; }
+
+    @include hover { color: $c-accent; }
+  }
+
+  &[open] &__summary { color: $c-accent-600; }
+
+  &__icon {
+    position: relative;
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    background: $c-accent-100;
+    border-radius: 50%;
+    transition: background-color $dur-base $ease-out, transform $dur-base $ease-out;
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      background: $c-accent;
+      border-radius: 2px;
+      transform: translate(-50%, -50%);
+      transition: background-color $dur-base $ease-out;
+    }
+
+    &::before { width: 12px; height: 2px; }
+    &::after  { width: 2px;  height: 12px; }
+  }
+
+  &[open] &__icon {
+    background: $c-accent;
+    transform: rotate(45deg);
+
+    &::before,
+    &::after { background: $c-white; }
+  }
+
+  &__body {
+    padding: 0 $sp-6 $sp-6;
+    font-size: $fs-sm;
+    line-height: 1.7;
+  }
+
+  // Nested tick-lists inside answers (borrowed from Evisa)
+  &__list {
+    display: grid;
+    gap: $sp-2;
+    margin-top: $sp-4;
+
+    li {
+      display: flex;
+      gap: $sp-3;
+      align-items: flex-start;
+      font-size: $fs-xs;
+      font-weight: 600;
+      color: $c-primary;
+    }
+
+    svg {
+      flex: 0 0 auto;
+      width: 16px;
+      height: 16px;
+      margin-top: 3px;
+      color: $c-accent;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Tick list — used in hero and about
+// --------------------------------------------------------------------------
+.ticks {
+  display: grid;
+  gap: $sp-3;
+
+  li {
+    display: flex;
+    gap: $sp-3;
+    align-items: flex-start;
+    font-size: $fs-sm;
+    font-weight: 600;
+  }
+
+  svg {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    color: $c-accent;
+  }
+
+  &--light {
+    li { color: rgba(255, 255, 255, .92); }
+    svg { color: $c-highlight; }
+  }
+
+  &--inline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $sp-3 $sp-6;
+  }
+}

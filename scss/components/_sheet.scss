@@ -1,0 +1,133 @@
+// ==========================================================================
+// BOTTOM SHEET — replaces modals below `lg` (DESIGN-PLAN §9.4)
+// On desktop the same markup renders as a centred dialog.
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.sheet-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: $z-sheet;
+  background: rgba(11, 18, 32, .5);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity $dur-base $ease-out, visibility $dur-base;
+
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.sheet {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $z-sheet;
+  display: flex;
+  flex-direction: column;
+  max-height: 92dvh;
+  background: $c-white;
+  border-radius: $r-sheet $r-sheet 0 0;
+  box-shadow: $shadow-sheet;
+  transform: translateY(101%);
+  visibility: hidden;
+  transition: transform $dur-base $ease-sheet, visibility $dur-base;
+
+  &.is-open {
+    transform: translateY(0);
+    visibility: visible;
+  }
+
+  // While a drag is in progress JS drives the transform directly
+  &.is-dragging {
+    transition: none;
+  }
+
+  // ------------------------------------------------------------------------
+  // Drag handle
+  // ------------------------------------------------------------------------
+  &__handle {
+    flex: 0 0 auto;
+    padding: $sp-3 0 $sp-2;
+    cursor: grab;
+    touch-action: none;
+
+    &::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 4px;
+      margin: 0 auto;
+      background: $c-line;
+      border-radius: $r-pill;
+    }
+  }
+
+  &__head {
+    flex: 0 0 auto;
+    display: flex;
+    gap: $sp-4;
+    align-items: center;
+    justify-content: space-between;
+    padding: $sp-2 $sp-5 $sp-4;
+    border-bottom: 1px solid $c-line;
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: 1.125rem;
+    font-weight: 800;
+    color: $c-primary;
+    letter-spacing: -.02em;
+  }
+
+  &__close {
+    @include tap;
+
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    color: $c-slate;
+    background: $c-mist;
+    border-radius: 50%;
+
+    svg { width: 18px; height: 18px; }
+  }
+
+  &__body {
+    flex: 1 1 auto;
+    padding: $sp-5 $sp-5 calc(#{$sp-6} + env(safe-area-inset-bottom));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  // ------------------------------------------------------------------------
+  // Desktop — becomes a centred dialog
+  // ------------------------------------------------------------------------
+  @include mq(lg) {
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+    width: min(560px, calc(100vw - #{$sp-10}));
+    max-height: 86vh;
+    border-radius: $r-xl;
+    box-shadow: $shadow-xl;
+    transform: translate(-50%, -46%) scale(.96);
+    opacity: 0;
+    transition: transform $dur-base $ease-out, opacity $dur-base $ease-out, visibility $dur-base;
+
+    &.is-open {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    &__handle { display: none; }
+  }
+}

@@ -1,0 +1,250 @@
+// ==========================================================================
+// BUTTONS
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.btn {
+  @include tap;
+
+  position: relative;
+  display: inline-flex;
+  gap: $sp-2;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: $sp-3 $sp-7;
+  overflow: hidden;
+  font-family: $font-body;
+  font-size: $fs-sm;
+  font-weight: 700;
+  letter-spacing: .01em;
+  white-space: nowrap;
+  border-radius: $r-pill;
+  transition: transform $dur-fast $ease-out, background-color $dur-base $ease-out,
+              color $dur-base $ease-out, box-shadow $dur-base $ease-out, border-color $dur-base $ease-out;
+
+  svg {
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    transition: transform $dur-base $ease-out;
+  }
+
+  @include hover {
+    svg { transform: translateX(3px); }
+  }
+
+  // ------------------------------------------------------------------------
+  // Gold — the primary conversion button. Ink text, never white (13.9:1).
+  // ------------------------------------------------------------------------
+  &--primary {
+    color: $c-ink;
+    background: $g-gold;
+    box-shadow: $shadow-gold;
+
+    @include hover {
+      background: $c-highlight-600;
+      box-shadow: 0 14px 36px rgba(247, 222, 140, .48);
+      transform: translateY(-2px);
+    }
+  }
+
+  &--secondary {
+    color: $c-white;
+    background: $c-primary;
+
+    @include hover {
+      background: $c-primary-600;
+      box-shadow: $shadow-lg;
+      transform: translateY(-2px);
+    }
+  }
+
+  &--accent {
+    color: $c-white;
+    background: $c-accent;
+
+    @include hover {
+      background: $c-accent-600;
+      transform: translateY(-2px);
+    }
+  }
+
+  &--ghost {
+    color: $c-primary;
+    background: transparent;
+    border: 1.5px solid $c-line;
+
+    @include hover {
+      color: $c-primary;
+      background: $c-white;
+      border-color: $c-primary;
+    }
+  }
+
+  // Ghost on dark / photographic backgrounds
+  &--ghost-light {
+    color: $c-white;
+    background: rgba(255, 255, 255, .08);
+    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(255, 255, 255, .38);
+
+    @include hover {
+      color: $c-primary;
+      background: $c-white;
+      border-color: $c-white;
+    }
+  }
+
+  &--block {
+    width: 100%;
+  }
+
+  &--sm {
+    min-height: 42px;
+    padding: $sp-2 $sp-5;
+    font-size: $fs-xs;
+  }
+
+  &[disabled],
+  &.is-loading {
+    pointer-events: none;
+    opacity: .6;
+  }
+
+  &.is-loading::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentcolor;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin .7s linear infinite;
+  }
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
+// --------------------------------------------------------------------------
+// Text link with an animated rule
+// --------------------------------------------------------------------------
+.link {
+  display: inline-flex;
+  gap: $sp-2;
+  align-items: center;
+  font-size: $fs-sm;
+  font-weight: 700;
+  color: $c-accent;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    transition: transform $dur-base $ease-out;
+  }
+
+  @include hover {
+    color: $c-accent-600;
+    svg { transform: translateX(4px); }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Icon button
+// --------------------------------------------------------------------------
+.icon-btn {
+  @include tap;
+
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: $c-primary;
+  border-radius: 50%;
+  transition: background-color $dur-base $ease-out, color $dur-base $ease-out, transform $dur-fast $ease-out;
+
+  svg { width: 20px; height: 20px; }
+
+  @include hover {
+    color: $c-white;
+    background: $c-primary;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Floating actions (desktop) — DESIGN-PLAN §8.18
+// --------------------------------------------------------------------------
+.floaters {
+  position: fixed;
+  right: $sp-6;
+  bottom: $sp-6;
+  z-index: $z-sticky;
+  display: none;
+  flex-direction: column;
+  gap: $sp-3;
+
+  @include mq(lg) { display: flex; }
+}
+
+.floater {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  color: $c-white;
+  border-radius: 50%;
+  box-shadow: $shadow-lg;
+  transition: transform $dur-base $ease-back, opacity $dur-base $ease-out;
+
+  svg { width: 24px; height: 24px; }
+
+  &--wa {
+    background: #25D366;
+    opacity: 0;
+    transform: scale(0);
+    animation: pop-in .5s $ease-back 2s forwards;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 2px solid #25D366;
+      border-radius: 50%;
+      animation: pulse-ring 2.4s ease-out infinite;
+    }
+  }
+
+  &--top {
+    position: relative;
+    color: $c-primary;
+    background: $c-white;
+    opacity: 0;
+    pointer-events: none;
+
+    &.is-visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    circle {
+      fill: none;
+      stroke-width: 2.5;
+      transform: rotate(-90deg);
+      transform-origin: center;
+    }
+  }
+
+  @include hover { transform: translateY(-3px) scale(1.05); }
+}
+
+@keyframes pop-in {
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-ring {
+  0%   { opacity: .7; transform: scale(1); }
+  70%  { opacity: 0;  transform: scale(1.5); }
+  100% { opacity: 0;  transform: scale(1.5); }
+}

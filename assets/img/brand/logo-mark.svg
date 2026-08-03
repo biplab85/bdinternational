@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 128" width="140" height="128" role="img" aria-label="BD International">
+  <title>BD International</title>
+  <g fill="none" stroke-width="13" stroke-linecap="butt">
+    <!-- B : stem + two bowls -->
+    <g stroke="#0F2A5C">
+      <path d="M20 22 V106"/>
+      <path d="M14 22 H41 A21 21 0 0 1 41 64 H14"/>
+      <path d="M14 64 H45 A21 21 0 0 1 45 106 H14"/>
+    </g>
+    <!-- D : stem + top arm curving down into the counter -->
+    <g stroke="#0F2A5C">
+      <path d="M78 22 V106"/>
+      <path d="M72 22 H92 A30 30 0 0 1 112 50"/>
+    </g>
+    <!-- the bowl leaves its counter and rises away — the open path -->
+    <path d="M72 106 H92 A34 34 0 0 0 122 52" stroke="#00A99D" stroke-linecap="round"/>
+  </g>
+</svg>

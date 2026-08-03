@@ -1,0 +1,350 @@
+// ==========================================================================
+// FAQ + CTA BAND + CONTACT — DESIGN-PLAN §8.14, §8.15, §8.16
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.faq {
+  @include section-padding;
+
+  position: relative;
+
+  // `clip`, not `hidden`: overflow: hidden would make this a scroll container
+  // and silently kill the sticky intro column. Clipped on both axes so the
+  // arc's bleed can't spill down over the navy CTA band below.
+  overflow: clip;
+
+  // Fills the empty run of white beneath the sticky intro card. Sits behind
+  // the content, which is why `__inner` takes a stacking context below.
+  &__arc {
+    position: absolute;
+    bottom: -14%;
+    left: -11%;
+    z-index: 0;
+    width: min(560px, 52vw);
+    opacity: .14;
+    pointer-events: none;
+  }
+
+  &__inner {
+    @include container;
+
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: clamp($sp-7, 4vw, $sp-10);
+
+    // A stretched grid item fills the row and has nothing to stick within.
+    align-items: start;
+
+    @include mq(lg) { grid-template-columns: .82fr 1.18fr; }
+  }
+
+  &__intro {
+    @include mq(lg) {
+      position: sticky;
+      // clears the 101px stuck header with a little breathing room
+      top: 137px;
+    }
+  }
+
+  &__lead {
+    max-width: 42ch;
+    margin-top: $sp-5;
+    font-size: $fs-lead;
+    line-height: 1.7;
+    color: $c-slate;
+  }
+
+  // One question per row. The old two-column grid put Q2 to the right of Q1,
+  // so the eye had to zig-zag and an opening answer shoved its neighbour
+  // down; a single column reads top to bottom like the conversation it is.
+  &__list {
+    display: grid;
+    gap: $sp-3;
+  }
+
+  &__aside {
+    display: grid;
+    gap: $sp-4;
+    justify-items: start;
+    margin-top: $sp-7;
+    padding: $sp-6;
+    background: linear-gradient(158deg, $c-primary-100 0%, $c-mist 68%);
+    border: 1px solid $c-line;
+    border-radius: $r-lg;
+
+    p { font-size: $fs-sm; }
+
+    b { display: block; color: $c-primary; }
+  }
+}
+
+// ==========================================================================
+// §8.15 — CTA band with a cut-out figure breaking the top edge
+// ==========================================================================
+.cta {
+  position: relative;
+  background: $g-primary;
+
+  // No margin-top. It used to add ~96px on top of the FAQ's 120px bottom
+  // padding, and because both are white the eye read the whole 216px as the
+  // FAQ's own spacing — 120 above its heading against 216 below. The arc
+  // still has that 120px of white to bleed up into, and the figure the
+  // margin was reserving room for was never added (it's commented out in
+  // the markup).
+
+  // __arc sits at right: -6% of the full-bleed section, which pushed the whole
+  // document ~6vw wide and gave every breakpoint a horizontal scrollbar.
+  // `clip` (not `hidden`) so the arc keeps its intentional vertical bleed.
+  overflow-x: clip;
+
+  &__inner {
+    @include container;
+
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: $sp-7;
+    align-items: center;
+    padding-block: clamp($sp-8, 6vw, $sp-11);
+
+    @include mq(lg) { grid-template-columns: 1.25fr .75fr; }
+  }
+
+  &__arc {
+    position: absolute;
+    top: -18%;
+    right: -6%;
+    z-index: 1;
+    width: min(520px, 56vw);
+    opacity: .13;
+    pointer-events: none;
+  }
+
+  h2 { color: $c-white; }
+
+  &__lead {
+    margin-top: $sp-4;
+    font-size: $fs-lead;
+    color: rgba(255, 255, 255, .78);
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $sp-3;
+    margin-top: $sp-7;
+
+    @include mq(lg) { margin-top: 0; justify-content: flex-end; }
+  }
+
+  // The counsellor photo rising out of the band
+  &__figure {
+    position: absolute;
+    right: 4%;
+    bottom: 0;
+    z-index: 1;
+    display: none;
+    width: min(360px, 28vw);
+
+    @include mq(xl) { display: block; }
+
+    img { width: 100%; height: auto; }
+  }
+}
+
+// ==========================================================================
+// §8.16 — Contact + offices
+// ==========================================================================
+// The contact block is no longer a section on the page — it lives only inside
+// `.sheet--contact` (see the dialog rules at the end of this file). These
+// class names are unchanged, so everything below still applies; only the
+// section's own padding is gone, because there is no section left to pad.
+.contact {
+  &__inner {
+    display: grid;
+    gap: clamp($sp-8, 6vw, $sp-10);
+
+    @include mq(lg) { grid-template-columns: .9fr 1.1fr; align-items: start; }
+  }
+
+  // ------------------------------------------------------------------------
+  // Office cards
+  // ------------------------------------------------------------------------
+  &__offices {
+    display: grid;
+    gap: $sp-4;
+    margin-top: $sp-7;
+  }
+
+  &__office {
+    position: relative;
+    padding: $sp-5 $sp-5 $sp-5 $sp-6;
+    background: $c-white;
+    border: 1px solid $c-line;
+    border-left: 3px solid $c-accent;
+    border-radius: $r-md;
+    transition: box-shadow $dur-base $ease-out;
+
+    @include hover { box-shadow: $shadow-md; }
+
+    &--hq { border-left-color: $c-highlight; }
+
+    &__head {
+      display: flex;
+      gap: $sp-3;
+      align-items: center;
+      margin-bottom: $sp-3;
+    }
+
+    h3 {
+      font-size: 1.0625rem;
+      font-weight: 800;
+    }
+
+    &__rows {
+      display: grid;
+      gap: $sp-2;
+    }
+
+    &__row {
+      display: flex;
+      gap: $sp-3;
+      align-items: flex-start;
+      font-size: $fs-sm;
+
+      svg {
+        flex: 0 0 auto;
+        width: 17px;
+        height: 17px;
+        margin-top: 3px;
+        color: $c-accent;
+      }
+
+      a {
+        transition: color $dur-base $ease-out;
+        @include hover { color: $c-accent; }
+      }
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  // Form panel
+  // ------------------------------------------------------------------------
+  &__panel {
+    padding: clamp($sp-6, 4vw, $sp-8);
+    background: $c-mist;
+    border-radius: $r-xl;
+  }
+
+  &__panel-title {
+    margin-bottom: $sp-2;
+    font-family: $font-display;
+    font-size: 1.375rem;
+    font-weight: 800;
+    color: $c-primary;
+    letter-spacing: -.02em;
+  }
+
+  &__panel-sub {
+    margin-bottom: $sp-6;
+    font-size: $fs-sm;
+  }
+
+  &__label {
+    display: block;
+    margin-bottom: $sp-3;
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $c-primary;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+}
+
+// ==========================================================================
+// §8.16b — Contact dialog
+// The block's only home. Wider than the default sheet because it carries two
+// columns of content, and the sizing that used to come from the section
+// wrapper now comes from here.
+// ==========================================================================
+.sheet--contact {
+  @include mq(lg) {
+    // Two columns need roughly twice the default 560px dialog.
+    width: min(1080px, calc(100vw - #{$sp-10}));
+    max-height: 84vh;
+  }
+
+  // No title bar: the adopted block leads with its own "Come in, or call us",
+  // and a second heading above it would just say the same thing twice. The
+  // close button floats over the content instead.
+  .sheet__close--float {
+    position: absolute;
+    top: $sp-4;
+    right: $sp-4;
+    z-index: 2;
+    box-shadow: $shadow-sm;
+
+    @include mq(lg) { top: $sp-5; right: $sp-5; }
+  }
+
+  // Everything below is tightened relative to the standalone-section values
+  // these classes were written for. A section can afford to breathe down the
+  // page; a dialog is competing with the viewport, and at the original
+  // spacing the content ran 930px tall inside an 880px frame — so it opened
+  // already scrolled, which is what made it feel oversized.
+  .sheet__body {
+    padding: $sp-5 $sp-5 calc(#{$sp-5} + env(safe-area-inset-bottom));
+
+    @include mq(lg) { padding: clamp($sp-5, 2vw, $sp-6); }
+  }
+
+  .contact__inner {
+    gap: clamp($sp-5, 2.4vw, $sp-7);
+
+    @include mq(lg) { grid-template-columns: .92fr 1.08fr; }
+  }
+
+  .contact__offices {
+    gap: $sp-3;
+    margin-top: $sp-5;
+  }
+
+  .contact__office { padding: $sp-4 $sp-4 $sp-4 $sp-5; }
+
+  .contact__panel { padding: $sp-6; }
+
+  // The tallest single element in the form, and the one with the least to
+  // lose — three lines is still a comfortable place to type a paragraph.
+  .contact__panel textarea { min-height: 84px; }
+
+  // Desktop only: the information half sits on a tinted panel so the white
+  // office cards lift off it and the form half reads as the primary action.
+  // On mobile the two halves are stacked, where a panel would just be a box
+  // around the whole screen.
+  @include mq(lg) {
+    .contact__inner > div:first-child {
+      padding: $sp-6;
+      background: linear-gradient(158deg, $c-primary-100 0%, $c-mist 68%);
+      border-radius: $r-lg;
+    }
+  }
+
+  // Staggered settle for the two halves, a beat behind the dialog itself.
+  &.is-open .contact__inner > * {
+    animation: contact-col-in .55s $ease-out backwards;
+  }
+
+  &.is-open .contact__inner > * + * { animation-delay: .09s; }
+}
+
+@keyframes contact-col-in {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sheet--contact.is-open .contact__inner > * { animation: none; }
+}

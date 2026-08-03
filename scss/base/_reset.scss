@@ -1,0 +1,126 @@
+// ==========================================================================
+// RESET
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+* { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(#{$appbar-h} + #{$sp-4});
+
+  @include mq(lg) { scroll-padding-top: 96px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body {
+  font-family: $font-body;
+  font-size: $fs-body;
+  font-weight: 400;
+  line-height: 1.7;
+  color: $c-slate;
+  background: $c-white;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+
+  // Reserve room for the mobile tab bar so nothing hides beneath it
+  @include mq-down(lg) {
+    padding-bottom: calc(#{$tabbar-h} + env(safe-area-inset-bottom));
+  }
+
+  &.is-locked {
+    overflow: hidden;
+    touch-action: none;
+  }
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+// 16px minimum stops iOS auto-zoom on focus (DESIGN-PLAN §9.7)
+input,
+textarea,
+select { font-size: max(16px, 1rem); }
+
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-display;
+  color: $c-primary;
+  text-wrap: balance;
+}
+
+p { text-wrap: pretty; }
+
+:focus-visible { @include focus-ring; }
+
+::selection {
+  color: $c-white;
+  background: $c-primary;
+}
+
+// Skip link
+.skip-link {
+  position: absolute;
+  top: $sp-2;
+  left: $sp-2;
+  z-index: $z-toast;
+  padding: $sp-3 $sp-5;
+  font-weight: 700;
+  color: $c-white;
+  background: $c-primary;
+  border-radius: $r-pill;
+  transform: translateY(-200%);
+  transition: transform $dur-base $ease-out;
+
+  &:focus { transform: translateY(0); }
+}

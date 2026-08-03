@@ -1,0 +1,228 @@
+// ==========================================================================
+// FORMS
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.field {
+  position: relative;
+  margin-bottom: $sp-4;
+
+  &__label {
+    display: block;
+    margin-bottom: $sp-2;
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $c-primary;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  &__control {
+    width: 100%;
+    min-height: 52px;
+    padding: $sp-3 $sp-4;
+    color: $c-ink;
+    background: $c-white;
+    border: 1.5px solid $c-line;
+    border-radius: $r-md;
+    transition: border-color $dur-base $ease-out, box-shadow $dur-base $ease-out;
+
+    &::placeholder { color: $c-muted; }
+
+    &:focus {
+      border-color: $c-accent;
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(87, 191, 218, .14);
+    }
+  }
+
+  textarea.field__control {
+    min-height: 128px;
+    resize: vertical;
+  }
+
+  select.field__control {
+    padding-right: $sp-9;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%234A5568' stroke-width='2' stroke-linecap='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right $sp-4 center;
+  }
+
+  &__error {
+    display: none;
+    margin-top: $sp-2;
+    font-size: $fs-xs;
+    font-weight: 600;
+    color: $c-error;
+  }
+
+  &.has-error {
+    .field__control {
+      border-color: $c-error;
+      box-shadow: 0 0 0 4px rgba(214, 69, 69, .12);
+    }
+
+    .field__error { display: block; }
+  }
+}
+
+// Two fields side by side once there is room
+.field-row {
+  display: grid;
+  gap: 0 $sp-4;
+
+  @include mq(sm) { grid-template-columns: 1fr 1fr; }
+}
+
+// --------------------------------------------------------------------------
+// Consent checkbox
+// --------------------------------------------------------------------------
+.check {
+  display: flex;
+  gap: $sp-3;
+  align-items: flex-start;
+  margin-bottom: $sp-5;
+  font-size: $fs-xs;
+  line-height: 1.6;
+  cursor: pointer;
+
+  input {
+    flex: 0 0 auto;
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
+    accent-color: $c-accent;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Chip-group — pick a destination before writing a message
+// --------------------------------------------------------------------------
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $sp-2;
+  margin-bottom: $sp-5;
+
+  input { @include visually-hidden; }
+
+  label {
+    @include tap;
+
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    padding: $sp-2 $sp-4;
+    font-size: $fs-xs;
+    font-weight: 600;
+    color: $c-slate;
+    cursor: pointer;
+    background: $c-white;
+    border: 1.5px solid $c-line;
+    border-radius: $r-pill;
+    transition: all $dur-base $ease-out;
+  }
+
+  input:checked + label {
+    color: $c-white;
+    background: $c-accent;
+    border-color: $c-accent;
+  }
+
+  input:focus-visible + label { @include focus-ring; }
+}
+
+// --------------------------------------------------------------------------
+// Form success state — tick draws itself
+// --------------------------------------------------------------------------
+.form-success {
+  display: none;
+  padding: $sp-7 $sp-5;
+  text-align: center;
+
+  &.is-visible { display: block; }
+
+  &__icon {
+    display: grid;
+    place-items: center;
+    width: 68px;
+    height: 68px;
+    margin: 0 auto $sp-5;
+    background: $c-accent-100;
+    border-radius: 50%;
+
+    svg { width: 34px; height: 34px; }
+
+    path {
+      fill: none;
+      stroke: $c-accent;
+      stroke-width: 3;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 48;
+      stroke-dashoffset: 48;
+      animation: draw-tick .5s $ease-out .1s forwards;
+    }
+  }
+
+  &__title {
+    font-family: $font-display;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: $c-primary;
+  }
+
+  &__text {
+    margin: $sp-2 auto 0;
+    font-size: $fs-sm;
+  }
+}
+
+@keyframes draw-tick {
+  to { stroke-dashoffset: 0; }
+}
+
+// --------------------------------------------------------------------------
+// Newsletter
+// --------------------------------------------------------------------------
+.newsletter {
+  display: flex;
+  gap: $sp-2;
+  margin-top: $sp-4;
+
+  input {
+    flex: 1 1 auto;
+    min-width: 0;
+    min-height: 48px;
+    padding: $sp-2 $sp-4;
+    color: $c-white;
+    background: rgba(255, 255, 255, .08);
+    border: 1.5px solid rgba(255, 255, 255, .2);
+    border-radius: $r-pill;
+
+    &::placeholder { color: rgba(255, 255, 255, .45); }
+
+    &:focus {
+      border-color: $c-highlight;
+      outline: none;
+    }
+  }
+
+  button {
+    flex: 0 0 auto;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    color: $c-ink;
+    background: $c-highlight;
+    border-radius: 50%;
+    transition: transform $dur-base $ease-out;
+
+    svg { width: 20px; height: 20px; }
+
+    @include hover { transform: translateX(3px); }
+  }
+}

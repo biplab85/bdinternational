@@ -1,0 +1,315 @@
+// ==========================================================================
+// ELIGIBILITY CHECKER — DESIGN-PLAN §8.9
+// The differentiator: none of the seven reference sites has a working one.
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.quiz {
+  @include section-padding;
+
+  position: relative;
+  overflow: hidden;
+  color: rgba(255, 255, 255, .78);
+  background: $g-primary;
+
+  &__inner {
+    @include container;
+
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: clamp($sp-8, 6vw, $sp-10);
+    align-items: center;
+
+    @include mq(lg) { grid-template-columns: .9fr 1.1fr; }
+  }
+
+  &__arc {
+    position: absolute;
+    bottom: -32%;
+    left: -12%;
+    z-index: 1;
+    width: min(620px, 62vw);
+    opacity: .12;
+    pointer-events: none;
+  }
+
+  h2 { color: $c-white; }
+
+  &__lead {
+    margin-top: $sp-4;
+    font-size: $fs-lead;
+    line-height: 1.65;
+    color: rgba(255, 255, 255, .78);
+  }
+
+  &__assurance {
+    display: flex;
+    gap: $sp-3;
+    align-items: flex-start;
+    margin-top: $sp-7;
+    padding: $sp-4 $sp-5;
+    font-size: $fs-xs;
+    line-height: 1.6;
+    background: rgba(255, 255, 255, .07);
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: $r-md;
+
+    svg {
+      flex: 0 0 auto;
+      width: 20px;
+      height: 20px;
+      margin-top: 1px;
+      color: $c-highlight;
+    }
+  }
+
+  // ------------------------------------------------------------------------
+  // The card that holds the steps
+  // ------------------------------------------------------------------------
+  &__card {
+    position: relative;
+    padding: clamp($sp-6, 4vw, $sp-8);
+    color: $c-slate;
+    background: $c-white;
+    border-radius: $r-xl;
+    box-shadow: $shadow-xl;
+  }
+
+  &__head {
+    display: flex;
+    gap: $sp-4;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: $sp-6;
+  }
+
+  &__count {
+    font-family: $font-display;
+    font-size: $fs-sm;
+    font-weight: 800;
+    color: $c-accent;
+    letter-spacing: .04em;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__track {
+    flex: 1 1 auto;
+    height: 4px;
+    margin-left: $sp-4;
+    overflow: hidden;
+    background: $c-line;
+    border-radius: $r-pill;
+  }
+
+  &__bar {
+    display: block;   // it is a <span>; without this the % width collapses
+    width: 25%;
+    height: 100%;
+    background: $g-accent;
+    border-radius: $r-pill;
+    transition: width $dur-base $ease-out;
+  }
+
+  // ------------------------------------------------------------------------
+  // Steps
+  // ------------------------------------------------------------------------
+  &__steps { position: relative; }
+
+  &__step {
+    display: none;
+
+    &.is-active { display: block; }
+  }
+
+  &__q {
+    margin-bottom: $sp-5;
+    font-family: $font-display;
+    font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+    font-weight: 800;
+    line-height: 1.25;
+    color: $c-primary;
+    letter-spacing: -.025em;
+  }
+
+  &__options {
+    display: grid;
+    gap: $sp-3;
+
+    @include mq(sm) { grid-template-columns: 1fr 1fr; }
+  }
+
+  &__opt {
+    @include tap;
+
+    display: flex;
+    gap: $sp-3;
+    align-items: center;
+    padding: $sp-4;
+    font-size: $fs-sm;
+    font-weight: 600;
+    color: $c-primary;
+    text-align: left;
+    background: $c-white;
+    border: 1.5px solid $c-line;
+    border-radius: $r-md;
+    transition: all $dur-base $ease-out;
+
+    &__mark {
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      width: 24px;
+      height: 24px;
+      border: 2px solid $c-line;
+      border-radius: 50%;
+      transition: all $dur-base $ease-out;
+
+      svg {
+        width: 12px;
+        height: 12px;
+        color: $c-white;
+        opacity: 0;
+        transform: scale(.4);
+        transition: all $dur-fast $ease-back;
+      }
+    }
+
+    @include hover {
+      border-color: $c-accent;
+      box-shadow: $shadow-sm;
+    }
+
+    &.is-selected {
+      background: $c-accent-100;
+      border-color: $c-accent;
+
+      .quiz__opt__mark {
+        background: $c-accent;
+        border-color: $c-accent;
+
+        svg { opacity: 1; transform: scale(1); }
+      }
+    }
+  }
+
+  &__nav {
+    display: flex;
+    gap: $sp-3;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: $sp-7;
+  }
+
+  &__back {
+    display: inline-flex;
+    gap: $sp-2;
+    align-items: center;
+    font-size: $fs-sm;
+    font-weight: 700;
+    color: $c-muted;
+    transition: color $dur-base $ease-out;
+
+    svg { width: 16px; height: 16px; }
+
+    @include hover { color: $c-primary; }
+
+    &[hidden] { visibility: hidden; }
+  }
+
+  // ------------------------------------------------------------------------
+  // Result
+  // ------------------------------------------------------------------------
+  &__result {
+    display: none;
+
+    &.is-active { display: block; }
+  }
+
+  &__result-head {
+    display: flex;
+    gap: $sp-4;
+    align-items: center;
+    padding-bottom: $sp-5;
+    margin-bottom: $sp-5;
+    border-bottom: 1px solid $c-line;
+  }
+
+  &__result-icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 54px;
+    height: 54px;
+    background: $c-accent-100;
+    border-radius: 50%;
+
+    svg { width: 26px; height: 26px; color: $c-accent; }
+  }
+
+  &__result-title {
+    display: block;
+    font-family: $font-display;
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.25;
+    color: $c-primary;
+    letter-spacing: -.02em;
+  }
+
+  &__result-sub {
+    display: block;
+    margin-top: 4px;
+    font-size: $fs-xs;
+    line-height: 1.55;
+  }
+
+  &__summary {
+    display: grid;
+    gap: $sp-3;
+    margin-bottom: $sp-6;
+  }
+
+  &__row {
+    display: flex;
+    gap: $sp-4;
+    align-items: flex-start;
+    justify-content: space-between;
+    padding: $sp-3 $sp-4;
+    background: $c-mist;
+    border-radius: $r-sm;
+
+    dt {
+      font-size: $fs-xs;
+      font-weight: 700;
+      color: $c-muted;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    dd {
+      margin: 0;
+      font-size: $fs-sm;
+      font-weight: 700;
+      color: $c-primary;
+      text-align: right;
+    }
+  }
+
+  &__disclaimer {
+    margin-top: $sp-4;
+    font-size: 11px;
+    line-height: 1.55;
+    color: $c-muted;
+  }
+
+  &__restart {
+    margin-top: $sp-4;
+    font-size: $fs-xs;
+    font-weight: 700;
+    color: $c-muted;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}

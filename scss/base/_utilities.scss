@@ -1,0 +1,63 @@
+// ==========================================================================
+// UTILITIES
+// ==========================================================================
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.sr-only { @include visually-hidden; }
+
+.container      { @include container; }
+.container--wide{ @include container($container-wide); }
+
+.section        { @include section-padding; position: relative; }
+.section--mist  { background: $c-mist; }
+.section--dark  {
+  color: rgba(255, 255, 255, .78);
+  background: $c-primary;
+
+  h1, h2, h3, h4 { color: $c-white; }
+}
+
+.hide-mobile { @include mq-down(lg) { display: none !important; } }
+.hide-desk   { @include mq(lg)      { display: none !important; } }
+
+.text-center { text-align: center; }
+
+// --------------------------------------------------------------------------
+// Scroll-reveal base state. GSAP takes over when it loads; if JS fails,
+// `.no-js` on <html> keeps everything visible.
+// --------------------------------------------------------------------------
+.js [data-animate] {
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-animate] { opacity: 1; }
+}
+
+// --------------------------------------------------------------------------
+// Decorative arc — the logo's 32° sweep, reused as a structural motif
+// --------------------------------------------------------------------------
+.arc {
+  position: absolute;
+  pointer-events: none;
+  user-select: none;
+}
+
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+// Faint world-map watermark used on dark bands
+.worldmap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .07;
+  background: url('../img/deco/worldmap.svg') center / cover no-repeat;
+}

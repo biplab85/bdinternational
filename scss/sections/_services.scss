@@ -1,0 +1,245 @@
+// ==========================================================================
+// §8.8 — Services
+// Six cards, six light gradients.
+//
+// Every card carries its whole colour identity on four custom properties.
+// That is the point of the map below: the tint, the icon, the "Learn more"
+// link, the border and the hover glow are all derived from one row, so a
+// card can never end up with a peach background and a teal arrow.
+//
+// The gradients stay pale (mid-90s lightness) because the card text is
+// $c-primary navy and the ink colours are hand-picked to clear 4.5:1
+// against the *lightest* stop, not the average.
+// ==========================================================================
+@use 'sass:map';
+@use '../abstracts/variables' as *;
+@use '../abstracts/mixins' as *;
+
+.services {
+  @include section-padding;
+
+  // While the pinned reveal sequence owns this section it becomes exactly
+  // one viewport tall with its content centred — otherwise the pinned frame
+  // is top-heavy with a bank of dead space under the cards.
+  //
+  // The padding is symmetric so the gap above the eyebrow and the gap below
+  // the last row always match. Because the content is centre-aligned it
+  // isn't a fixed offset: with room to spare the centring sets both gaps
+  // equally and the padding does nothing, and only on a short viewport does
+  // it bite, as a floor that keeps the heading clear of the 76px fixed
+  // header. That floor is why the breakpoint below is gated at 850px.
+  //
+  // Added by main.js only on the breakpoint where the sequence runs.
+  &.is-sequenced {
+    display: flex;
+    align-items: center;
+    min-height: 100vh;
+
+    // 80px, not the section's usual rhythm: it still clears the 76px fixed
+    // header, and every pixel here decides whether the sequence runs at all.
+    // Keep in sync with PAD in main.js — the fit check adds twice this.
+    padding-block: 80px;
+
+    > .services__inner { width: 100%; }
+
+    // The standalone heading gap (up to 88px) is sized for a section you
+    // scroll through. Inside a one-viewport frame it was the single biggest
+    // block of dead space, and at 1080p — a 945px viewport once browser
+    // chrome is taken out — it alone pushed the content 18px over the limit
+    // and silently dropped the whole section to the fallback stagger.
+    .sec-head { margin-bottom: $sp-8; }
+  }
+
+  &__inner { @include container; }
+
+  &__grid {
+    display: grid;
+
+    // One card per row on phones. The 2-up that used to start here now
+    // starts at `md`, so tablet and desktop are untouched.
+    grid-template-columns: 1fr;
+    gap: $sp-3;
+
+    // Depth for the 3D entrance in main.js block 13. Harmless on its own —
+    // nothing is rotated until the timeline runs, and a no-JS visitor just
+    // gets a flat grid.
+    perspective: 1400px;
+
+    @include mq(md) { grid-template-columns: repeat(2, 1fr); gap: $sp-5; }
+    @include mq(lg) { grid-template-columns: repeat(3, 1fr); gap: $sp-6; }
+  }
+
+  // GSAP animates the cell, the card handles its own hover. Keeping those on
+  // separate elements is not cosmetic: GSAP writes `translate/rotate/scale:
+  // none` inline on every target to protect its matrix, which would silently
+  // kill any CSS hover transform on the same node.
+  &__cell {
+    display: flex;
+
+    > .card { flex: 1; }
+  }
+
+  // Compact treatment on phones — 2-up, tighter padding
+  &__grid .card {
+    @include mq-down(md) {
+      padding: $sp-4;
+
+      .card__icon {
+        width: 44px;
+        height: 44px;
+        margin-bottom: $sp-3;
+
+        svg { width: 21px; height: 21px; }
+      }
+
+      .card__title { font-size: .9375rem; }
+      .card__text  { font-size: $fs-xs; }
+      .card__more  { display: none; }
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// The six themes
+// `from`/`to` are the gradient stops, `ink` is the one saturated colour the
+// card is allowed to use, `glow` is that ink at low alpha for the bloom and
+// the hover shadow, `line` the same again for the border.
+// --------------------------------------------------------------------------
+// `num`/`num-hi` are the outlined number's stroke at rest and on hover. The
+// alpha is baked into the colour rather than applied with `opacity` on
+// purpose — GSAP holds an inline opacity on that element after the entrance,
+// which a stylesheet hover rule could never outrank.
+// Each `ink` is the guideline hue darkened only as far as the white hover icon
+// needs: cyan #23859F and purple #7342AA keep $c-accent / $c-primary's exact
+// hue and saturation, so a hovered chip still reads as the palette colour
+// rather than as a generic dark tone.
+$svc-themes: (
+  1: (from: #DEEFF3, to: #F9FCFD, ink: #23859F, glow: rgba(35, 133, 159, .22), line: rgba(35, 133, 159, .22), num: rgba(35, 133, 159, .40), num-hi: rgba(35, 133, 159, .78)),
+  2: (from: #F7F1DA, to: #FEFDF9, ink: #96750A, glow: rgba(228, 195, 85, .26), line: rgba(228, 195, 85, .28), num: rgba(150, 117, 10, .40), num-hi: rgba(150, 117, 10, .78)),
+  3: (from: #E8E1F1, to: #FBFAFD, ink: #7342AA, glow: rgba(115, 66, 170, .20), line: rgba(115, 66, 170, .20), num: rgba(115, 66, 170, .38), num-hi: rgba(115, 66, 170, .75)),
+  4: (from: #DEEFF3, to: #F9FCFD, ink: #23859F, glow: rgba(35, 133, 159, .22), line: rgba(35, 133, 159, .22), num: rgba(35, 133, 159, .40), num-hi: rgba(35, 133, 159, .78)),
+  5: (from: #F7F1DA, to: #FEFDF9, ink: #96750A, glow: rgba(150, 117, 10, .20), line: rgba(150, 117, 10, .20), num: rgba(150, 117, 10, .38), num-hi: rgba(150, 117, 10, .75)),
+  6: (from: #E8E1F1, to: #FBFAFD, ink: #4C2873, glow: rgba(76, 40, 115, .20), line: rgba(76, 40, 115, .20), num: rgba(76, 40, 115, .38), num-hi: rgba(76, 40, 115, .75))
+);
+
+.card--svc {
+  // Fallbacks, so a card with a missing/unknown data-svc still looks
+  // deliberate rather than broken.
+  --svc-from: #{$c-mist};
+  --svc-to:   #{$c-white};
+  --svc-ink:  #{$c-accent-600};
+  --svc-glow: rgba(97, 51, 148, .14);
+  --svc-line: rgba(97, 51, 148, .12);
+  --svc-num: rgba(97, 51, 148, .30);
+  --svc-num-hi: rgba(97, 51, 148, .60);
+
+  overflow: hidden;
+  background: linear-gradient(150deg, var(--svc-from) 0%, var(--svc-to) 64%);
+  border-color: var(--svc-line);
+
+  // Corner bloom. This is what keeps the tint from reading as a flat fill —
+  // it swells on hover instead of the background changing colour.
+  &::before {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    content: '';
+    background: radial-gradient(115% 85% at 100% 0%, var(--svc-glow) 0%, transparent 62%);
+    border-radius: inherit;
+    opacity: .8;
+    transform: scale(1);
+    transition: opacity $dur-base $ease-out, transform $dur-base $ease-out;
+  }
+
+  // Lift the content over the bloom. Needed explicitly: the pseudo-element is
+  // positioned, the text nodes are not, so without this they'd paint under it.
+  .card__icon,
+  .card__title,
+  .card__text,
+  .card__more { position: relative; z-index: 1; }
+
+  // Outlined step number, top-right, opposite the icon. Hollow rather than
+  // filled so it reads as a watermark and never competes with the title.
+  .card__num {
+    position: absolute;
+    top: $sp-4;
+    right: $sp-5;
+    z-index: 1;
+    font-family: $font-display;
+    font-size: 3.25rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.04em;
+    font-variant-numeric: tabular-nums;
+    pointer-events: none;
+
+    // Baseline for the handful of engines without text-stroke: the same
+    // colour as a solid fill. Wrong-but-fine beats invisible, which is what a
+    // bare `color: transparent` would leave them with.
+    color: var(--svc-num);
+    transition: color $dur-base $ease-out, -webkit-text-stroke-color $dur-base $ease-out;
+
+    @supports (-webkit-text-stroke: 1px currentcolor) {
+      color: transparent;
+      -webkit-text-stroke: 1.5px var(--svc-num);
+    }
+
+    @include mq-down(md) {
+      top: $sp-3;
+      right: $sp-3;
+      font-size: 2rem;
+
+      @supports (-webkit-text-stroke: 1px currentcolor) {
+        -webkit-text-stroke-width: 1.2px;
+      }
+    }
+  }
+
+  // Frosted chip rather than the default flat teal square — it lets the
+  // gradient show through and ties the icon to its own card.
+  .card__icon {
+    color: var(--svc-ink);
+    background: rgba(255, 255, 255, .72);
+    box-shadow: inset 0 0 0 1px var(--svc-line);
+  }
+
+  .card__more { color: var(--svc-ink); }
+
+  @include hover {
+    // The base card's translateY(-6px) is inherited as-is — the card element
+    // is untouched by GSAP now, so its transform is ours to use again.
+    border-color: var(--svc-line);
+    box-shadow: 0 22px 46px var(--svc-glow);
+
+    &::before { opacity: 1; transform: scale(1.2); }
+
+    // Colour only. The number does carry a GSAP-owned inline opacity and
+    // transform, so brightening it any other way would be a no-op.
+    .card__num {
+      color: var(--svc-num-hi);
+
+      @supports (-webkit-text-stroke: 1px currentcolor) {
+        color: transparent;
+        -webkit-text-stroke-color: var(--svc-num-hi);
+      }
+    }
+
+    .card__icon {
+      color: $c-white;
+      background: var(--svc-ink);
+      box-shadow: inset 0 0 0 1px transparent;
+    }
+  }
+}
+
+@each $i, $theme in $svc-themes {
+  .card--svc[data-svc='#{$i}'] {
+    --svc-from: #{map.get($theme, from)};
+    --svc-to:   #{map.get($theme, to)};
+    --svc-ink:  #{map.get($theme, ink)};
+    --svc-glow: #{map.get($theme, glow)};
+    --svc-line: #{map.get($theme, line)};
+    --svc-num:  #{map.get($theme, num)};
+    --svc-num-hi: #{map.get($theme, num-hi)};
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "bdinternational",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BD International — study abroad & immigration consultancy landing page",
+  "scripts": {
+    "dev": "sass --watch scss/main.scss:assets/css/main.css --style=expanded --source-map",
+    "build": "sass scss/main.scss:assets/css/main.css --style=compressed --no-source-map"
+  },
+  "devDependencies": {
+    "sass": "^1.80.0"
+  }
+}
