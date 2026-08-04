@@ -201,10 +201,18 @@
   svg { width: 24px; height: 24px; }
 
   &--wa {
-    background: #25D366;
     opacity: 0;
     transform: scale(0);
     animation: pop-in .5s $ease-back 2s forwards;
+
+    // The PNG carries the full WhatsApp mark, circle included, so it sits on
+    // the page rather than on a green disc. `height: auto` because the tag's
+    // height attribute would otherwise hold at 24px and squash the glyph once
+    // the width is a percentage.
+    img {
+      width: 70%;
+      height: auto;
+    }
 
     &::after {
       content: '';
