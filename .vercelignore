@@ -1,0 +1,13 @@
+# Kept out of the deployment. Nothing here is needed to serve the site —
+# assets/css/main.css is committed, so the Sass source never ships.
+#
+# NOTE: if you ever switch vercel.json back to running a build, `scss` has to
+# come off this list or the build will have nothing to compile.
+
+node_modules
+scss
+
+# Working files, not site content
+DESIGN-PLAN.md
+.playwright-mcp
+*.zip

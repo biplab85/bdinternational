@@ -76,6 +76,27 @@ to, never in `main.scss`.
 page flow. Every "Free consultation" trigger and every `#contact` link opens
 `#sheet-contact`, so edit it there.
 
+## Deployment
+
+Vercel, from `main`. `vercel.json` pins it:
+
+```json
+{ "framework": null, "buildCommand": "", "outputDirectory": "." }
+```
+
+**There is deliberately no build step on Vercel.** `assets/css/main.css` is
+committed, so deploying is just serving the repository root — which is also the
+only thing that has to be true for the site to work. Left to auto-detect,
+Vercel sees the `build` script in `package.json`, runs it, then fails looking
+for an output directory, because there is no `public/`.
+
+The trade-off: **compile and commit the CSS yourself.** Edit Sass without
+running `npm run dev`, and the deployed stylesheet is whatever was last
+committed. Bump the `?v=NN` cache-buster in the same commit.
+
+To build on Vercel instead, set `"buildCommand": "npm run build"` and remove
+`scss` from `.vercelignore` — the build has nothing to compile otherwise.
+
 ## Known leftovers
 
 Carried over from the BD International era and not yet updated:
