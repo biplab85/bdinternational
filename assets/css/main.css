@@ -4627,10 +4627,13 @@ p {
 }
 .sheet--contact .contact__offices {
   gap: 0.75rem;
-  margin-top: 1.25rem;
+  margin-top: 0.75rem;
 }
 .sheet--contact .contact__office {
-  padding: 1rem 1rem 1rem 1.25rem;
+  padding: 0.75rem 1rem 0.75rem 1.25rem;
+}
+.sheet--contact .eyebrow {
+  margin-bottom: 0.75rem;
 }
 .sheet--contact .contact__panel {
   padding: 1.5rem;
@@ -4638,11 +4641,65 @@ p {
 .sheet--contact .contact__panel textarea {
   min-height: 84px;
 }
+.sheet--contact .field__label,
+.sheet--contact .contact__label {
+  color: #838085;
+  text-transform: capitalize;
+}
+.sheet--contact .contact__inner > div:first-child {
+  container-type: inline-size;
+}
+.sheet--contact #contact-title {
+  font-size: min(clamp(1.875rem, 3.4vw, 2.75rem), 10.2cqi);
+  letter-spacing: normal;
+  white-space: nowrap;
+}
 @media (min-width: 1024px) {
   .sheet--contact .contact__inner > div:first-child {
     padding: 1.5rem;
     background: linear-gradient(158deg, #F3EFF7 0%, #F4F6FA 68%);
     border-radius: 20px;
+  }
+  .sheet--contact .sheet__body {
+    min-height: 0;
+    overflow: hidden;
+    display: flex;
+  }
+  .sheet--contact .contact__inner {
+    flex: 1 1 auto;
+    min-height: 0;
+    grid-template-rows: minmax(0, 1fr);
+    align-items: stretch;
+  }
+  .sheet--contact .contact__inner > div:first-child,
+  .sheet--contact .contact__panel {
+    min-height: 0;
+  }
+  .sheet--contact .contact__panel {
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  .sheet--contact .contact__panel,
+  .sheet--contact .contact__inner > div:first-child {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(97, 51, 148, 0.28) transparent;
+  }
+  .sheet--contact .contact__panel::-webkit-scrollbar,
+  .sheet--contact .contact__inner > div:first-child::-webkit-scrollbar {
+    width: 6px;
+  }
+  .sheet--contact .contact__panel::-webkit-scrollbar-track,
+  .sheet--contact .contact__inner > div:first-child::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .sheet--contact .contact__panel::-webkit-scrollbar-thumb,
+  .sheet--contact .contact__inner > div:first-child::-webkit-scrollbar-thumb {
+    background: rgba(97, 51, 148, 0.28);
+    border-radius: 999px;
+  }
+  .sheet--contact .contact__inner > div:first-child {
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 }
 .sheet--contact.is-open .contact__inner > * {

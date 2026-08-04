@@ -307,18 +307,57 @@
     @include mq(lg) { grid-template-columns: .92fr 1.08fr; }
   }
 
+  // Trimmed again now that the form is the only intended scroller: at 1440x900
+  // the address column overshot the dialog by 14px, which put a second
+  // scrollbar next to the form for the sake of fourteen pixels. Pulling ~36px
+  // out of the spacing lets it sit still at the common laptop heights.
   .contact__offices {
     gap: $sp-3;
-    margin-top: $sp-5;
+    margin-top: $sp-3;
   }
 
-  .contact__office { padding: $sp-4 $sp-4 $sp-4 $sp-5; }
+  .contact__office { padding: $sp-3 $sp-4 $sp-3 $sp-5; }
+
+  .eyebrow { margin-bottom: $sp-3; }
 
   .contact__panel { padding: $sp-6; }
 
   // The tallest single element in the form, and the one with the least to
   // lose — three lines is still a comfortable place to type a paragraph.
   .contact__panel textarea { min-height: 84px; }
+
+  // Field titles read as title case in a soft grey, not the uppercase primary
+  // the shared .field component ships with. Scoped to this dialog on purpose:
+  // the eligibility sheet uses the same component and keeps the original.
+  // Covers both label flavours — .field__label on the inputs, .contact__label
+  // on the destination chip group.
+  .field__label,
+  .contact__label {
+    color: #838085;
+    text-transform: capitalize;
+  }
+
+  // --------------------------------------------------------------------------
+  // "Come in, or call us" holds one line, at every dialog width.
+  //
+  // It was breaking by less than a pixel: the line needs 43.9px of font against
+  // a 44px $fs-h2, so "call us" dropped to a second line. A fixed smaller size
+  // would fix this width and break at the next one, and vw units are no help —
+  // the dialog stops growing at 1080px while the viewport keeps going, so vw
+  // and the column part company exactly where the text is tightest.
+  //
+  // Sizing against the column itself is what actually holds: 1cqi is 1% of the
+  // address column's own inline size, so the ratio that fits here fits at any
+  // width. 10.65cqi is the exact fit; 10.2 leaves a margin for the hinting and
+  // fallback-font differences that a nowrap line can't absorb.
+  // --------------------------------------------------------------------------
+  .contact__inner > div:first-child { container-type: inline-size; }
+
+  #contact-title {
+    font-size: min(#{$fs-h2}, 10.2cqi);
+    letter-spacing: normal;
+    white-space: nowrap;
+  }
 
   // Desktop only: the information half sits on a tinted panel so the white
   // office cards lift off it and the form half reads as the primary action.
@@ -330,7 +369,87 @@
       background: linear-gradient(158deg, $c-primary-100 0%, $c-mist 68%);
       border-radius: $r-lg;
     }
+
+    // ----------------------------------------------------------------------
+    // Only the form scrolls. Scrolling the whole dialog dragged the address
+    // out of view exactly when someone was filling the form in — the two
+    // halves are meant to be read against each other, so the address column
+    // stays put and the form takes the overflow on its own.
+    //
+    // `min-height: 0` at every level is what makes this work: a flex item and
+    // a grid item both floor at their content height by default, so without
+    // it the body would simply grow past the dialog's max-height and the
+    // inner scroller would never have a bounded height to scroll within.
+    // ----------------------------------------------------------------------
+    .sheet__body {
+      min-height: 0;
+      overflow: hidden;
+
+      // Flex, so the grid below is stretched to this box by layout rather than
+      // by a percentage. `.sheet` is `height: auto` capped by `max-height`, so
+      // its height is never *definite* — a `height: 100%` here resolves against
+      // the pre-clamp content height (686px) instead of the clamped box (521px)
+      // and quietly does nothing.
+      display: flex;
+    }
+
+    .contact__inner {
+      // Stretched to the body's content box by the flex line, not by a %.
+      flex: 1 1 auto;
+      min-height: 0;
+
+      // Being the right height is not enough on its own. The single implicit
+      // row is auto-sized, so it grows to the tallest column and overflows the
+      // container it was just told to fit — and a stretched item stretches to
+      // the *row*, not the container, so the form came out full content height
+      // and never scrolled. Pinning the row to the container's height is what
+      // actually bounds the columns.
+      grid-template-rows: minmax(0, 1fr);
+
+      // Overrides the base `align-items: start`; the columns have to fill the
+      // row for the form's own height to be bounded by it.
+      align-items: stretch;
+    }
+
+    .contact__inner > div:first-child,
+    .contact__panel { min-height: 0; }
+
+    .contact__panel {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
+
+    // The default Windows scrollbar is a 17px grey slab, which reads as a
+    // seam down the middle of the dialog. Thin and tinted, it reads as part
+    // of the panel it belongs to.
+    .contact__panel,
+    .contact__inner > div:first-child {
+      scrollbar-width: thin;
+      scrollbar-color: rgba($c-primary, .28) transparent;
+
+      &::-webkit-scrollbar { width: 6px; }
+      &::-webkit-scrollbar-track { background: transparent; }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba($c-primary, .28);
+        border-radius: 999px;
+      }
+    }
+
+    // Safety valve, not a second scroller by intent: the address column is
+    // ~690px and the dialog caps at 84vh, so on a 768px-tall laptop it no
+    // longer fits. Without this the overflow would be silently clipped and the
+    // last phone number unreachable. On a normal-height screen it never
+    // engages and the column sits still, as intended.
+    .contact__inner > div:first-child {
+      overflow-y: auto;
+      overscroll-behavior: contain;
+    }
   }
+
+  // Mobile keeps the sheet's own scroll: the columns are stacked there, and a
+  // form that scrolled inside an already-short sheet would be two nested
+  // scrollers fighting over the same drag.
 
   // Staggered settle for the two halves, a beat behind the dialog itself.
   &.is-open .contact__inner > * {
