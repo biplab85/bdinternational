@@ -19,7 +19,12 @@
   --primary-600:    #7342AA;
   --primary-700:    #47246D;
   --accent:         #57BFDA;
-  --accent-600:     #2CA8C8;
+  /* Darkened from #2CA8C8. That value carried every two-tone heading on the
+     page at 2.64:1 on the light ground and 2.44:1 on .section--wash — under
+     the 3:1 that even large text needs. This clears AA outright at 5.09:1 /
+     4.70:1. The lighter --accent is untouched: it is only ever used on the
+     dark band, where it is already high contrast. */
+  --accent-600:     #0F7490;
   --highlight:      #F7DE8C;
   --highlight-600:  #E4C355;
 
@@ -93,10 +98,16 @@ ul { padding: 0; list-style: none; }
 button { background: none; border: 0; cursor: pointer; font: inherit; color: inherit; }
 input, textarea { font: inherit; color: inherit; }
 
+/* --primary, not --accent. The pale accent measured 2.02:1 against the page
+   ground, and WCAG 2.2 SC 1.4.11 wants 3:1 for a focus indicator; this is
+   8.28:1. On the dark band the ring is redrawn below. */
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
 }
+.on-dark :focus-visible,
+.section--dark :focus-visible,
+.footer :focus-visible { outline-color: var(--highlight); }
 
 ::selection { color: var(--pure); background: var(--primary); }
 
@@ -155,23 +166,89 @@ p     { color: var(--para-light); }
 .on-dark h4 { color: var(--pure); }
 .on-dark p, .on-dark .p-lg { color: var(--para-dark); }
 
-/* Eyebrow — small tracked label above a heading */
+/* --------------------------------------------------------------------------
+   EYEBROW — the one section label
+
+   A typographic mark, not a badge. The dot-in-a-pill is the default every
+   template reaches for, and it says nothing about this page.
+
+   Two things carry it instead:
+
+     Tracking. Everything else here is set TIGHT — the h1 at -2px, h2 at
+     -1.8px, body at -0.4px. Setting the label wide and uppercase at +.16em
+     makes it the only opened-up type in the system, so it reads as a
+     different voice rather than as small body copy.
+
+     A split rule. The underline is one element carrying two weights: a short
+     saturated segment in the brand gold, then a long faint one. It scans as a
+     measure or an index mark — the label is pinned to something.
+
+   No background, no border, no shadow. It sits ON the page instead of being
+   a chip placed over it, which is also what lets it work unchanged on the
+   photograph, the dark bands and the light sections.
+   -------------------------------------------------------------------------- */
 .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: -.2px;
+  position: relative;
+  display: inline-block;
+  padding-bottom: 11px;
+  margin-bottom: 22px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: .16em;
+  text-transform: uppercase;
   color: var(--primary);
-  margin-bottom: 16px;
 }
-.eyebrow::before {
+
+.eyebrow::after {
   content: '';
-  width: 22px; height: 1px;
-  background: currentColor;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  border-radius: 2px;
+  /* The hard stop is the point of it — a fade would just look like a shadow. */
+  background: linear-gradient(
+    90deg,
+    var(--highlight-600) 0 26px,
+    rgba(97, 51, 148, .2) 26px
+  );
 }
-.eyebrow--light { color: var(--highlight); }
+
+/* Dark grounds and over photography. White for the label rather than gold:
+   gold on gold at 12px is the one pairing here that cannot hold 4.5:1. */
+.eyebrow--light,
+.on-dark .eyebrow { color: var(--pure); }
+
+.eyebrow--light::after,
+.on-dark .eyebrow::after {
+  background: linear-gradient(
+    90deg,
+    var(--highlight) 0 26px,
+    rgba(255, 255, 255, .24) 26px
+  );
+}
+
+/* Parents that already space their children with `gap` must not also collect
+   the eyebrow's bottom margin, or the label sits twice as far from its
+   heading as everywhere else. */
+.hero__text > .eyebrow,
+.vmove__intro > .eyebrow,
+.bnr__content > .eyebrow { margin-bottom: 0; }
+
+/* The longest label — the hero's — needs ~360px at the desktop setting, which
+   is more than a 375px phone gives it. Tightened just enough to hold one
+   line; wrapping a tracked label leaves an orphan under a full-width rule,
+   which reads as a mistake. line-height covers any label added later that
+   still wraps. */
+@media (max-width: 479px) {
+  .eyebrow {
+    font-size: 11px;
+    letter-spacing: .1em;
+    line-height: 1.5;
+  }
+}
 
 /* Accent phrase inside a heading */
 .tt { color: var(--accent-600); }
@@ -201,7 +278,8 @@ p     { color: var(--para-light); }
   margin: 0 auto 60px;
   text-align: center;
 }
-.sec-head .eyebrow::before { display: none; }
+/* The dot stays in centred headers now — it was only hidden because the old
+   eyebrow's 22px rule looked broken hanging off a centred line. */
 .sec-head .eyebrow { margin-inline: auto; }
 .sec-head .p-lg { margin-top: 16px; }
 
@@ -281,6 +359,17 @@ p     { color: var(--para-light); }
 }
 .btn--ghost:hover { border-color: var(--primary); color: var(--primary); }
 
+/* White fill, brand border, brand text — the reference's second banner button.
+   Distinct from .btn--white, whose border matches its fill; here the outline
+   is the brand colour, and hover inverts straight into .btn--primary so the
+   pair reads as one control. */
+.btn--outline {
+  color: var(--primary);
+  background: var(--white);
+  border: 1px solid var(--primary);
+}
+.btn--outline:hover { color: var(--white); background: var(--primary); }
+
 .btn--ghost-light {
   color: var(--pure);
   background: rgba(255, 255, 255, .08);
@@ -313,6 +402,25 @@ p     { color: var(--para-light); }
   width: 100%;
   padding-inline: 15px;
   background: transparent;
+  transition: transform .42s var(--ease);
+  will-change: transform;
+}
+
+/* Retracts on scroll down, returns on scroll up. Translated by its own height
+   plus its 15px offset so it clears the viewport completely rather than
+   leaving a sliver of the pill showing. */
+.navbar.is-tucked { transform: translateY(calc(-100% - 20px)); }
+
+/* Mobile keeps the bar pinned. The phone layout has no inline links to reach
+   for — the toggle is the only way into the menu, so taking it away mid-scroll
+   would leave the reader with no navigation at all except the app bar. */
+@media (max-width: 991px) {
+  .navbar,
+  .navbar.is-tucked { transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .navbar { transition: none; }
 }
 
 .nav-container {
@@ -333,16 +441,7 @@ p     { color: var(--para-light); }
 
 .nav-menu { display: flex; align-items: center; }
 
-.nav-link {
-  padding: 26px 16px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.2em;
-  color: var(--dark);
-  transition: color .3s var(--ease);
-}
-.nav-link:hover,
-.nav-link.is-current { color: var(--primary); }
+/* .nav-link now lives in the NAVIGATION block at the end of this file. */
 
 .nav-actions { display: flex; align-items: center; gap: 12px; }
 
@@ -365,10 +464,28 @@ p     { color: var(--para-light); }
    -------------------------------------------------------------------------- */
 .hero {
   position: relative;
-  min-height: 800px;
+  /* max(), so the floor is a fixed 940px on a short laptop but the hero grows
+     to fill a tall monitor instead of leaving the fold stranded mid-screen.
+     svh rather than vh: on mobile browsers vh is the tallest state, which
+     would push the CTAs under the address bar on first paint. */
+  min-height: max(940px, 88svh);
+  /* Column flex pushing the copy to the foot of the section, rather than a
+     bigger padding-top. Padding would fix the copy at a set distance from the
+     TOP, so on a tall monitor it would drift back toward the middle as the
+     hero grew; anchoring to the bottom keeps it the same distance above the
+     fold at every height. padding-top stays as a floor so it can never ride
+     up under the navbar on a short screen. */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   padding-top: 200px;
-  padding-bottom: 140px;
+  padding-bottom: 80px;
   overflow: hidden;
+}
+
+/* svh is recent enough to be worth a floor for anything that lacks it. */
+@supports not (height: 1svh) {
+  .hero { min-height: 940px; }
 }
 
 /* The photograph fills the whole section, behind everything */
@@ -392,13 +509,21 @@ p     { color: var(--para-light); }
   content: '';
   position: absolute;
   inset: 0;
-  /* Mid-stop is .55 rather than the .44 that looked right by eye: measured
-     against this photograph, .44 left the 18px lead at 3.8:1 on its lightest
-     pixels, under the 4.5:1 AA needs. The 56px H1 and the label both cleared
-     it either way. */
+  /* Re-weighted now the copy is anchored to the foot of the section instead
+     of sitting near the top. It used to land in the scrim's dense opening
+     stop and measured 9:1; at the new position it had drifted into the light
+     middle and the 12px label fell to 4.85:1 — passing, but on 8% headroom.
+
+     So the density is inverted: the top opens up, which lets more of the
+     photograph read, and the weight moves to the 55–100% band where the type
+     actually is. The purple bloom follows it down to 50% 72%. */
   background:
-    linear-gradient(180deg, rgba(31, 20, 46, .70) 0%, rgba(31, 20, 46, .55) 48%, rgba(31, 20, 46, .74) 100%),
-    radial-gradient(56% 46% at 50% 24%, rgba(97, 51, 148, .34), transparent 72%);
+    linear-gradient(180deg,
+      rgba(31, 20, 46, .58) 0%,
+      rgba(31, 20, 46, .38) 28%,
+      rgba(31, 20, 46, .68) 62%,
+      rgba(31, 20, 46, .82) 100%),
+    radial-gradient(62% 46% at 50% 72%, rgba(97, 51, 148, .40), transparent 70%);
 }
 
 .hero__content {
@@ -420,26 +545,6 @@ p     { color: var(--para-light); }
   gap: 20px;
 }
 
-/* Dot + label. The reference pairs an 8px accent dot with a 16px/500 label —
-   not the ruled eyebrow used by the rest of the page. */
-.hero__label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.hero__label .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--highlight);
-}
-.hero__label span {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.2em;
-  letter-spacing: -.6px;
-  color: var(--pure);
-}
 
 .hero__titles {
   display: flex;
@@ -448,6 +553,45 @@ p     { color: var(--para-light); }
   gap: 16px;
 }
 .hero__titles h1 { color: var(--pure); }
+
+/* --------------------------------------------------------------------------
+   TYPEWRITER
+
+   Every character is present and laid out from the first frame — only its
+   opacity changes — so the headline never reflows and the copy under it never
+   jumps. The caret is an absolutely-positioned pseudo-element on whichever
+   character is current, which is why moving it costs no layout either.
+   -------------------------------------------------------------------------- */
+.tw-c {
+  position: relative;
+  opacity: 0;
+  transition: opacity .1s linear;
+}
+.tw-c.is-on { opacity: 1; }
+
+.tw-c.is-caret::after {
+  content: '';
+  position: absolute;
+  top: .1em;
+  right: -.08em;
+  bottom: .16em;
+  width: 3px;
+  border-radius: 1px;
+  background: var(--highlight);
+  animation: tw-blink 1s steps(1, end) infinite;
+}
+
+@keyframes tw-blink {
+  0%, 50%      { opacity: 1; }
+  50.01%, 100% { opacity: 0; }
+}
+
+/* The script bails before splitting when motion is reduced, so this is only a
+   belt-and-braces guard for a mid-session preference change. */
+@media (prefers-reduced-motion: reduce) {
+  .tw-c { opacity: 1; transition: none; }
+  .tw-c.is-caret::after { display: none; }
+}
 .hero__sub {
   max-width: 450px;
   color: var(--pure);
@@ -513,28 +657,15 @@ p     { color: var(--para-light); }
   align-items: start;
 }
 
-/* Dot + label, as in the hero but on a light ground */
-.about__label {
+/* The label used to be .about__label with its own placement; it is the shared
+   .eyebrow now, so the cell assignment lives here. */
+.about__grid > .eyebrow {
   grid-column: 1;
   grid-row: 1;
   justify-self: start;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+  margin-bottom: 0;
 }
-.about__label .dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: var(--accent);
-}
-.about__label span {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 1.2em;
-  letter-spacing: -.6px;
-  color: var(--dark);
-}
+
 
 /* The statement is an h3 carrying a whole sentence, not a title, with one
    phrase lifted into the accent colour mid-sentence. */
@@ -608,6 +739,15 @@ p     { color: var(--para-light); }
   border-radius: var(--radius);
 }
 
+/* The library shot is lifted out of line with its neighbour so the pair reads
+   as a staggered pass rather than a matched pair. Offset with `top` on a
+   relative box, not a margin, so it moves visually without changing the
+   flex row's height or the grid row below it. */
+.about__photos img:first-child {
+  position: relative;
+  top: -38px;
+}
+
 /* The reference opens the column gap as the viewport grows rather than
    closing it — the section gets airier on big screens, not denser. */
 @media (min-width: 1280px) {
@@ -675,18 +815,36 @@ p     { color: var(--para-light); }
   overflow: hidden;
   border-radius: var(--radius);
   background: var(--svc-panel, var(--purple-light));
+  /* Carried transparent on every card so the active one can colour it in
+     without the 1px inset shifting the content when it lands. */
+  border: 1px solid transparent;
   transform: scale(.9);
-  transition: transform 1.8s cubic-bezier(.19, 1, .22, 1);
+  transition: transform 1.8s cubic-bezier(.19, 1, .22, 1),
+              box-shadow .9s var(--ease),
+              border-color .9s var(--ease);
 }
-.svc-slide.is-active .svc-card { transform: scale(1); }
+
+/* The active card lifts on its OWN colour rather than a neutral grey: each
+   palette carries --svc-glow as a bare triplet, so the border and all three
+   shadow layers are mixed from the same hue the card is already using. A grey
+   shadow under a yellow card reads as dirt; this reads as the card glowing. */
+.svc-slide.is-active { position: relative; z-index: 1; }
+.svc-slide.is-active .svc-card {
+  transform: scale(1);
+  border-color: rgba(var(--svc-glow, 97, 51, 148), .3);
+  box-shadow:
+    0 1px 2px rgba(var(--svc-glow, 97, 51, 148), .07),
+    0 10px 22px -10px rgba(var(--svc-glow, 97, 51, 148), .3),
+    0 30px 58px -26px rgba(var(--svc-glow, 97, 51, 148), .42);
+}
 
 /* Per-card palette. The reference sets these inline per item; here they are
    four tints rotating across the six, each paired with the saturated parent
    of its own tint. */
-.svc-slide:nth-child(4n + 1) .svc-card { --svc-panel: #E8E1F1; --svc-ink: #613394; }
-.svc-slide:nth-child(4n + 2) .svc-card { --svc-panel: #E4E4E4; --svc-ink: #1F1F1F; }
-.svc-slide:nth-child(4n + 3) .svc-card { --svc-panel: #F7F1DA; --svc-ink: #C9A21F; }
-.svc-slide:nth-child(4n + 4) .svc-card { --svc-panel: #DEEFF3; --svc-ink: #2CA8C8; }
+.svc-slide:nth-child(4n + 1) .svc-card { --svc-panel: #E8E1F1; --svc-ink: #613394; --svc-glow:  97,  51, 148; }
+.svc-slide:nth-child(4n + 2) .svc-card { --svc-panel: #E4E4E4; --svc-ink: #1F1F1F; --svc-glow:  31,  31,  31; }
+.svc-slide:nth-child(4n + 3) .svc-card { --svc-panel: #F7F1DA; --svc-ink: #C9A21F; --svc-glow: 176, 139,  20; }
+.svc-slide:nth-child(4n + 4) .svc-card { --svc-panel: #DEEFF3; --svc-ink: #2CA8C8; --svc-glow:  25, 130, 156; }
 
 /* Watermark: pinned to the LEFT edge, vertically centred, 40% of the card and
    rotated 180deg, following the reference's placement. Drawn from KD's own arc
@@ -827,104 +985,648 @@ p     { color: var(--para-light); }
 }
 
 /* --------------------------------------------------------------------------
-   WHY US — image left, statement + chips right
+   MOVE WITH THE RIGHT VISA
+   Ported from the reference's home-1 visa section. Its metrics, verbatim:
+
+     header   flex, space-between, align-items FLEX-END, 40px below (50 @1280)
+     intro    max-width 580px, 20px stack gap
+     grid     .5fr 1fr, 10px gutter
+     panel    10px radius, 40px block padding, frame inset 30px (20 @991)
+     dots     20px circle at a 20px inset -> centre lands on the frame corner
+     map      image at .5 opacity, four cards absolutely placed, 4px radius
+
+   Only the colour is KD's. The reference runs indigo -> orange out of the
+   bottom-right corner; here the base is the brand purple with a cyan bloom in
+   that same corner and a gold one opposite, which is the recipe .cta already
+   uses. Kept dark deliberately: the panel carries white type, and the
+   reference's own orange end would put its 16px caption near 3:1.
    -------------------------------------------------------------------------- */
+.vmove__head {
+  display: flex;
+  align-items: flex-end;          /* button rides the heading's baseline */
+  justify-content: space-between;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.vmove__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  max-width: 580px;
+}
+.vmove__intro .p-lg { margin: 0; }
+
+/* Dot + label, as .about__label */
+
+.vmove__cta--mob { display: none; }
+
+.vmove__grid {
+  display: grid;
+  grid-template-columns: .5fr 1fr;
+  gap: 10px;                      /* deliberately tight — one object, not two */
+}
+
+/* ---- gradient stat panel ------------------------------------------------ */
+.vmove__panel {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Height comes from the map beside it: 820px of usable width against the
+     dot map's 1.98:1 gives ~414px of artwork, plus room for the cards that
+     overhang its top and bottom edges. The reference's own 547px assumes a
+     squarer map bitmap than this one. */
+  min-height: 470px;
+  padding-block: 40px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background:
+    radial-gradient(circle farthest-corner at 100% 100%, rgba(87, 191, 218, .38), transparent 62%),
+    radial-gradient(circle farthest-corner at 0% 0%, rgba(247, 222, 140, .16), transparent 58%),
+    linear-gradient(145deg, var(--primary-600) 0%, var(--primary-700) 100%);
+}
+
+/* One inset border instead of the reference's four line divs — same picture,
+   a quarter of the markup, and it can never fall out of alignment. */
+.vmove__panel::before {
+  content: '';
+  position: absolute;
+  inset: 30px;
+  border: 1px solid rgba(249, 249, 249, .55);
+  pointer-events: none;
+}
+
+/* 20px disc at a 20px inset puts its centre at 30px — exactly the corner of
+   the frame above. That registration is the whole trick. */
+.vmove__pin {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .3);
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+}
+.vmove__pin::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--highlight);
+}
+.vmove__pin--tl { top: 20px;    left: 20px; }
+.vmove__pin--tr { top: 20px;    right: 20px; }
+.vmove__pin--bl { bottom: 20px; left: 20px; }
+.vmove__pin--br { bottom: 20px; right: 20px; }
+
+.vmove__panel-body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding-inline: 20px;
+  margin-inline: 30px;
+  text-align: center;
+}
+
+/* Overlapping row; the middle face is larger, and the wrapper's left margin
+   cancels the first negative margin so the group stays optically centred. */
+.vmove__faces {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 10px;
+}
+.vmove__faces img {
+  width: 44px;
+  height: 44px;
+  margin-left: -10px;
+  object-fit: cover;
+  border: 2px solid var(--white);
+  border-radius: 50%;
+}
+.vmove__faces img.is-big { width: 54px; height: 54px; }
+
+.vmove__stat {
+  font-size: 80px;
+  font-weight: 600;
+  line-height: 1em;
+  letter-spacing: -3px;
+  color: var(--white);
+  font-variant-numeric: tabular-nums;
+}
+.vmove__statcap {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2em;
+  color: var(--white);
+}
+
+/* ---- map ---------------------------------------------------------------- */
+.vmove__map {
+  position: relative;
+  padding-left: 40px;
+  /* Same reason as .bnr: the map is object-fit:contain and never overflows
+     at rest, but it drifts on scroll. */
+  overflow: hidden;
+}
+.vmove__map-img {
+  width: 100%;
+  height: 100%;
+  min-height: 470px;
+  object-fit: contain;
+  opacity: .2;                    /* ground, never content */
+}
+
+/* Each card is anchored to a different corner, so they cannot collide as the
+   panel reflows. 4px, not the 10px used by surfaces — these read as labels
+   pinned to the map rather than as cards sitting on it. */
+.vmove__card {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 24px;
+  background: var(--white);
+  border-radius: 4px;
+  box-shadow: 1px 1px 6px 1px rgba(0, 0, 0, .1);
+}
+.vmove__card img {
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  object-fit: cover;
+  border: 2px solid var(--pure);
+  border-radius: 50%;
+}
+.vmove__card b {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.2em;
+  color: var(--dark);
+}
+.vmove__card span span {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  color: var(--para-light);
+}
+
+.vmove__card--1 { top: 40px;    left: 100px; }
+.vmove__card--2 { top: 100px;   right: 100px; }
+.vmove__card--3 { bottom: 140px; left: 80px; }
+.vmove__card--4 { bottom: 100px; right: 40px; }
+
+@media (min-width: 1280px) {
+  .vmove__head { margin-bottom: 50px; }
+  .vmove__panel-body { padding-inline: 60px; }
+}
+
+@media (min-width: 1440px) {
+  .vmove__card--1 { top: 60px; }
+  .vmove__card--2 { top: 140px; }
+  .vmove__card--3 { bottom: 160px; left: 100px; }
+  .vmove__card--4 { bottom: 140px; }
+}
+
+/* --------------------------------------------------------------------------
+   BANNER — photo field with a clearing
+   Ported from the reference's home-3 hero. Its metrics, verbatim:
+
+     section   padding 40px 0 0
+     field     absolute inset 0, seven equal columns, 10px gutter
+     column    its own grid: [slot] [card(s)] [rule filling the rest]
+     card      100% x 150px, 8px radius, object-fit cover
+     copy      max-width 650px, margin 400px auto 120px, centred
+
+   Row templates per column, which is the whole trick — only the sizes differ:
+
+     --3   150 150 150 auto     2 cards, ends deepest      opacity .7
+     --2    70 150 150 auto     2 cards, starts highest    opacity .8
+     --1   150 150     auto     1 card                     opacity .9
+     --c   100 150     auto     1 card, the focal one      opacity  1
+
+   Card bottoms therefore land at 470 / 390 / 310 / 260 / 310 / 390 / 470 — a
+   symmetric valley opening upward. The rules below them are the exact inverse
+   (361 / 441 / 521 / 571 / ...), so the two systems always sum to one height.
+   -------------------------------------------------------------------------- */
+.bnr {
+  position: relative;
+  padding: 40px 0 0;            /* hands straight off to the section below */
+  /* Nothing overflows this at rest — the field is inset:0 inside the stage.
+     It is here so a parallaxing column can never ride up into the section
+     above it. */
+  overflow: hidden;
+}
+
+/* flow-root, not plain relative. The field is absolutely positioned, so the
+   copy is the stage's first IN-FLOW child and its 360px top margin would
+   otherwise collapse straight out of the stage — leaving the field only as
+   tall as the copy and flattening the whole valley. A block formatting
+   context keeps the margin inside, which is what gives the field its height. */
+.bnr__stage {
+  position: relative;
+  display: flow-root;
+}
+
+.bnr__field {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+  pointer-events: none;
+}
+
+/* Each column is its own grid. The first row is not padding — .bnr__slot is
+   visible, in the same tint and radius as the cards, so it reads as an empty
+   card slot and the field looks like a system with some cells filled. */
+.bnr__col {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 10px;
+  height: 100%;
+}
+.bnr__col--3 { grid-template-rows: 130px 130px 130px auto; }
+.bnr__col--2 { grid-template-rows:  70px 130px 130px auto; }
+.bnr__col--1 { grid-template-rows: 150px 130px auto; }
+.bnr__col--c { grid-template-rows: 100px 130px auto; }
+
+.bnr__slot {
+  background: var(--primary-5);
+  border-radius: var(--radius-sm);
+}
+
+.bnr__img {
+  width: 100%;
+  height: 130px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+.bnr__col--3 .bnr__img { opacity: .7; }
+.bnr__col--2 .bnr__img { opacity: .8; }
+.bnr__col--1 .bnr__img { opacity: .9; }
+
+/* The leftover `auto` row: a hairline continuing the column down behind the
+   copy, longest in the centre where the cards stop soonest. */
+.bnr__rule {
+  justify-self: center;
+  width: 1px;
+  height: 100%;
+  background: var(--primary-5);
+}
+
+/* 400px is not arbitrary. Of the columns sitting under this 650px block the
+   deepest card bottom is at 430px; the label's top edge lands at 440px. The
+   10px gap is the grid gutter, so the copy continues the field's own rhythm
+   instead of floating over it. */
+.bnr__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  max-width: 650px;
+  margin: 360px auto 80px;
+  text-align: center;
+}
+
+
+.bnr__titles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+/* Capped narrower than the heading on purpose, so the paragraph tucks inside
+   the headline's silhouette rather than matching its width. */
+.bnr__sub { max-width: 450px; }
+
+.bnr__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+}
+
+/* Must sit AFTER the base rules above — the file's other min-width:1280 block
+   is declared earlier, and at equal specificity the later declaration wins. */
+@media (min-width: 1280px) {
+  .bnr__img { height: 150px; }
+  .bnr__col--3 { grid-template-rows: 150px 150px 150px auto; }
+  .bnr__col--2 { grid-template-rows:  70px 150px 150px auto; }
+  .bnr__col--1 { grid-template-rows: 150px 150px auto; }
+  .bnr__col--c { grid-template-rows: 100px 150px auto; }
+  .bnr__content { margin-top: 400px; margin-bottom: 120px; }
+}
+
+/* --------------------------------------------------------------------------
+   WHY US — proof grid on a gradient ground
+
+   The band needs its own weight without going dark: the very next section is
+   .section--dark, and two dark bands touching would read as one long block.
+   So the ground is a light three-point mesh in the brand hues rather than the
+   flat --primary-5 that .section--wash already uses twice on this page.
+
+   Stops are placed so the lightest part of the mesh sits under the copy
+   column on the right, and the saturated corners stay behind the photograph
+   and the outer margins where no text runs.
+   -------------------------------------------------------------------------- */
+.why-band {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(58% 68% at 10% 16%, rgba(97, 51, 148, .13), transparent 62%),
+    radial-gradient(52% 62% at 92% 86%, rgba(87, 191, 218, .17), transparent 60%),
+    radial-gradient(42% 52% at 82% 8%, rgba(247, 222, 140, .20), transparent 58%),
+    linear-gradient(180deg, #FDFDFE 0%, #F6F4FB 52%, #F1F6F8 100%);
+}
+
+/* Grain. A single inline feTurbulence tile at very low alpha — it stops the
+   mesh from banding on wide screens and is what keeps a flat gradient from
+   looking like a cheap CSS gradient. Costs no request. */
+.why-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.045'/%3E%3C/svg%3E");
+}
+
 .why {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: 60px;
   grid-template-columns: .9fr 1.1fr;
   align-items: center;
 }
-.why__media { overflow: hidden; border-radius: var(--radius); }
+
+/* Lifted off the ground rather than sitting flat on it — on a gradient a
+   flush-mounted photo reads as a hole, not as a card. */
+.why__media {
+  overflow: hidden;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lift);
+}
 .why__media img { width: 100%; aspect-ratio: 4 / 3.4; object-fit: cover; }
 
 .why__body { display: flex; flex-direction: column; align-items: flex-start; }
 .why__body .p-lg { margin-top: 20px; max-width: 52ch; }
 
-.chips {
+/* The four claims, each with the line that backs it up. Two columns so the
+   block stays beside the photograph rather than running past its bottom
+   edge; the cards are translucent so the mesh reads through them. */
+.proof {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+  margin-top: 32px;
+  padding: 0;
+  list-style: none;
+}
+
+.proof__item {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 30px;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 18px 18px 20px;
+  background: rgba(255, 255, 255, .62);
+  border: 1px solid rgba(255, 255, 255, .9);
+  border-radius: var(--radius);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 22px -16px rgba(31, 31, 31, .28);
+  transition: background-color .35s var(--ease), transform .35s var(--ease),
+              box-shadow .35s var(--ease);
 }
-.chip {
-  padding: 10px 18px;
-  font-size: 15px;
+.proof__item:hover {
+  background: rgba(255, 255, 255, .88);
+  transform: translateY(-3px);
+  box-shadow: 0 18px 34px -20px rgba(97, 51, 148, .38);
+}
+
+.proof__icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  color: var(--primary);
+  background: var(--purple-light);
+  border-radius: var(--radius-sm);
+}
+.proof__icon svg { width: 20px; height: 20px; }
+
+/* Rotate the icon tint through the brand so the grid is not four identical
+   purple squares, while the ink stays dark enough to read at 20px. */
+.proof__item:nth-child(2) .proof__icon { color: var(--accent-600); background: var(--cyan-light); }
+.proof__item:nth-child(3) .proof__icon { color: #8A6B12;           background: var(--yellow-light); }
+.proof__item:nth-child(4) .proof__icon { color: var(--primary);    background: var(--purple-light); }
+
+.proof__text {
+  display: block;
+  font-size: 14px;
+  line-height: 1.5em;
+  color: var(--para-light);
+}
+.proof__text b {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 16px;
   font-weight: 500;
+  letter-spacing: -.3px;
   color: var(--dark);
-  background: var(--pure);
-  border: 1px solid var(--gray-8);
-  border-radius: var(--radius-pill);
 }
-.chip--a { background: var(--cyan-light);   border-color: transparent; }
-.chip--b { background: var(--yellow-light); border-color: transparent; }
-.chip--c { background: var(--purple-light); border-color: transparent; }
 
 .why__body .btn { margin-top: 36px; }
 
 /* --------------------------------------------------------------------------
-   VISA & COUNTRY — dark band: big stat + flag rows
+   CHOOSE YOUR DESTINATION — dark band
+
+   Was flat --dark with four emoji and two figures repeated from the visa
+   section above. Now a purple-lifted gradient carrying three real country
+   rows, each with a genuine flag, the same two facts the destination cards
+   quote, and a differentiator tag.
+
+   Deliberately a different dark from the footer: this band is bounded by
+   light sections on both sides, so it lifts toward purple in the middle
+   rather than sinking the way the footer does at the end of the page.
    -------------------------------------------------------------------------- */
-.visa__inner {
+.picker-band {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(52% 60% at 8% 12%, rgba(97, 51, 148, .42), transparent 62%),
+    radial-gradient(46% 54% at 96% 88%, rgba(87, 191, 218, .16), transparent 60%),
+    radial-gradient(40% 46% at 74% 6%, rgba(247, 222, 140, .09), transparent 58%),
+    linear-gradient(160deg, #241733 0%, #1C1626 48%, #17131F 100%);
+}
+
+/* Grain, as on .why-band and .cta — a band this wide bands without it. */
+.picker-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .55;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+}
+
+.picker {
+  position: relative;
+  z-index: 1;
   display: grid;
   gap: 60px;
-  grid-template-columns: 1.1fr .9fr;
+  grid-template-columns: 1fr 1.05fr;
   align-items: center;
 }
 
-.visa__stat {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  margin-top: 40px;
-  padding-top: 30px;
-  border-top: 1px solid rgba(255, 255, 255, .14);
+.picker__intro { display: flex; flex-direction: column; align-items: flex-start; }
+.picker__intro .p-lg { margin-top: 20px; max-width: 46ch; }
+.picker__intro .btn { margin-top: 34px; }
+
+.picker__list {
+  display: grid;
+  gap: 12px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
 }
-.visa__stat b {
-  font-size: 60px;
+
+.picker__row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, .045);
+  border: 1px solid rgba(255, 255, 255, .11);
+  border-radius: var(--radius);
+  transition: background-color .35s var(--ease), border-color .35s var(--ease),
+              transform .35s var(--ease);
+}
+.picker__row:hover {
+  background: rgba(255, 255, 255, .085);
+  border-color: rgba(247, 222, 140, .45);
+  transform: translateX(5px);
+}
+
+/* The flag sits in its own rounded well with an inner hairline, so a light
+   flag (New Zealand's canton, Malaysia's white stripes) still has an edge
+   against the band and does not bleed into it. */
+.picker__flag {
+  position: relative;
+  flex: 0 0 auto;
+  width: 54px;
+  height: 36px;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: 0 3px 10px -4px rgba(0, 0, 0, .6);
+}
+.picker__flag img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.picker__flag::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 5px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .28);
+  pointer-events: none;
+}
+
+.picker__body { flex: 1 1 auto; min-width: 0; }
+
+.picker__top {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.picker__name {
+  font-size: 19px;
   font-weight: 500;
-  line-height: 1em;
-  letter-spacing: -2px;
+  letter-spacing: -.5px;
+  color: var(--pure);
+}
+
+.picker__tag {
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0;
   color: var(--highlight);
+  background: rgba(247, 222, 140, .12);
+  border: 1px solid rgba(247, 222, 140, .3);
+  border-radius: var(--radius-pill);
+}
+
+.picker__meta {
+  display: block;
+  margin-top: 6px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, .66);
+}
+.picker__meta b {
+  font-weight: 600;
+  color: var(--pure);
   font-variant-numeric: tabular-nums;
 }
-.visa__stat span { font-size: 16px; color: var(--para-dark); max-width: 24ch; }
+.picker__meta i { margin-inline: 7px; font-style: normal; opacity: .45; }
 
-/* Row of student initials, the reference's avatar stack */
-.avatars { display: flex; align-items: center; margin-top: 30px; }
-.avatars span {
+.picker__go {
   display: grid;
   place-items: center;
-  width: 44px; height: 44px;
-  margin-right: -12px;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
   color: var(--pure);
-  background: var(--primary-600);
-  border: 2px solid var(--dark);
+  background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .16);
   border-radius: 50%;
+  transition: background-color .35s var(--ease), color .35s var(--ease),
+              border-color .35s var(--ease), transform .35s var(--ease);
 }
-.avatars p { margin-left: 26px; font-size: 14px; color: var(--para-dark); }
-
-.flags { display: grid; gap: 10px; }
-.flag-row {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 18px 22px;
-  background: rgba(255, 255, 255, .05);
-  border: 1px solid rgba(255, 255, 255, .1);
-  border-radius: var(--radius);
-  transition: background-color .3s var(--ease), transform .3s var(--ease);
+.picker__go svg { width: 16px; height: 16px; }
+.picker__row:hover .picker__go {
+  color: var(--dark);
+  background: var(--highlight);
+  border-color: var(--highlight);
+  transform: translateX(2px);
 }
-.flag-row:hover { background: rgba(255, 255, 255, .1); transform: translateX(4px); }
-.flag-row__flag { font-size: 26px; line-height: 1; }
-.flag-row__name { font-size: 18px; font-weight: 500; color: var(--pure); }
-.flag-row__meta { margin-left: auto; font-size: 14px; color: var(--para-dark); }
 
 /* --------------------------------------------------------------------------
-   DESTINATIONS — three photo cards
+   DESTINATIONS — full-bleed editorial cards
+
+   Rebuilt from stacked white cards to overlay cards, for three reasons:
+
+     1. The source photographs are 700x875 PORTRAIT. The old card forced them
+        into a 4/3 landscape crop, which cut the Opera House and the Petronas
+        towers through the middle. 4/5 is their native ratio, so nothing is
+        thrown away and the subject survives.
+     2. A photo block sitting on a bordered white box is the generic pattern.
+        Type set into the image reads as editorial rather than as a listing.
+     3. Every card is now structurally identical — name, two stats, one CTA,
+        one tag. Previously New Zealand had no tag, so its whole content stack
+        sat ~10px higher than its neighbours. Uniform structure, no drift.
+
+   Contrast is the constraint. White type over photography needs a measured
+   scrim, not a guessed one — see the gradient stops on .dest-card__media::after.
    -------------------------------------------------------------------------- */
 .dest-grid {
   display: grid;
@@ -933,148 +1635,59 @@ p     { color: var(--para-light); }
 }
 
 .dest-card {
+  position: relative;
   display: block;
   overflow: hidden;
-  background: var(--pure);
-  border: 1px solid var(--gray-8);
   border-radius: var(--radius);
-  transition: box-shadow .35s var(--ease), transform .35s var(--ease), border-color .35s var(--ease);
+  isolation: isolate;
+  transition: box-shadow .45s var(--ease), transform .45s var(--ease);
 }
 .dest-card:hover {
-  border-color: transparent;
   box-shadow: var(--shadow-lift);
-  transform: translateY(-4px);
+  transform: translateY(-6px);
 }
-.dest-card:hover .dest-card__media img { transform: scale(1.06); }
 
-.dest-card__media { overflow: hidden; }
+/* Native ratio of the source files — no crop through the subject. */
+.dest-card__media {
+  display: block;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+}
 .dest-card__media img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  height: 100%;
   object-fit: cover;
-  transition: transform .8s var(--ease);
+  transition: transform 1.1s var(--ease);
 }
+.dest-card:hover .dest-card__media img { transform: scale(1.07); }
 
-.dest-card__body { padding: 24px 24px 26px; }
-
-.dest-card__row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.dest-card__name { font-size: 24px; font-weight: 500; letter-spacing: -1px; color: var(--dark); }
-
-.dest-card__stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-top: 20px;
-  padding-top: 18px;
-  border-top: 1px solid var(--gray-8);
-}
-.dest-card__stat b { display: block; font-size: 17px; font-weight: 600; color: var(--dark); letter-spacing: -.5px; }
-.dest-card__stat span { display: block; margin-top: 3px; font-size: 12px; color: var(--para-light); }
-
-.dest-card .link { margin-top: 20px; }
-
-/* --------------------------------------------------------------------------
-   TESTIMONIALS — three cards, each led by a tag cluster
-   -------------------------------------------------------------------------- */
-.tst-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.tst-card {
-  display: flex;
-  flex-direction: column;
-  padding: 30px;
-  background: var(--pure);
-  border: 1px solid var(--gray-8);
-  border-radius: var(--radius);
-  transition: box-shadow .35s var(--ease), transform .35s var(--ease), border-color .35s var(--ease);
-}
-.tst-card:hover {
-  border-color: transparent;
-  box-shadow: var(--shadow-lift);
-  transform: translateY(-4px);
-}
-
-.tst-card__tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding-bottom: 22px;
-  margin-bottom: 22px;
-  border-bottom: 1px solid var(--gray-8);
-}
-.tst-card__tags .tag { font-size: 12px; }
-
-.tst-card__stars { display: flex; gap: 3px; color: var(--highlight-600); margin-bottom: 16px; }
-.tst-card__stars svg { width: 16px; height: 16px; }
-
-.tst-card__quote { font-size: 16px; line-height: 1.6em; color: var(--para-light); }
-
-.tst-card__person {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-top: auto;
-  padding-top: 26px;
-}
-.tst-card__avatar {
-  display: grid;
-  place-items: center;
-  flex: 0 0 auto;
-  width: 52px; height: 52px;
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: 0;
-  color: var(--pure);
-  background: var(--primary);
-  border-radius: 50%;
-}
-.tst-card__name  { display: block; font-size: 16px; font-weight: 500; color: var(--dark); }
-.tst-card__route { display: block; margin-top: 2px; font-size: 14px; color: var(--para-light); }
-
-/* --------------------------------------------------------------------------
-   BLOG — three cards
-   -------------------------------------------------------------------------- */
-.blog-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-
-.blog-card {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  background: var(--pure);
-  border: 1px solid var(--gray-8);
-  border-radius: var(--radius);
-  transition: box-shadow .35s var(--ease), transform .35s var(--ease), border-color .35s var(--ease);
-}
-.blog-card:hover {
-  border-color: transparent;
-  box-shadow: var(--shadow-lift);
-  transform: translateY(-4px);
-}
-.blog-card:hover .blog-card__img img { transform: scale(1.06); }
-
-.blog-card__img { position: relative; overflow: hidden; }
-.blog-card__img img {
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  object-fit: cover;
-  transition: transform .8s var(--ease);
-}
-.blog-card__cat {
+/* The scrim. Stops are placed against the copy, not by eye: the band from
+   58% down is where the name and stats sit, so it carries the weight, while
+   the top stays nearly clear so the photograph still reads as a photograph.
+   The faint top wash exists only to hold the tag chip off a bright sky. */
+.dest-card__media::after {
+  content: '';
   position: absolute;
-  top: 16px; left: 16px;
-  padding: 6px 14px;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(24, 14, 38, .34) 0%,
+    rgba(24, 14, 38, .06) 26%,
+    rgba(24, 14, 38, .52) 58%,
+    rgba(24, 14, 38, .88) 100%
+  );
+  transition: opacity .45s var(--ease);
+}
+.dest-card:hover .dest-card__media::after { opacity: .92; }
+
+/* Solid chip rather than a frosted one: the same device .blog-card__cat
+   already uses, and it cannot fail contrast over an unknown photograph. */
+.dest-card__tag {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 2;
+  padding: 7px 14px;
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0;
@@ -1083,85 +1696,474 @@ p     { color: var(--para-light); }
   border-radius: var(--radius-pill);
 }
 
+.dest-card__body {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  padding: 26px 24px 24px;
+}
+
+.dest-card__name {
+  display: block;
+  font-size: 30px;
+  font-weight: 500;
+  line-height: 1.1em;
+  letter-spacing: -1.2px;
+  color: var(--pure);
+}
+
+.dest-card__stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, .22);
+}
+.dest-card__stat b {
+  display: block;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.5px;
+  color: var(--pure);
+  font-variant-numeric: tabular-nums;
+}
+.dest-card__stat span {
+  display: block;
+  margin-top: 3px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, .78);
+}
+
+/* Label plus a round arrow. The label carries the destination name so the
+   link text still stands alone out of context. */
+.dest-card__go {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--pure);
+}
+.dest-card__arrow {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 42px;
+  height: 42px;
+  color: var(--pure);
+  background: rgba(255, 255, 255, .14);
+  border: 1px solid rgba(255, 255, 255, .34);
+  border-radius: 50%;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  transition: background-color .35s var(--ease), color .35s var(--ease),
+              border-color .35s var(--ease), transform .35s var(--ease);
+}
+.dest-card__arrow svg { width: 17px; height: 17px; }
+.dest-card:hover .dest-card__arrow {
+  color: var(--primary);
+  background: var(--pure);
+  border-color: var(--pure);
+  transform: translate(2px, -2px);
+}
+
+/* The whole card is one link, so the ring has to sit on the card, not on a
+   child that the scrim would swallow. */
+.dest-card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+/* --------------------------------------------------------------------------
+   TESTIMONIALS
+
+   Was: a bordered white box with the quote set in the same grey as body copy,
+   under a row of tags and stars, ending in a flat initials disc. The quote —
+   the only thing anyone reads here — carried the least visual weight on the
+   card.
+
+   Now the quote leads: 18px, near-black, generous leading, against an oversize
+   typographic mark that anchors the top-right. The card sits on a soft
+   top-down wash rather than flat white so it lifts off .section--wash, and the
+   person block uses a real photograph.
+
+   Markup is figure / blockquote / figcaption with a <cite>, which is what a
+   testimonial actually is — the old markup was div-only.
+   -------------------------------------------------------------------------- */
+.tst-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.tst-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 34px 30px 30px;
+  overflow: hidden;
+  background:
+    linear-gradient(180deg, rgba(97, 51, 148, .05) 0%, rgba(255, 255, 255, 0) 42%),
+    var(--pure);
+  border: 1px solid var(--gray-8);
+  border-radius: var(--radius);
+  transition: box-shadow .4s var(--ease), transform .4s var(--ease),
+              border-color .4s var(--ease);
+}
+.tst-card:hover {
+  border-color: transparent;
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-5px);
+}
+
+/* The quotation mark, oversize and cropped by the card's own overflow. Set in
+   the body face at 500 so it matches the page rather than importing a serif
+   for one glyph. */
+.tst-card__mark {
+  position: absolute;
+  top: -26px;
+  right: 14px;
+  font-size: 150px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--primary);
+  opacity: .1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.tst-card__tags {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.tst-card__tags .tag { font-size: 12px; }
+
+.tst-card__stars {
+  display: flex;
+  gap: 3px;
+  margin-bottom: 18px;
+  color: var(--highlight-600);
+}
+.tst-card__stars svg { width: 15px; height: 15px; }
+
+/* The quote is the content. Near-black at 18px, not grey at 16px. */
+.tst-card__quote {
+  position: relative;
+  flex: 1 1 auto;
+  margin: 0;
+}
+.tst-card__quote p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.62em;
+  letter-spacing: -.3px;
+  color: var(--dark);
+}
+
+.tst-card__person {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 28px 0 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--gray-8);
+}
+.tst-card__avatar {
+  flex: 0 0 auto;
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.tst-card__name {
+  display: block;
+  font-size: 16px;
+  font-weight: 500;
+  font-style: normal;          /* <cite> italicises by default */
+  letter-spacing: -.3px;
+  color: var(--dark);
+}
+.tst-card__route { display: block; margin-top: 3px; font-size: 14px; color: var(--para-light); }
+
+/* --------------------------------------------------------------------------
+   BLOG — three cards on a conic ground
+
+   The gradient had to be distinct from the four already on the page, and all
+   four are radial or linear: .why-band is a purple-led corner mesh, .cta and
+   .picker-band are purple radials on dark, the footer is a vertical fade. So
+   this one is CONIC — the hue sweeps around a point off the top-left corner
+   rather than bleeding out of it, which gives the band a rotation none of the
+   others have.
+
+   It is also cyan-led rather than purple-led. .why-band sits three sections
+   up carrying the warm purple end of the palette; running this one cool keeps
+   the two light bands from reading as the same treatment repeated.
+   -------------------------------------------------------------------------- */
+.insights-band {
+  position: relative;
+  overflow: hidden;
+  background:
+    conic-gradient(
+      from 200deg at 12% -6%,
+      rgba(87, 191, 218, .12) 0deg,
+      rgba(97, 51, 148, .07) 82deg,
+      rgba(247, 222, 140, .12) 168deg,
+      rgba(87, 191, 218, .09) 262deg,
+      rgba(87, 191, 218, .12) 360deg
+    ),
+    linear-gradient(180deg, #F7FBFC 0%, #FEFEFF 44%, #F6F9FB 100%);
+}
+
+/* A conic at these alphas bands worse than a radial does — the sweep crosses
+   many shallow steps. The grain is doing real work here, not just texture. */
+.insights-band::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .6;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+}
+
+.insights-band > .container { position: relative; z-index: 1; }
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.blog-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--pure);
+  border: 1px solid var(--gray-8);
+  border-radius: var(--radius);
+  transition: box-shadow .4s var(--ease), transform .4s var(--ease),
+              border-color .4s var(--ease);
+}
+
+/* A brand rule that draws in along the top edge on hover. Scales from the
+   left rather than fading, so the card reads as being selected. */
+.blog-card::after {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--highlight-600) 0 34%, var(--primary) 34%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s var(--ease);
+}
+.blog-card:hover::after { transform: scaleX(1); }
+
+.blog-card:hover {
+  border-color: transparent;
+  box-shadow: var(--shadow-lift);
+  transform: translateY(-6px);
+}
+.blog-card:hover .blog-card__img img { transform: scale(1.07); }
+
+.blog-card__img { position: relative; overflow: hidden; }
+.blog-card__img img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  transition: transform 1s var(--ease);
+}
+
+/* A wash at the foot of the photograph so the card body does not butt against
+   a hard cut, and the chip has something to sit on whatever the image is. */
+.blog-card__img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(24, 14, 38, .28) 0%, transparent 38%, rgba(24, 14, 38, .16) 100%);
+  pointer-events: none;
+}
+
+/* Brand chip rather than the plain white pill — it is the one piece of the
+   card that has to be legible over an unknown photograph. */
+.blog-card__cat {
+  position: absolute;
+  z-index: 1;
+  top: 14px;
+  left: 14px;
+  padding: 6px 13px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--pure);
+  background: var(--primary);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 12px -6px rgba(31, 31, 31, .5);
+}
+
 .blog-card__body {
   display: flex;
   flex: 1 1 auto;
   flex-direction: column;
   padding: 24px;
 }
+
 .blog-card__meta {
   display: flex;
-  gap: 16px;
+  gap: 14px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
   font-size: 13px;
   color: var(--para-light);
-  margin-bottom: 12px;
+  border-bottom: 1px solid var(--gray-8);
 }
 .blog-card__meta span { display: inline-flex; align-items: center; gap: 6px; }
-.blog-card__meta svg { width: 14px; height: 14px; }
+.blog-card__meta svg { width: 14px; height: 14px; color: var(--primary); opacity: .7; }
 
 .blog-card h4 {
-  font-size: 20px;
-  letter-spacing: -.7px;
-  line-height: 1.3em;
+  font-size: 21px;
+  letter-spacing: -.8px;
+  line-height: 1.28em;
   margin-bottom: 10px;
 }
 .blog-card h4 a { transition: color .3s var(--ease); }
 .blog-card:hover h4 a { color: var(--primary); }
 .blog-card p { font-size: 15px; line-height: 1.55em; }
-.blog-card .link { margin-top: auto; padding-top: 20px; font-size: 15px; }
 
-/* --------------------------------------------------------------------------
-   FINAL CTA
-   -------------------------------------------------------------------------- */
-.cta {
-  padding: 90px 60px;
-  background: var(--primary);
-  border-radius: var(--radius);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
+.blog-card .link {
+  margin-top: auto;
+  padding-top: 20px;
+  font-size: 15px;
 }
-.cta::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(40% 60% at 12% 12%, rgba(87, 191, 218, .28), transparent 62%),
-    radial-gradient(44% 62% at 90% 88%, rgba(247, 222, 140, .22), transparent 60%);
-  pointer-events: none;
-}
-.cta > * { position: relative; z-index: 1; }
-.cta h2 { color: var(--pure); max-width: 20ch; margin-inline: auto; }
-.cta .p-lg { margin: 20px auto 0; max-width: 60ch; color: rgba(255, 255, 255, .82); }
-.cta__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  margin-top: 40px;
-}
+.blog-card:hover .link svg { transform: translateX(4px); }
 
 /* --------------------------------------------------------------------------
    FOOTER
+
+   Was flat #1F1F1F. Now a purple-lifted gradient with a hairline top edge and
+   an oversize wordmark bedded into the surface, so the page closes on
+   something rather than simply running out of sections.
+
+   The band above it is also dark (.section--dark, a solid #1F1F1F), so the
+   footer starts DARKER than that band and lifts toward purple as it rises —
+   the two never read as one undifferentiated block.
    -------------------------------------------------------------------------- */
 .footer {
-  background: var(--dark);
-  color: var(--para-dark);
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding-top: 100px;
+  color: var(--para-dark);
+  background:
+    radial-gradient(64% 58% at 14% 0%, rgba(97, 51, 148, .34), transparent 62%),
+    radial-gradient(52% 48% at 92% 12%, rgba(87, 191, 218, .10), transparent 58%),
+    linear-gradient(180deg, #221634 0%, #1B1526 34%, #141018 100%);
 }
 
+/* The hairline that separates it from the section above. */
+.footer::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(247, 222, 140, .34) 22%,
+    rgba(87, 191, 218, .30) 62%,
+    transparent
+  );
+}
+
+/* --------------------------------------------------------------------------
+   WATERMARK
+
+   Filled with a top-down fade through background-clip rather than a flat
+   alpha: a uniform grey wordmark sits ON the footer, a fading one sits IN it.
+   Sized in vw so it always spans the full width, and clipped by the footer's
+   own overflow so the letterforms run off both edges.
+
+   z-index 0 against the container's 1 — it must stay under the bottom bar's
+   rule, which crosses it.
+
+   Fails safe. If background-clip:text is unsupported the fill stays
+   transparent and nothing is painted, which is the correct outcome for a
+   purely decorative mark.
+   -------------------------------------------------------------------------- */
+.footer__watermark {
+  position: absolute;
+  z-index: 0;
+  left: 50%;
+  bottom: -.14em;
+  transform: translateX(-50%);
+  font-size: 21vw;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -.055em;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  opacity: .4;
+  color: transparent;
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, .085) 0%,
+    rgba(255, 255, 255, .028) 52%,
+    rgba(255, 255, 255, 0) 88%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.footer > .container { position: relative; z-index: 1; }
+
+/* --------------------------------------------------------------------------
+   NEWSLETTER
+   -------------------------------------------------------------------------- */
+/* A two-track grid, not space-between flex. With flex the heading collapsed
+   to its max-width and left a ~550px void in the middle of the row; the grid
+   gives the heading the room it needs and keeps the form at a fixed measure. */
 .footer__news {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 30px 60px;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 60px;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr);
+  gap: 36px 60px;
+  align-items: end;
+  padding-bottom: 56px;
   border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
-.footer__news h3 { color: var(--pure); max-width: 22ch; }
+.footer__news-copy { max-width: 46ch; }
+.footer__news h3 { color: var(--pure); }
+.footer__news-copy p {
+  margin-top: 12px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, .58);
+}
 
-.newsletter { display: flex; gap: 10px; min-width: min(420px, 100%); }
+.newsletter { min-width: min(440px, 100%); }
+.newsletter__label {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -.1px;
+  color: rgba(255, 255, 255, .72);
+}
+.newsletter__row { display: flex; gap: 10px; }
+
 .newsletter input {
   flex: 1 1 auto;
   min-width: 0;
@@ -1172,53 +2174,170 @@ p     { color: var(--para-light); }
   background: rgba(255, 255, 255, .06);
   border: 1px solid rgba(255, 255, 255, .16);
   border-radius: var(--radius-sm);
+  transition: border-color .3s var(--ease), background-color .3s var(--ease);
 }
-.newsletter input::placeholder { color: rgba(255, 255, 255, .4); }
-.newsletter input:focus { outline: none; border-color: var(--accent); }
+/* .58 white, not .4 — the old placeholder sat at 3.77:1. */
+.newsletter input::placeholder { color: rgba(255, 255, 255, .58); }
+.newsletter input:hover { background: rgba(255, 255, 255, .09); }
+.newsletter input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, .1);
+  border-color: var(--highlight);
+}
+.newsletter input[aria-invalid] { border-color: #F0A2A2; }
 
+/* Injected by index1.js on submit — success and failure share the slot so
+   the layout does not jump between the two states. */
+.form-note {
+  margin-top: 10px;
+  min-height: 1.2em;
+  font-size: 13px;
+  line-height: 1.4em;
+  color: rgba(255, 255, 255, .72);
+}
+.form-note.is-error { color: #F5B5B5; }
+
+/* --------------------------------------------------------------------------
+   COLUMNS
+   -------------------------------------------------------------------------- */
 .footer__grid {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 1fr 1.4fr;
+  grid-template-columns: 1.6fr 1fr 1fr 1.5fr;
   gap: 40px;
-  padding-block: 60px;
+  padding-block: 64px;
 }
 
 .footer__logo img { height: 78px; width: auto; }
-.footer__blurb { margin-top: 24px; max-width: 34ch; font-size: 15px; color: var(--para-dark); line-height: 1.6em; }
+.footer__blurb {
+  margin-top: 24px;
+  max-width: 34ch;
+  font-size: 15px;
+  line-height: 1.6em;
+  color: var(--para-dark);
+}
 
-.footer__socials { display: flex; gap: 10px; margin-top: 26px; }
+.footer__socials { display: flex; gap: 10px; margin-top: 28px; }
 .footer__socials a {
   display: grid;
   place-items: center;
-  width: 42px; height: 42px;
+  width: 42px;
+  height: 42px;
   color: var(--pure);
   background: rgba(255, 255, 255, .07);
+  border: 1px solid rgba(255, 255, 255, .1);
   border-radius: var(--radius-sm);
-  transition: background-color .3s var(--ease), transform .3s var(--ease);
+  transition: background-color .3s var(--ease), border-color .3s var(--ease),
+              transform .3s var(--ease);
 }
-.footer__socials a:hover { background: var(--primary); transform: translateY(-3px); }
+.footer__socials a:hover {
+  background: var(--primary-600);
+  border-color: var(--primary-600);
+  transform: translateY(-3px);
+}
 .footer__socials svg { width: 17px; height: 17px; }
 
+/* Small gold rule under each column head — the same mark the eyebrow uses,
+   so the footer belongs to the same system as the page above it. */
 .footer__title {
-  margin-bottom: 22px;
+  position: relative;
+  margin-bottom: 26px;
+  padding-bottom: 12px;
   font-size: 16px;
   font-weight: 500;
   color: var(--pure);
 }
-.footer__list li + li { margin-top: 12px; }
+.footer__title::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 24px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--highlight);
+}
+
+.footer__list li + li { margin-top: 11px; }
 .footer__list a {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   font-size: 15px;
   color: var(--para-dark);
+  transition: color .3s var(--ease), transform .3s var(--ease);
+}
+.footer__list a:hover { color: var(--highlight); transform: translateX(3px); }
+
+/* Muted until hover so the column reads as a list of labels first and a row
+   of icons second — at full strength five glyphs compete with the words. */
+.footer__list svg {
+  flex: 0 0 auto;
+  width: 15px;
+  height: 15px;
+  opacity: .5;
+  transition: opacity .3s var(--ease);
+}
+.footer__list a:hover svg { opacity: 1; }
+
+/* Border rather than an inset shadow: on an <img> an inset shadow paints
+   under the image and never shows. box-sizing keeps it inside the 22x15. */
+.footer__flag {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 15px;
+  object-fit: cover;
+  border: 1px solid rgba(255, 255, 255, .3);
+  border-radius: 3px;
+}
+/* The flags are already at full strength, so the row needs a little more air
+   than the icon list to keep the same rhythm. */
+.footer__list--flags li + li { margin-top: 13px; }
+
+/* --------------------------------------------------------------------------
+   CONTACT
+   -------------------------------------------------------------------------- */
+.footer__office { font-size: 15px; line-height: 1.55em; }
+.footer__office + .footer__office { margin-top: 18px; }
+.footer__office b {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--pure);
+}
+
+/* The head office is the only entry in the column, so the panel is what stops
+   it reading as three loose lines of text. No bottom margin — nothing follows
+   it any more. */
+.footer__office--head {
+  padding: 16px 18px;
+  background: rgba(255, 255, 255, .045);
+  border: 1px solid rgba(255, 255, 255, .1);
+  border-radius: var(--radius-sm);
+}
+
+.footer__line {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.footer__line + .footer__line { margin-top: 8px; }
+.footer__ico {
+  flex: 0 0 auto;
+  width: 15px;
+  height: 15px;
+  margin-top: .3em;
+  color: var(--highlight);
+}
+.footer__office a {
+  color: var(--para-dark);
+  word-break: break-word;
   transition: color .3s var(--ease);
 }
-.footer__list a:hover { color: var(--highlight); }
-
-.footer__office { font-size: 15px; line-height: 1.6em; }
-.footer__office + .footer__office { margin-top: 18px; }
-.footer__office b { display: block; color: var(--pure); font-weight: 500; }
-.footer__office a { color: var(--para-dark); transition: color .3s var(--ease); }
 .footer__office a:hover { color: var(--highlight); }
 
+/* --------------------------------------------------------------------------
+   BOTTOM BAR
+   -------------------------------------------------------------------------- */
 .footer__bottom {
   display: flex;
   flex-wrap: wrap;
@@ -1230,22 +2349,392 @@ p     { color: var(--para-light); }
   border-top: 1px solid rgba(255, 255, 255, .1);
 }
 .footer__legal { display: flex; flex-wrap: wrap; gap: 20px; }
-.footer__legal a:hover { color: var(--pure); }
+.footer__legal a { transition: color .3s var(--ease); }
+.footer__legal a:hover { color: var(--highlight); }
+
+
+/* ==========================================================================
+   NAVIGATION — icons, active state, drawer, bottom app bar
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   DESKTOP BAR
+   The active item gets a tinted pill, not just a colour change: on a white
+   bar a purple label alone is easy to miss, and colour on its own is not a
+   sufficient indicator anyway.
+   -------------------------------------------------------------------------- */
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 12px;
+  margin-block: 14px;
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.2em;
+  letter-spacing: -.2px;
+  white-space: nowrap;
+  color: var(--dark);
+  border-radius: var(--radius-pill);
+  transition: color .25s var(--ease), background-color .25s var(--ease);
+}
+.nav-link__ico {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  opacity: .55;
+  transition: opacity .25s var(--ease), color .25s var(--ease);
+}
+
+.nav-link:hover { color: var(--primary); background: var(--primary-5); }
+.nav-link:hover .nav-link__ico { opacity: 1; }
+
+.nav-link.is-current {
+  color: var(--primary);
+  background: var(--purple-light);
+}
+.nav-link.is-current .nav-link__ico { opacity: 1; }
+
+/* Between the collapse point and ~1200px the seven labels plus icons crowd
+   the logo and the CTA. The labels carry the meaning, so the icons go first. */
+@media (min-width: 992px) and (max-width: 1219px) {
+  .nav-link { padding-inline: 9px; gap: 0; }
+  .nav-link__ico { display: none; }
+}
+
+/* --------------------------------------------------------------------------
+   DRAWER
+   -------------------------------------------------------------------------- */
+.drawer-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  background: rgba(18, 11, 28, .55);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  transition: opacity .35s var(--ease);
+}
+.drawer-scrim.is-open { opacity: 1; }
+.drawer-scrim[hidden] { display: none; }
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  width: min(360px, 88vw);
+  padding: 0 0 env(safe-area-inset-bottom);
+  background: var(--white);
+  box-shadow: -24px 0 60px -30px rgba(31, 31, 31, .5);
+  transform: translateX(100%);
+  transition: transform .42s var(--ease);
+  overscroll-behavior: contain;
+}
+.drawer.is-open { transform: translateX(0); }
+
+.drawer__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--gray-8);
+}
+.drawer__logo { height: 46px; width: auto; }
+
+.drawer__close {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--dark);
+  background: var(--primary-5);
+  border-radius: 50%;
+  transition: background-color .25s var(--ease), color .25s var(--ease);
+}
+.drawer__close:hover { color: var(--pure); background: var(--primary); }
+.drawer__close svg { width: 20px; height: 20px; }
+
+.drawer__nav {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding: 14px 14px 20px;
+}
+
+.drawer__link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  color: var(--dark);
+  transition: background-color .25s var(--ease), color .25s var(--ease);
+}
+.drawer__link + .drawer__link { margin-top: 2px; }
+
+.drawer__ico {
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 38px;
+  height: 38px;
+  color: var(--primary);
+  background: var(--purple-light);
+  border-radius: var(--radius-sm);
+  transition: background-color .25s var(--ease), color .25s var(--ease);
+}
+.drawer__ico svg { width: 18px; height: 18px; }
+
+.drawer__label {
+  flex: 1 1 auto;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -.3px;
+}
+.drawer__chev {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+  opacity: .3;
+  transition: transform .25s var(--ease), opacity .25s var(--ease);
+}
+.drawer__link:hover .drawer__chev { opacity: .7; transform: translateX(3px); }
+
+.drawer__link.is-current { background: var(--primary-5); color: var(--primary); }
+.drawer__link.is-current .drawer__ico { color: var(--pure); background: var(--primary); }
+.drawer__link.is-current .drawer__chev { opacity: .8; }
+
+.drawer__foot {
+  padding: 18px 20px calc(20px + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--gray-8);
+  background: var(--pure);
+}
+.drawer__call {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  min-height: 44px;
+  margin-top: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--primary);
+}
+.drawer__call svg { width: 16px; height: 16px; }
+
+/* Locks the page while the sheet is open, without the jump a plain
+   overflow:hidden causes when the scrollbar disappears. */
+.is-locked { overflow: hidden; }
+
+/* --------------------------------------------------------------------------
+   BOTTOM APP BAR — mobile only
+   -------------------------------------------------------------------------- */
+.appbar {
+  position: fixed;
+  z-index: 1000;
+  right: 10px;
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  left: 10px;
+  display: none;                       /* switched on at the breakpoint */
+  align-items: stretch;
+  gap: 2px;
+  padding: 6px;
+  /* .92, not .86. The bar is fixed, so it floats over the dark band and the
+     purple CTA as well as the light sections — at .86 the ground showed
+     through enough to drop the 11px labels to 3.7:1. */
+  background: rgba(255, 255, 255, .92);
+  border: 1px solid var(--gray-8);
+  border-radius: 22px;
+  box-shadow: 0 18px 36px -18px rgba(31, 31, 31, .45),
+              0 2px 6px rgba(31, 31, 31, .06);
+  -webkit-backdrop-filter: saturate(180%) blur(18px);
+  backdrop-filter: saturate(180%) blur(18px);
+  transition: transform .35s var(--ease), opacity .35s var(--ease);
+}
+
+/* Retracts on scroll down, returns on scroll up. Translated rather than
+   hidden so it can never take a tap while it is on its way out. */
+.appbar.is-tucked {
+  transform: translateY(calc(100% + 16px + env(safe-area-inset-bottom)));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.appbar__item {
+  display: flex;
+  flex: 1 1 0;
+  min-width: 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 52px;
+  padding: 6px 2px;
+  border-radius: 16px;
+  /* Darker than --para-light. These labels are 11px sitting on a translucent
+     bar over unknown ground, so they need the headroom. */
+  color: #4A4A52;
+  transition: color .25s var(--ease), background-color .25s var(--ease);
+}
+.appbar__ico {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+}
+.appbar__ico svg { width: 21px; height: 21px; }
+
+.appbar__label {
+  max-width: 100%;
+  overflow: hidden;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -.1px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.appbar__item.is-current {
+  color: var(--primary);
+  background: var(--purple-light);
+}
+.appbar__item:active { transform: scale(.96); }
+
+/* The contact entry stays tinted whether or not it is the current section —
+   it is the page's one conversion action, not just another destination. */
+.appbar__item--cta { color: var(--primary); }
+.appbar__item--cta .appbar__ico { color: var(--primary); }
+
+@media (max-width: 991px) {
+  .appbar { display: flex; }
+  /* Reserve the bar's height plus its inset, or the footer's last row sits
+     underneath it. */
+  body { padding-bottom: calc(78px + env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 359px) {
+  .appbar__label { font-size: 10px; }
+  .appbar__item { gap: 2px; }
+}
+
+/* --------------------------------------------------------------------------
+   FINAL CTA
+   -------------------------------------------------------------------------- */
+.cta {
+  position: relative;
+  overflow: hidden;
+  padding: 88px 60px;
+  text-align: center;
+  border-radius: var(--radius);
+  background:
+    radial-gradient(48% 62% at 8% 6%, rgba(87, 191, 218, .34), transparent 62%),
+    radial-gradient(46% 58% at 94% 92%, rgba(247, 222, 140, .28), transparent 60%),
+    radial-gradient(60% 70% at 78% 4%, rgba(147, 92, 208, .40), transparent 66%),
+    linear-gradient(150deg, var(--primary-600) 0%, var(--primary-700) 100%);
+}
+
+/* Grain, as on .why-band — a panel this large bands without it. */
+.cta::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .6;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.05'/%3E%3C/svg%3E");
+}
+
+.cta__arc {
+  position: absolute;
+  top: 50%;
+  right: -8%;
+  width: 46%;
+  height: 150%;
+  color: var(--pure);
+  opacity: .07;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.cta__inner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 720px;
+  margin-inline: auto;
+}
+
+.cta h2 { color: var(--pure); max-width: 18ch; }
+.cta .p-lg {
+  margin-top: 18px;
+  max-width: 54ch;
+  color: rgba(255, 255, 255, .86);
+}
+
+.cta__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 38px;
+}
+
+/* Evidence, not another ask — the last thing on the page before the footer. */
+.cta__trust {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 40px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255, 255, 255, .18);
+}
+.cta__faces { display: flex; align-items: center; margin-left: 9px; }
+.cta__faces img {
+  width: 38px;
+  height: 38px;
+  margin-left: -9px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, .85);
+  border-radius: 50%;
+}
+.cta__trust p {
+  font-size: 15px;
+  text-align: left;
+  color: rgba(255, 255, 255, .82);
+}
+.cta__trust b { color: var(--pure); font-weight: 600; }
 
 /* --------------------------------------------------------------------------
    SCROLL REVEAL
-   Opacity is only ever set once JS has confirmed it can run — see the .js
-   guard — so a blocked script leaves the page fully visible.
+
+   The hidden state is gated on `.js`, which is set inline in <head>, so
+   nothing is ever hidden from a reader without scripting. index1.js always
+   runs (it is same-origin and deferred) and will reveal everything even if
+   the GSAP CDN is unreachable, so a blocked library cannot strand content.
+
+   The RESTING state is pure CSS — `.is-in` is what every element ends on,
+   whether GSAP animated it or not. GSAP clears its inline styles when each
+   tween finishes, so the page at rest is byte-identical either way.
    -------------------------------------------------------------------------- */
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(24px);
   transition: opacity .7s var(--ease), transform .7s var(--ease);
 }
 .js [data-reveal].is-in { opacity: 1; transform: none; }
 
+/* When GSAP is driving, the CSS transition must not also run or the two fight
+   over the same properties. */
+.gsap-on [data-reveal] { transition: none; }
+
 @media (prefers-reduced-motion: reduce) {
-  .js [data-reveal] { opacity: 1; transform: none; }
+  .js [data-reveal] { opacity: 1; transform: none; transition: none; }
 }
 
 /* ==========================================================================
@@ -1260,27 +2749,13 @@ p     { color: var(--para-light); }
   .section { padding-block: 80px; }
   .nav-container { max-width: 1300px; }
 
-  /* Nav collapses to a toggle + stacked panel */
+  /* The inline bar is replaced wholesale by the drawer, not restyled into a
+     dropdown — see the NAVIGATION block at the end of this file. */
   .nav-toggle { display: grid; }
-  .nav-menu {
-    position: absolute;
-    top: calc(100% + 10px);
-    left: 0; right: 0;
-    flex-direction: column;
-    align-items: stretch;
-    padding: 10px 20px 20px;
-    background: var(--white);
-    border: 1px solid var(--gray-8);
-    border-radius: var(--radius-sm);
-    box-shadow: var(--shadow-nav);
-    display: none;
-  }
-  .nav-container { position: relative; }
-  .nav-menu.is-open { display: flex; }
-  .nav-link { width: 100%; padding: 12px 0; }
+  .nav-menu { display: none; }
   .nav-actions .btn { display: none; }
 
-  .hero { min-height: 680px; padding-top: 140px; }
+  .hero { min-height: max(780px, 82svh); padding-top: 160px; padding-bottom: 120px; }
   .hero__content { gap: 30px; }
 
   .about__swoosh { height: 80%; }
@@ -1296,10 +2771,40 @@ p     { color: var(--para-light); }
      approaches full width — the reference's 50% -> 75% -> 90% progression. */
   .svc-mask { width: 75%; }
 
+  /* Frame and its corner dots both tighten, keeping the 10px offset that
+     centres the dots on the corners. */
+  .vmove__panel { min-height: 420px; }
+  .vmove__panel::before { inset: 20px; }
+  .vmove__pin--tl { top: 10px;    left: 10px; }
+  .vmove__pin--tr { top: 10px;    right: 10px; }
+  .vmove__pin--bl { bottom: 10px; left: 10px; }
+  .vmove__pin--br { bottom: 10px; right: 10px; }
+  .vmove__panel-body { margin-inline: 20px; padding-inline: 0; }
+
+  .vmove__map { padding-left: 0; }
+  .vmove__map-img { min-height: 420px; }
+  .vmove__card { padding: 12px 16px; gap: 10px; }
+  .vmove__card--1 { top: 20px;    left: 20px; }
+  .vmove__card--2 { top: 40px;    right: 20px; }
+  .vmove__card--3 { bottom: 60px; left: 40px; }
+  .vmove__card--4 { bottom: 10px; right: 20px; }
+
+  /* Cards down to 100px; the two single-card columns keep a taller opening
+     row so the valley does not flatten out as the field shortens. */
+  .bnr__img { height: 100px; }
+  .bnr__col--3 { grid-template-rows: 100px 100px 100px auto; }
+  .bnr__col--2 { grid-template-rows:  70px 100px 100px auto; }
+  .bnr__col--1 { grid-template-rows: 120px 100px auto; }
+  .bnr__col--c { grid-template-rows:  90px 100px auto; }
+  .bnr__content { margin-top: 320px; gap: 30px; }
+
   .why { grid-template-columns: 1fr; gap: 40px; }
   .why__media img { aspect-ratio: 16 / 9; }
+  /* The copy column is full width here, so two proof cards per row would run
+     to a very long measure. */
+  .proof { grid-template-columns: 1fr 1fr; gap: 10px; }
 
-  .visa__inner { grid-template-columns: 1fr; gap: 40px; }
+  .picker { grid-template-columns: 1fr; gap: 40px; }
 
   .dest-grid,
   .tst-grid,
@@ -1339,8 +2844,17 @@ p     { color: var(--para-light); }
   .hero__bg::after { display: none; }
 
   .hero__content { margin-bottom: 60px; }
-  .hero__label span,
   .hero__titles h1 { color: var(--dark); }
+  /* The hero photo becomes a band BELOW the copy here, so the label is back
+     on the light ground and needs the solid skin again. */
+  .hero__content .eyebrow--light { color: var(--primary); }
+  .hero__content .eyebrow--light::after {
+    background: linear-gradient(
+      90deg,
+      var(--highlight-600) 0 26px,
+      rgba(97, 51, 148, .2) 26px
+    );
+  }
   .hero__sub { color: var(--para-light); }
 
   /* The reference re-anchors the shape to the top of the section here, where
@@ -1354,17 +2868,46 @@ p     { color: var(--para-light); }
     grid-template-rows: auto auto auto auto;
     gap: 20px;
   }
-  .about__label,
+  .about__grid > .eyebrow,
   .about__statement,
   .about__figure,
   .about__photos { grid-column: 1; grid-row: auto; }
   .about__figure { flex-direction: column; align-items: flex-start; align-self: auto; height: auto; }
   .about__photos { flex-direction: column; height: auto; }
   .about__photos img { width: 100%; height: 250px; }
+  /* Stacked here, so the stagger has nothing to stagger against — it would
+     just open a 38px gap between the two. */
+  .about__photos img:first-child { top: 0; }
 
   .dest-grid,
   .tst-grid,
   .blog-grid { grid-template-columns: 1fr; }
+
+  /* One per row — two 14px claims side by side on a phone leaves about four
+     words a line. */
+  .proof { grid-template-columns: 1fr; }
+
+  /* Header stacks and the button leaves it for the foot of the section, as
+     the reference swaps .button-wrapper-desk for .button-wrapper-mob. */
+  .vmove__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  .vmove__head .vmove__cta { display: none; }
+  .vmove__cta--mob { display: block; margin-top: 30px; }
+
+  .vmove__grid { grid-template-columns: 1fr; gap: 30px; }
+  .vmove__panel { min-height: 0; padding-block: 60px; }
+  .vmove__map-img { min-height: 0; }
+
+  /* 7 -> 5. The outermost PAIR leaves and the track is retemplated to match,
+     so the survivors keep filling the width at their natural proportion.
+     This only stays symmetrical because the column order is a palindrome. */
+  .bnr__field { grid-template-columns: repeat(5, 1fr); }
+  .bnr__col--3 { display: none; }
+  .bnr__content { margin-top: 290px; }
 
   .svc-mask { width: 90%; }
   .svc-card { padding: 20px 20px 24px; min-height: 320px; }
@@ -1374,9 +2917,13 @@ p     { color: var(--para-light); }
   .cta { padding: 56px 24px; }
   .cta__actions .btn { width: 100%; }
 
-  .footer__news { padding-bottom: 40px; }
+  .footer__news { grid-template-columns: 1fr; padding-bottom: 40px; }
   .newsletter { min-width: 100%; }
   .footer__bottom { justify-content: flex-start; }
+
+  /* The wordmark is sized in vw, so it grows relative to a shrinking footer.
+     Pulled back here or it swamps the columns instead of underlying them. */
+  .footer__watermark { font-size: 26vw; bottom: -.1em; }
 }
 
 @media (max-width: 479px) {
@@ -1387,8 +2934,42 @@ p     { color: var(--para-light); }
   .big-number { font-size: 56px; letter-spacing: -1.6px; }
   .svc-card { padding: 15px 15px 20px; }
 
+  /* The reference drops its labelled cards entirely here and swaps in bare
+     40px avatars, because four 180px labels cannot share a phone-width map
+     without overlapping. Same outcome, without the duplicate markup: the card
+     sheds its label and shrinks back to the avatar it already contains. */
+  .vmove__card {
+    padding: 0;
+    background: none;
+    box-shadow: none;
+    border-radius: 50%;
+  }
+  .vmove__card > span { display: none; }
+  .vmove__card img { width: 40px; height: 40px; }
+
+  .vmove__card--1 { top: 10%;   left: 20%;  bottom: auto; right: auto; }
+  .vmove__card--2 { top: 15%;   right: 20%; bottom: auto; left: auto; }
+  .vmove__card--3 { bottom: 20%; left: 25%;  top: auto;   right: auto; }
+  .vmove__card--4 { bottom: 25%; right: 20%; top: auto;   left: auto; }
+
+  .vmove__stat { font-size: 60px; letter-spacing: -2px; }
+
+  /* 5 -> 3. The next pair out leaves, so only 1-card / centre / 1-card
+     survive, and the field is capped so it cannot outgrow the copy. */
+  .bnr__field { grid-template-columns: repeat(3, 1fr); max-height: 760px; }
+  .bnr__col--2 { display: none; }
+  .bnr__content { max-width: 100%; margin-top: 260px; }
+  .bnr__sub { max-width: 100%; }
+  .bnr__cta .btn { width: 100%; }
+
   /* Hero buttons deliberately keep their intrinsic width and wrap centred,
      as the reference does — they are not stretched to full width like the
      final CTA's. */
   .footer__grid { grid-template-columns: 1fr; }
+
+  /* Input above button rather than beside it — a 54px field and a Subscribe
+     button cannot share 330px without the field becoming a stub. */
+  .newsletter__row { flex-direction: column; }
+  .newsletter__row .btn { width: 100%; }
+  .footer__watermark { font-size: 30vw; }
 }

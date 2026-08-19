@@ -36,7 +36,7 @@
       href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
     />
 
-    <link rel="stylesheet" href="assets/css/index1.css?v=11" />
+    <link rel="stylesheet" href="assets/css/index1.css?v=42" />
 
     <script>
       document.documentElement.className = "js";
@@ -213,14 +213,38 @@
           />
         </a>
 
-        <nav class="nav-menu" id="nav-menu" aria-label="Primary">
-          <a class="nav-link is-current" href="#top">Home</a>
-          <a class="nav-link" href="#about">About</a>
-          <a class="nav-link" href="#services">Services</a>
-          <a class="nav-link" href="#destinations">Destinations</a>
-          <a class="nav-link" href="#stories">Success stories</a>
-          <a class="nav-link" href="#insights">Blog</a>
-          <a class="nav-link" href="#contact">Contact</a>
+        <!-- data-nav is what the scroll spy keys on. Every navigation surface
+             on the page carries it — this bar, the drawer and the bottom app
+             bar — so one pass marks the current section in all three. -->
+        <nav class="nav-menu" aria-label="Primary">
+          <a class="nav-link is-current" href="#top" data-nav="#top">
+            <svg class="nav-link__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home" /></svg>
+            <span>Home</span>
+          </a>
+          <a class="nav-link" href="#about" data-nav="#about">
+            <svg class="nav-link__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-users" /></svg>
+            <span>About</span>
+          </a>
+          <a class="nav-link" href="#services" data-nav="#services">
+            <svg class="nav-link__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cap" /></svg>
+            <span>Services</span>
+          </a>
+          <a class="nav-link" href="#destinations" data-nav="#destinations">
+            <svg class="nav-link__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-plane" /></svg>
+            <span>Destinations</span>
+          </a>
+          <a class="nav-link" href="#stories" data-nav="#stories">
+            <svg class="nav-link__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-star" /></svg>
+            <span>Stories</span>
+          </a>
+          <a class="nav-link" href="#insights" data-nav="#insights">
+            <svg class="nav-link__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-book" /></svg>
+            <span>Blog</span>
+          </a>
+          <a class="nav-link" href="#contact" data-nav="#contact">
+            <svg class="nav-link__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-headset" /></svg>
+            <span>Contact</span>
+          </a>
         </nav>
 
         <div class="nav-actions">
@@ -244,7 +268,7 @@
             type="button"
             aria-label="Open menu"
             aria-expanded="false"
-            aria-controls="nav-menu"
+            aria-controls="nav-drawer"
           >
             <svg
               viewBox="0 0 24 24"
@@ -260,6 +284,80 @@
       </div>
     </div>
 
+    <!-- ===================================================================
+         MOBILE DRAWER
+         Sheet from the right with its own scrim. Kept out of .navbar so it can
+         sit above the fixed bar and cover the full viewport height, and marked
+         inert while closed so nothing inside it is tabbable behind the scrim.
+         =================================================================== -->
+    <div class="drawer-scrim" id="drawer-scrim" hidden></div>
+
+    <aside class="drawer" id="nav-drawer" aria-label="Menu" aria-hidden="true" inert>
+      <div class="drawer__head">
+        <img
+          class="drawer__logo"
+          src="assets/img/brand/kd-education-ltd.svg"
+          alt="KD Education Limited"
+          width="483"
+          height="360"
+        />
+        <button class="drawer__close" id="drawer-close" type="button" aria-label="Close menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <use href="#i-close" />
+          </svg>
+        </button>
+      </div>
+
+      <nav class="drawer__nav" aria-label="Primary">
+        <a class="drawer__link is-current" href="#top" data-nav="#top">
+          <span class="drawer__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home" /></svg></span>
+          <span class="drawer__label">Home</span>
+          <svg class="drawer__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-arrow-r" /></svg>
+        </a>
+        <a class="drawer__link" href="#about" data-nav="#about">
+          <span class="drawer__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-users" /></svg></span>
+          <span class="drawer__label">About</span>
+          <svg class="drawer__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-arrow-r" /></svg>
+        </a>
+        <a class="drawer__link" href="#services" data-nav="#services">
+          <span class="drawer__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cap" /></svg></span>
+          <span class="drawer__label">Services</span>
+          <svg class="drawer__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-arrow-r" /></svg>
+        </a>
+        <a class="drawer__link" href="#destinations" data-nav="#destinations">
+          <span class="drawer__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-plane" /></svg></span>
+          <span class="drawer__label">Destinations</span>
+          <svg class="drawer__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-arrow-r" /></svg>
+        </a>
+        <a class="drawer__link" href="#stories" data-nav="#stories">
+          <span class="drawer__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-star" /></svg></span>
+          <span class="drawer__label">Success stories</span>
+          <svg class="drawer__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-arrow-r" /></svg>
+        </a>
+        <a class="drawer__link" href="#insights" data-nav="#insights">
+          <span class="drawer__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-book" /></svg></span>
+          <span class="drawer__label">Blog</span>
+          <svg class="drawer__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-arrow-r" /></svg>
+        </a>
+        <a class="drawer__link" href="#contact" data-nav="#contact">
+          <span class="drawer__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-headset" /></svg></span>
+          <span class="drawer__label">Contact</span>
+          <svg class="drawer__chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-arrow-r" /></svg>
+        </a>
+      </nav>
+
+      <div class="drawer__foot">
+        <a class="btn btn--primary btn--block" href="#contact">
+          Book free consultation
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-r" /></svg>
+        </a>
+        <a class="drawer__call" href="tel:+61292301933">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone" /></svg>
+          +61 2 9230 1933
+        </a>
+      </div>
+    </aside>
+
     <main id="main">
       <!-- =================================================================
            HERO
@@ -268,13 +366,16 @@
         <div class="container">
           <div class="hero__content">
             <div class="hero__text">
-              <div class="hero__label" data-reveal>
-                <span class="dot" aria-hidden="true"></span>
-                <span>Straight answers and end-to-end support</span>
-              </div>
+              <span class="eyebrow eyebrow--light" data-reveal
+                >Straight answers and end-to-end support</span
+              >
 
               <div class="hero__titles">
-                <h1 id="hero-title" data-reveal>
+                <!-- The text is the real text. index1.js splits it into
+                     per-character spans and reveals them; if the script never
+                     runs, or the reader has asked for reduced motion, the
+                     heading is simply here in full. -->
+                <h1 id="hero-title" data-reveal data-typewriter>
                   Your future starts here.
                 </h1>
                 <p class="p-lg hero__sub" data-reveal>
@@ -352,10 +453,7 @@
 
         <div class="container">
           <div class="about__grid">
-            <div class="about__label" data-reveal>
-              <span class="dot" aria-hidden="true"></span>
-              <span>About BD International</span>
-            </div>
+            <span class="eyebrow" data-reveal>About KD Education</span>
 
             <div class="about__statement">
               <h3 id="about-title" data-reveal>
@@ -607,9 +705,272 @@
       </section>
 
       <!-- =================================================================
-           WHY US — image left, statement + chips right
+           MOVE WITH THE RIGHT VISA
+           Ported from the Locaro "home-1" visa section, measured off it:
+
+             header      flex row, space-between, align-items FLEX-END so the
+                         button sits on the heading's baseline. 40px below
+                         (50px from 1280 up).
+             grid        .5fr 1fr, 10px gutter — the two panels almost touch
+                         and read as one object rather than two cards.
+             panel       gradient stat block, 10px radius, hairline frame
+                         inset 30px with a dot centred on each corner.
+             map         faded dot map with four labels floating over it,
+                         each anchored to a DIFFERENT corner so they can
+                         never collide as the panel resizes.
+
+           Colour is KD's: the reference's indigo -> orange radial becomes
+           purple with a cyan bloom at the corner the gradient is anchored to,
+           which is the same recipe .cta already uses further down the page.
            ================================================================= -->
-      <section class="section" aria-labelledby="why-title">
+      <section class="section" id="visa" aria-labelledby="visa-move-title">
+        <div class="container">
+          <div class="vmove__head">
+            <div class="vmove__intro">
+              <span class="eyebrow" data-reveal>Visa</span>
+              <h2 id="visa-move-title" data-reveal>
+                Move with the <span class="tt">right visa</span>
+              </h2>
+              <p class="p-lg" data-reveal>
+                Student visas for Australia, New Zealand and Malaysia — from
+                the first eligibility check to the day your grant letter
+                arrives. We file it, and we tell you honestly what your odds
+                are before you pay a thing.
+              </p>
+            </div>
+
+            <div class="vmove__cta" data-reveal>
+              <a class="btn btn--primary" href="#contact">
+                Explore visa options
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="#i-arrow-r" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="vmove__grid">
+            <!-- Gradient stat panel. The frame is one inset border rather than
+                 the reference's four separate line divs — same result, and the
+                 corner dots stay centred on it because the dot is 20px square
+                 at a 20px inset, putting its centre at exactly 30px. -->
+            <div class="vmove__panel" data-reveal>
+              <span class="vmove__pin vmove__pin--tl" aria-hidden="true"></span>
+              <span class="vmove__pin vmove__pin--tr" aria-hidden="true"></span>
+              <span class="vmove__pin vmove__pin--bl" aria-hidden="true"></span>
+              <span class="vmove__pin vmove__pin--br" aria-hidden="true"></span>
+
+              <div class="vmove__panel-body">
+                <div class="vmove__faces" aria-hidden="true">
+                  <img src="assets/img/people/av1.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                  <img class="is-big" src="assets/img/people/av2.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                  <img src="assets/img/people/av3.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                </div>
+                <div class="vmove__stat">98%</div>
+                <p class="vmove__statcap">
+                  Visa approvals on first application with our support
+                </p>
+              </div>
+            </div>
+
+            <!-- Map. Dots are a silhouette of BlankMap-World.svg (Wikimedia
+                 Commons, public domain, no attribution required) resampled to
+                 a 104x43 grid and emitted as zero-length round-capped strokes,
+                 which is why the whole map is ~13KB of path and one request
+                 instead of a bitmap. Purely atmospheric, so aria-hidden. -->
+            <div class="vmove__map">
+              <img
+                class="vmove__map-img"
+                src="assets/img/map/world-dots.svg"
+                alt=""
+                aria-hidden="true"
+                width="680"
+                height="344"
+                loading="lazy"
+                decoding="async"
+              />
+
+              <div class="vmove__card vmove__card--1" data-reveal>
+                <img src="assets/img/people/av4.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                <span>
+                  <b>Sydney</b>
+                  <span>Australia</span>
+                </span>
+              </div>
+
+              <div class="vmove__card vmove__card--2" data-reveal>
+                <img src="assets/img/people/av5.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                <span>
+                  <b>Kuala Lumpur</b>
+                  <span>Malaysia</span>
+                </span>
+              </div>
+
+              <div class="vmove__card vmove__card--3" data-reveal>
+                <img src="assets/img/people/av6.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                <span>
+                  <b>Melbourne</b>
+                  <span>Australia</span>
+                </span>
+              </div>
+
+              <div class="vmove__card vmove__card--4" data-reveal>
+                <img src="assets/img/people/av7.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                <span>
+                  <b>Auckland</b>
+                  <span>New Zealand</span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Below 767px the button leaves the header and lands here, as the
+               reference's .button-wrapper-mob does. -->
+          <div class="vmove__cta vmove__cta--mob" data-reveal>
+            <a class="btn btn--primary btn--block" href="#contact">
+              Explore visa options
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <use href="#i-arrow-r" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           BANNER — photo field with a clearing
+           Ported from the Locaro "home-3" hero, measured off it.
+
+           There is no hero photograph. The background is a seven-column field
+           of small cards whose row templates differ, so the image mass
+           retreats upward through the middle and leaves a clearing the copy
+           drops into. Two gradients run inward together — density
+           (2·2·1·1·1·2·2 cards) and opacity (.7·.8·.9·1·.9·.8·.7) — so the
+           single centre card is the brightest and loneliest thing on screen,
+           sitting directly above the heading.
+
+           The column order is a palindrome. That is not decoration: it is what
+           lets 767px and 479px each drop the outermost PAIR and stay
+           symmetrical for free, which is how the field goes 7 -> 5 -> 3.
+
+           Copy sits 400px down, which lands its top edge exactly 10px below
+           the deepest card above it — the same 10px as the grid gutter, so the
+           text reads as the next row of the field rather than a layer over it.
+
+           No scrim anywhere: nothing is set over a photograph. The cards are
+           small tiles on the page ground and the type has its own space.
+           ================================================================= -->
+      <section class="bnr" aria-labelledby="bnr-title">
+        <div class="container">
+          <div class="bnr__stage">
+            <!-- Atmosphere only — the copy carries the meaning, so the whole
+                 field is hidden from assistive tech rather than emitting
+                 eleven meaningless image announcements. -->
+            <div class="bnr__field" aria-hidden="true">
+              <div class="bnr__col bnr__col--3">
+                <span class="bnr__slot"></span>
+                <img class="bnr__img" src="assets/img/field/f01.webp" alt="" width="354" height="300" loading="lazy" decoding="async" />
+                <img class="bnr__img" src="assets/img/field/f02.webp" alt="" width="354" height="300" loading="lazy" decoding="async" />
+                <span class="bnr__rule"></span>
+              </div>
+
+              <div class="bnr__col bnr__col--2">
+                <span class="bnr__slot"></span>
+                <img class="bnr__img" src="assets/img/field/f03.webp" alt="" width="354" height="300" loading="lazy" decoding="async" />
+                <img class="bnr__img" src="assets/img/field/f04.webp" alt="" width="354" height="300" loading="lazy" decoding="async" />
+                <span class="bnr__rule"></span>
+              </div>
+
+              <div class="bnr__col bnr__col--1">
+                <span class="bnr__slot"></span>
+                <img class="bnr__img" src="assets/img/field/f05.webp" alt="" width="354" height="300" loading="lazy" decoding="async" />
+                <span class="bnr__rule"></span>
+              </div>
+
+              <!-- The focal card. Full opacity, and the only image in the
+                   field that is animated — as in the reference, where one
+                   photo out of eleven moves and the stillness of the other
+                   ten is what makes this one read as the subject. -->
+              <div class="bnr__col bnr__col--c">
+                <span class="bnr__slot"></span>
+                <img class="bnr__img" src="assets/img/field/f06.webp" alt="" width="354" height="300" loading="lazy" decoding="async" data-reveal />
+                <span class="bnr__rule"></span>
+              </div>
+
+              <div class="bnr__col bnr__col--1">
+                <span class="bnr__slot"></span>
+                <img class="bnr__img" src="assets/img/field/f07.webp" alt="" width="354" height="300" loading="lazy" decoding="async" />
+                <span class="bnr__rule"></span>
+              </div>
+
+              <div class="bnr__col bnr__col--2">
+                <span class="bnr__slot"></span>
+                <img class="bnr__img" src="assets/img/field/f08.webp" alt="" width="354" height="300" loading="lazy" decoding="async" />
+                <img class="bnr__img" src="assets/img/field/f09.webp" alt="" width="354" height="300" loading="lazy" decoding="async" />
+                <span class="bnr__rule"></span>
+              </div>
+
+              <div class="bnr__col bnr__col--3">
+                <span class="bnr__slot"></span>
+                <img class="bnr__img" src="assets/img/field/f10.webp" alt="" width="354" height="300" loading="lazy" decoding="async" />
+                <img class="bnr__img" src="assets/img/field/f11.webp" alt="" width="354" height="300" loading="lazy" decoding="async" />
+                <span class="bnr__rule"></span>
+              </div>
+            </div>
+
+            <div class="bnr__content">
+              <span class="eyebrow" data-reveal>New country. New chapter.</span>
+
+              <div class="bnr__titles">
+                <h2 id="bnr-title" data-reveal>
+                  Study abroad with confidence. Arrive with a plan.
+                </h2>
+                <p class="p-lg bnr__sub" data-reveal>
+                  End-to-end support for students and families — counselling,
+                  admission, visa, and the first month after you land.
+                </p>
+              </div>
+
+              <div class="bnr__cta" data-reveal>
+                <a class="btn btn--primary" href="#contact">
+                  Get a free consultation
+                </a>
+                <a class="btn btn--outline" href="#about">About us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           WHY US — proof grid on a gradient ground
+
+           Was: photo left, four pastel word-chips right, on flat white. The
+           chips asserted four things and evidenced none of them, and the
+           section sat between two other white sections with nothing to
+           separate it.
+
+           Now the four claims are the structure: each is an icon, a claim and
+           the one line that backs it up. The ground is a three-point brand
+           mesh rather than a flat tint, which is what gives the band its own
+           weight without going dark — the dark section is next, and two dark
+           bands in a row would collapse into one.
+           ================================================================= -->
+      <section class="section why-band" aria-labelledby="why-title">
         <div class="container">
           <div class="why">
             <div class="why__media" data-reveal>
@@ -629,16 +990,60 @@
                 Advice you can <span class="tt">actually check</span>
               </h2>
               <p class="p-lg" data-reveal>
-                Every counsellor is qualified and named — you'll know exactly
-                who is handling your file.
+                Every counsellor is qualified and named — you will know exactly
+                who is handling your file, and you can hold us to all four of
+                these.
               </p>
 
-              <div class="chips" data-reveal>
-                <span class="chip chip--a">Certified counsellors</span>
-                <span class="chip chip--b">Transparent fees</span>
-                <span class="chip chip--c">One point of contact</span>
-                <span class="chip chip--a">Post-arrival care</span>
-              </div>
+              <ul class="proof" data-reveal>
+                <li class="proof__item">
+                  <span class="proof__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <use href="#i-award" />
+                    </svg>
+                  </span>
+                  <span class="proof__text">
+                    <b>Certified counsellors</b>
+                    Every adviser is qualified, and named on your file from day one.
+                  </span>
+                </li>
+
+                <li class="proof__item">
+                  <span class="proof__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <use href="#i-wallet" />
+                    </svg>
+                  </span>
+                  <span class="proof__text">
+                    <b>Transparent fees</b>
+                    The figure quoted in your first meeting is the figure you pay.
+                  </span>
+                </li>
+
+                <li class="proof__item">
+                  <span class="proof__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <use href="#i-headset" />
+                    </svg>
+                  </span>
+                  <span class="proof__text">
+                    <b>One point of contact</b>
+                    The same person, from first counselling through to departure.
+                  </span>
+                </li>
+
+                <li class="proof__item">
+                  <span class="proof__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                      <use href="#i-heart" />
+                    </svg>
+                  </span>
+                  <span class="proof__text">
+                    <b>Post-arrival care</b>
+                    Someone you can call through your first month abroad.
+                  </span>
+                </li>
+              </ul>
 
               <a class="btn btn--primary" href="#contact" data-reveal>
                 Book free consultation
@@ -659,12 +1064,24 @@
       </section>
 
       <!-- =================================================================
-           VISA & COUNTRY — dark band
+           CHOOSE YOUR DESTINATION — dark band
+
+           Flags are real SVGs (Wikimedia Commons, public domain, no
+           attribution required), not emoji. The emoji they replace do not
+           render as flags on Windows at all — Chrome falls back to the
+           regional-indicator letter pairs, so the band literally read
+           "AU Australia / NZ New Zealand / MY Malaysia" on most desktops.
+
+           The 98% stat and the avatar stack that used to sit in the left
+           column have gone: both now live in "Move with the right visa"
+           further up, and carrying the same two figures twice about two
+           screens apart undercut both. The column carries the argument and a
+           way to act on it instead.
            ================================================================= -->
-      <section class="section section--dark on-dark" aria-labelledby="visa-title">
+      <section class="section picker-band on-dark" aria-labelledby="visa-title">
         <div class="container">
-          <div class="visa__inner">
-            <div>
+          <div class="picker">
+            <div class="picker__intro">
               <span class="eyebrow eyebrow--light" data-reveal
                 >Where you can study</span
               >
@@ -676,38 +1093,94 @@
                 months and what a year actually costs. Tell us your profile and
                 we will shortlist the ones you can realistically get into.
               </p>
-
-              <div class="visa__stat" data-reveal>
-                <b>98%</b>
-                <span>Visa success rate</span>
-              </div>
-
-              <div class="avatars" data-reveal>
-                <span>TR</span>
-                <span>SA</span>
-                <span>MH</span>
-                <span>FA</span>
-                <p>6.5K+ students placed</p>
-              </div>
-            </div>
-
-            <div class="flags" data-reveal>
-              <a class="flag-row" href="#destinations">
-                <span class="flag-row__flag" aria-hidden="true">🇦🇺</span>
-                <span class="flag-row__name">Australia</span>
-                <span class="flag-row__meta">Feb &amp; Jul intake</span>
-              </a>
-              <a class="flag-row" href="#destinations">
-                <span class="flag-row__flag" aria-hidden="true">🇳🇿</span>
-                <span class="flag-row__name">New Zealand</span>
-                <span class="flag-row__meta">Intake TBC</span>
-              </a>
-              <a class="flag-row" href="#destinations">
-                <span class="flag-row__flag" aria-hidden="true">🇲🇾</span>
-                <span class="flag-row__name">Malaysia</span>
-                <span class="flag-row__meta">Rolling intake</span>
+              <a class="btn btn--gold" href="#contact" data-reveal>
+                Check your eligibility
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="#i-arrow-r" />
+                </svg>
               </a>
             </div>
+
+            <ul class="picker__list" data-reveal>
+              <li>
+                <a class="picker__row" href="#destinations">
+                  <span class="picker__flag">
+                    <img src="assets/img/flags/au.svg" alt="" width="1280" height="640" loading="lazy" decoding="async" />
+                  </span>
+                  <span class="picker__body">
+                    <span class="picker__top">
+                      <span class="picker__name">Australia</span>
+                      <span class="picker__tag">Most popular</span>
+                    </span>
+                    <span class="picker__meta">
+                      <b>43</b> universities
+                      <i aria-hidden="true">·</i>
+                      <b>Feb &amp; Jul</b> intake
+                    </span>
+                  </span>
+                  <span class="picker__go" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <use href="#i-arrow-r" />
+                    </svg>
+                  </span>
+                </a>
+              </li>
+
+              <li>
+                <a class="picker__row" href="#destinations">
+                  <span class="picker__flag">
+                    <img src="assets/img/flags/nz.svg" alt="" width="1200" height="600" loading="lazy" decoding="async" />
+                  </span>
+                  <span class="picker__body">
+                    <span class="picker__top">
+                      <span class="picker__name">New Zealand</span>
+                      <span class="picker__tag">Highest work rights</span>
+                    </span>
+                    <span class="picker__meta">
+                      <b>8</b> universities
+                      <i aria-hidden="true">·</i>
+                      <b>Feb &amp; Jul</b> intake
+                    </span>
+                  </span>
+                  <span class="picker__go" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <use href="#i-arrow-r" />
+                    </svg>
+                  </span>
+                </a>
+              </li>
+
+              <li>
+                <a class="picker__row" href="#destinations">
+                  <span class="picker__flag">
+                    <img src="assets/img/flags/my.svg" alt="" width="1200" height="600" loading="lazy" decoding="async" />
+                  </span>
+                  <span class="picker__body">
+                    <span class="picker__top">
+                      <span class="picker__name">Malaysia</span>
+                      <span class="picker__tag">Lowest cost</span>
+                    </span>
+                    <span class="picker__meta">
+                      <b>9</b> universities
+                      <i aria-hidden="true">·</i>
+                      <b>Rolling</b> intake
+                    </span>
+                  </span>
+                  <span class="picker__go" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <use href="#i-arrow-r" />
+                    </svg>
+                  </span>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </section>
@@ -737,24 +1210,25 @@
             <a
               class="dest-card"
               href="#contact"
-              aria-label="Study in Australia"
+              aria-label="Study in Australia — 43 universities, Feb and Jul intake"
               data-reveal
             >
               <span class="dest-card__media">
                 <img
                   src="assets/img/destinations/au.jpg"
-                  alt=""
+                  alt="Sydney Opera House and the Harbour Bridge at dusk"
                   width="700"
-                  height="525"
+                  height="875"
                   loading="lazy"
                   decoding="async"
                 />
               </span>
+
+              <span class="dest-card__tag">Most popular</span>
+
               <span class="dest-card__body">
-                <span class="dest-card__row">
-                  <span class="dest-card__name">Australia</span>
-                  <span class="tag">Most popular</span>
-                </span>
+                <span class="dest-card__name">Australia</span>
+
                 <span class="dest-card__stats">
                   <span class="dest-card__stat">
                     <b>43</b>
@@ -765,92 +1239,98 @@
                     <span>Intake</span>
                   </span>
                 </span>
-                <span class="link"
-                  >Explore Australia
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <use href="#i-arrow-ur" /></svg
-                ></span>
+
+                <span class="dest-card__go">
+                  <span>Explore Australia</span>
+                  <span class="dest-card__arrow" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <use href="#i-arrow-ur" />
+                    </svg>
+                  </span>
+                </span>
               </span>
             </a>
 
-            <!-- TODO: drop assets/img/destinations/nz.jpg in place and replace
-                 the two "TBC" stats below with the real figures. Carried over
-                 from index.html unchanged. -->
             <a
               class="dest-card"
               href="#contact"
-              aria-label="Study in New Zealand"
+              aria-label="Study in New Zealand — 8 universities, Feb and Jul intake"
               data-reveal
             >
               <span class="dest-card__media">
                 <img
                   src="assets/img/destinations/nz.jpg"
-                  alt=""
+                  alt="The clocktower building at the University of Otago"
                   width="700"
-                  height="525"
+                  height="875"
                   loading="lazy"
                   decoding="async"
                 />
               </span>
+
+              <span class="dest-card__tag">Highest work rights</span>
+
               <span class="dest-card__body">
-                <span class="dest-card__row">
-                  <span class="dest-card__name">New Zealand</span>
-                </span>
+                <span class="dest-card__name">New Zealand</span>
+
                 <span class="dest-card__stats">
                   <span class="dest-card__stat">
-                    <b>TBC</b>
+                    <b>8</b>
                     <span>Universities</span>
                   </span>
                   <span class="dest-card__stat">
-                    <b>TBC</b>
+                    <b>Feb &amp; Jul</b>
                     <span>Intake</span>
                   </span>
                 </span>
-                <span class="link"
-                  >Explore New Zealand
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <use href="#i-arrow-ur" /></svg
-                ></span>
+
+                <span class="dest-card__go">
+                  <span>Explore New Zealand</span>
+                  <span class="dest-card__arrow" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <use href="#i-arrow-ur" />
+                    </svg>
+                  </span>
+                </span>
               </span>
             </a>
 
             <a
               class="dest-card"
               href="#contact"
-              aria-label="Study in Malaysia"
+              aria-label="Study in Malaysia — 9 universities, Rolling intake"
               data-reveal
             >
               <span class="dest-card__media">
                 <img
                   src="assets/img/destinations/my.jpg"
-                  alt=""
+                  alt="The Petronas Towers in Kuala Lumpur at dusk"
                   width="700"
-                  height="525"
+                  height="875"
                   loading="lazy"
                   decoding="async"
                 />
               </span>
+
+              <span class="dest-card__tag">Lowest cost</span>
+
               <span class="dest-card__body">
-                <span class="dest-card__row">
-                  <span class="dest-card__name">Malaysia</span>
-                  <span class="tag">Lowest cost</span>
-                </span>
+                <span class="dest-card__name">Malaysia</span>
+
                 <span class="dest-card__stats">
                   <span class="dest-card__stat">
                     <b>9</b>
@@ -861,19 +1341,22 @@
                     <span>Intake</span>
                   </span>
                 </span>
-                <span class="link"
-                  >Explore Malaysia
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <use href="#i-arrow-ur" /></svg
-                ></span>
+
+                <span class="dest-card__go">
+                  <span>Explore Malaysia</span>
+                  <span class="dest-card__arrow" aria-hidden="true">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <use href="#i-arrow-ur" />
+                    </svg>
+                  </span>
+                </span>
               </span>
             </a>
           </div>
@@ -897,104 +1380,119 @@
           </div>
 
           <div class="tst-grid">
-            <article class="tst-card" data-reveal>
+            <figure class="tst-card" data-reveal>
+              <span class="tst-card__mark" aria-hidden="true">&rdquo;</span>
+
               <div class="tst-card__tags">
                 <span class="tag">Australia</span>
                 <span class="tag">MSc Data Science</span>
                 <span class="tag">Deakin University</span>
               </div>
-              <div class="tst-card__stars" aria-label="5 out of 5">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" />
-                </svg>
-              </div>
-              <p class="tst-card__quote">
-                They told me my first choice wasn't realistic with my CGPA, and
-                suggested two others instead. I got into both. That honesty
-                saved me a year.
-              </p>
-              <div class="tst-card__person">
-                <span class="tst-card__avatar">TR</span>
-                <span>
-                  <span class="tst-card__name">Tanvir Rahman</span>
-                  <span class="tst-card__route">Bangladesh to Australia</span>
-                </span>
-              </div>
-            </article>
 
-            <article class="tst-card" data-reveal>
+              <div class="tst-card__stars" role="img" aria-label="Rated 5 out of 5">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+              </div>
+
+              <blockquote class="tst-card__quote">
+                <p>They told me my first choice was not realistic with my CGPA, and suggested two others instead. I got into both. That honesty saved me a year.</p>
+              </blockquote>
+
+              <figcaption class="tst-card__person">
+                <img
+                  class="tst-card__avatar"
+                  src="assets/img/people/av4.webp"
+                  alt=""
+                  width="128"
+                  height="128"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span>
+                  <cite class="tst-card__name">Tanvir Rahman</cite>
+                  <span class="tst-card__route">Dhaka to Melbourne</span>
+                </span>
+              </figcaption>
+            </figure>
+
+            <figure class="tst-card" data-reveal>
+              <span class="tst-card__mark" aria-hidden="true">&rdquo;</span>
+
               <div class="tst-card__tags">
-                <span class="tag">Canada</span>
+                <span class="tag">New Zealand</span>
                 <span class="tag">MBA</span>
-                <span class="tag">Seneca College</span>
+                <span class="tag">University of Otago</span>
               </div>
-              <div class="tst-card__stars" aria-label="5 out of 5">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" />
-                </svg>
-              </div>
-              <p class="tst-card__quote">
-                My visa file was rejected once before I came here. They found
-                the gap in my financial documents in twenty minutes. Approved on
-                the next attempt.
-              </p>
-              <div class="tst-card__person">
-                <span class="tst-card__avatar">SA</span>
-                <span>
-                  <span class="tst-card__name">Sadia Afrin</span>
-                  <span class="tst-card__route">Bangladesh to Canada</span>
-                </span>
-              </div>
-            </article>
 
-            <article class="tst-card" data-reveal>
+              <div class="tst-card__stars" role="img" aria-label="Rated 5 out of 5">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+              </div>
+
+              <blockquote class="tst-card__quote">
+                <p>My visa file had been refused once before I came here. They found the gap in my financial documents in twenty minutes. Approved on the next attempt.</p>
+              </blockquote>
+
+              <figcaption class="tst-card__person">
+                <img
+                  class="tst-card__avatar"
+                  src="assets/img/people/av5.webp"
+                  alt=""
+                  width="128"
+                  height="128"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span>
+                  <cite class="tst-card__name">Sadia Afrin</cite>
+                  <span class="tst-card__route">Chattogram to Dunedin</span>
+                </span>
+              </figcaption>
+            </figure>
+
+            <figure class="tst-card" data-reveal>
+              <span class="tst-card__mark" aria-hidden="true">&rdquo;</span>
+
               <div class="tst-card__tags">
                 <span class="tag">Australia</span>
                 <span class="tag">BEng Civil</span>
-                <span class="tag">RMIT</span>
+                <span class="tag">RMIT University</span>
               </div>
-              <div class="tst-card__stars" aria-label="5 out of 5">
-                <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" /></svg
-                ><svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                  <use href="#i-star" />
-                </svg>
+
+              <div class="tst-card__stars" role="img" aria-label="Rated 5 out of 5">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true"><use href="#i-star" /></svg>
               </div>
-              <p class="tst-card__quote">
-                What I appreciated most was that the fees they quoted in the
-                first meeting were the fees I actually paid. Nothing appeared
-                later.
-              </p>
-              <div class="tst-card__person">
-                <span class="tst-card__avatar">MH</span>
+
+              <blockquote class="tst-card__quote">
+                <p>What I appreciated most was that the fees quoted in the first meeting were the fees I actually paid. Nothing appeared later.</p>
+              </blockquote>
+
+              <figcaption class="tst-card__person">
+                <img
+                  class="tst-card__avatar"
+                  src="assets/img/people/av6.webp"
+                  alt=""
+                  width="128"
+                  height="128"
+                  loading="lazy"
+                  decoding="async"
+                />
                 <span>
-                  <span class="tst-card__name">Mahmudul Hasan</span>
-                  <span class="tst-card__route">Bangladesh to Australia</span>
+                  <cite class="tst-card__name">Mahmudul Hasan</cite>
+                  <span class="tst-card__route">Sylhet to Melbourne</span>
                 </span>
-              </div>
-            </article>
+              </figcaption>
+            </figure>
           </div>
         </div>
       </section>
@@ -1002,7 +1500,7 @@
       <!-- =================================================================
            BLOG
            ================================================================= -->
-      <section class="section" id="insights" aria-labelledby="blog-title">
+      <section class="section insights-band" id="insights" aria-labelledby="blog-title">
         <div class="container">
           <div class="split-head">
             <div>
@@ -1222,44 +1720,75 @@
 
       <!-- =================================================================
            FINAL CTA
+           A brand panel rather than a flat purple block: a three-point mesh
+           over the base, the KD arc motif bled off the right edge, grain to
+           stop the gradient banding, and a trust row under the buttons so the
+           last thing on the page is evidence rather than another ask.
            ================================================================= -->
       <section class="section section--tight" aria-labelledby="cta-title">
         <div class="container">
           <div class="cta" data-reveal>
-            <h2 id="cta-title">
-              Ready to start your <span class="tt--gold">journey</span>?
-            </h2>
-            <p class="p-lg">
-              Book a free consultation. Bring your transcripts — leave with a
-              plan.
-            </p>
-            <div class="cta__actions">
-              <a class="btn btn--gold" href="#contact">
-                Book free consultation
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <use href="#i-arrow-r" />
-                </svg>
-              </a>
-              <a class="btn btn--ghost-light" href="https://wa.me/8801711000000">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <use href="#i-wa" />
-                </svg>
-                WhatsApp
-              </a>
+            <!-- KD's own arc, bled off the right edge and cropped by the
+                 panel. Decorative and inert to the pointer. -->
+            <svg class="cta__arc" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="currentColor" stroke-linecap="round">
+                <path d="M60 470A250 250 0 0 1 310 220" stroke-width="26" opacity=".9" />
+                <path d="M130 500A280 280 0 0 1 410 220" stroke-width="14" opacity=".55" />
+                <path d="M210 530A320 320 0 0 1 530 210" stroke-width="7" opacity=".35" />
+              </g>
+            </svg>
+
+            <div class="cta__inner">
+              <span class="eyebrow eyebrow--light">Free consultation</span>
+
+              <h2 id="cta-title">
+                Ready to start your <span class="tt--gold">journey</span>?
+              </h2>
+
+              <p class="p-lg">
+                Bring your transcripts and your budget. Leave with a shortlist,
+                a timeline and an honest read on your chances — at no cost.
+              </p>
+
+              <div class="cta__actions">
+                <a class="btn btn--gold" href="#contact">
+                  Book free consultation
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <use href="#i-arrow-r" />
+                  </svg>
+                </a>
+                <a class="btn btn--ghost-light" href="https://wa.me/8801711000000">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <use href="#i-wa" />
+                  </svg>
+                  WhatsApp
+                </a>
+              </div>
+
+              <div class="cta__trust">
+                <span class="cta__faces" aria-hidden="true">
+                  <img src="assets/img/people/av1.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                  <img src="assets/img/people/av2.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                  <img src="assets/img/people/av3.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                </span>
+                <p>
+                  Join the <b>6,500+</b> students we have placed since 2014.
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -1270,41 +1799,55 @@
          FOOTER
          =================================================================== -->
     <footer class="footer">
+      <!-- Watermark. Set in the page face at the section's own scale and
+           filled with a top-down fade via background-clip, rather than flat
+           grey text at low alpha, so it reads as an impression in the surface.
+           Fails safe: with no background-clip support the fill stays
+           transparent and the mark simply is not drawn. -->
+      <span class="footer__watermark" aria-hidden="true">KD Education</span>
+
       <div class="container">
         <div class="footer__news">
-          <h3>
-            Intake deadlines, visa rule changes and scholarship openings — once
-            a month.
-          </h3>
+          <div class="footer__news-copy">
+            <h3>
+              Intake deadlines, visa rule changes and scholarship openings —
+              once a month.
+            </h3>
+            <p>No more than one email a month. Unsubscribe whenever you like.</p>
+          </div>
+
           <form class="newsletter" data-form novalidate>
-            <label class="sr-only" for="nl-email">Email address</label>
-            <input
-              id="nl-email"
-              name="email"
-              type="email"
-              inputmode="email"
-              autocomplete="email"
-              placeholder="Your email"
-              required
-            />
-            <button class="btn btn--gold" type="submit">
-              Subscribe
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <use href="#i-send" />
-              </svg>
-            </button>
+            <!-- A visible label, not a placeholder standing in for one. -->
+            <label class="newsletter__label" for="nl-email">Email address</label>
+            <div class="newsletter__row">
+              <input
+                id="nl-email"
+                name="email"
+                type="email"
+                inputmode="email"
+                autocomplete="email"
+                placeholder="you@example.com"
+                required
+              />
+              <button class="btn btn--gold" type="submit">
+                <span>Subscribe</span>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <use href="#i-send" />
+                </svg>
+              </button>
+            </div>
           </form>
         </div>
 
         <div class="footer__grid">
-          <div>
+          <div class="footer__brand">
             <span class="footer__logo">
               <img
                 src="assets/img/brand/kd-education-ltd-white.svg"
@@ -1315,51 +1858,23 @@
             </span>
             <p class="footer__blurb">
               Straight answers and end-to-end support for Bangladeshi students
-              applying to universities abroad. Dhaka · Chattogram · Sylhet.
+              applying to universities in Australia, New Zealand and Malaysia.
             </p>
             <div class="footer__socials">
-              <a href="#" aria-label="Facebook"
-                ><svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
+              <a href="#" aria-label="KD Education on Facebook"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <use href="#i-fb" /></svg
               ></a>
-              <a href="#" aria-label="Instagram"
-                ><svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
+              <a href="#" aria-label="KD Education on Instagram"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <use href="#i-ig" /></svg
               ></a>
-              <a href="#" aria-label="LinkedIn"
-                ><svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
+              <a href="#" aria-label="KD Education on LinkedIn"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <use href="#i-li" /></svg
               ></a>
-              <a href="#" aria-label="YouTube"
-                ><svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
+              <a href="#" aria-label="KD Education on YouTube"
+                ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                   <use href="#i-yt" /></svg
               ></a>
             </div>
@@ -1367,53 +1882,92 @@
 
           <div>
             <h3 class="footer__title">Quick links</h3>
+            <!-- Same sprite icons the header nav uses, so a destination reads
+                 the same wherever the reader meets it. -->
             <ul class="footer__list">
-              <li><a href="#about">About us</a></li>
-              <li><a href="#services">Services</a></li>
-              <li><a href="#destinations">Destinations</a></li>
-              <li><a href="#stories">Success stories</a></li>
-              <li><a href="#insights">Blog</a></li>
+              <li>
+                <a href="#about">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-users" /></svg>
+                  About us
+                </a>
+              </li>
+              <li>
+                <a href="#services">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cap" /></svg>
+                  Services
+                </a>
+              </li>
+              <li>
+                <a href="#destinations">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-plane" /></svg>
+                  Destinations
+                </a>
+              </li>
+              <li>
+                <a href="#stories">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-star" /></svg>
+                  Success stories
+                </a>
+              </li>
+              <li>
+                <a href="#insights">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-book" /></svg>
+                  Blog
+                </a>
+              </li>
             </ul>
           </div>
 
           <div>
             <h3 class="footer__title">Destinations</h3>
-            <ul class="footer__list">
-              <li><a href="#destinations">Australia</a></li>
-              <li><a href="#destinations">New Zealand</a></li>
-              <li><a href="#destinations">Malaysia</a></li>
+            <!-- The same public-domain flag SVGs the destination band uses,
+                 not emoji — those fall back to letter pairs on Windows. -->
+            <ul class="footer__list footer__list--flags">
+              <li>
+                <a href="#destinations">
+                  <img class="footer__flag" src="assets/img/flags/au.svg" alt="" width="1280" height="640" loading="lazy" decoding="async" />
+                  Australia
+                </a>
+              </li>
+              <li>
+                <a href="#destinations">
+                  <img class="footer__flag" src="assets/img/flags/nz.svg" alt="" width="1200" height="600" loading="lazy" decoding="async" />
+                  New Zealand
+                </a>
+              </li>
+              <li>
+                <a href="#destinations">
+                  <img class="footer__flag" src="assets/img/flags/my.svg" alt="" width="1200" height="600" loading="lazy" decoding="async" />
+                  Malaysia
+                </a>
+              </li>
             </ul>
           </div>
 
           <div id="contact">
             <h3 class="footer__title">Contact</h3>
 
-            <div class="footer__office">
+            <div class="footer__office footer__office--head">
               <b>Head office — Australia</b>
-              Lower Ground, 176 Cumberland St, The Rocks, NSW 2000, Australia<br />
-              <a href="tel:+61292301933">+61 2 9230 1933</a>
+              <span class="footer__line">
+                <svg class="footer__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <use href="#i-pin" />
+                </svg>
+                <span>Lower Ground, 176 Cumberland St, The Rocks, NSW 2000, Australia</span>
+              </span>
+              <span class="footer__line">
+                <svg class="footer__ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <use href="#i-phone" />
+                </svg>
+                <a href="tel:+61292301933">+61 2 9230 1933</a>
+              </span>
             </div>
 
-            <div class="footer__office">
-              <b>Ms Leily Avarideh</b>
-              <a href="tel:+61413507617">+61 413 507 617</a><br />
-              <a href="mailto:leily@kdinternational.com.au"
-                >leily@kdinternational.com.au</a
-              >
-            </div>
-
-            <div class="footer__office">
-              <b>Mr Mohammed Alkalbi</b>
-              <a href="tel:+61434584279">+61 434 584 279</a><br />
-              <a href="mailto:Mohammed@kdinternational.com.au"
-                >Mohammed@kdinternational.com.au</a
-              >
-            </div>
           </div>
         </div>
 
         <div class="footer__bottom">
-          <span>© 2026 BD International. All rights reserved.</span>
+          <span>&copy; 2026 KD Education Ltd. All rights reserved.</span>
           <div class="footer__legal">
             <a href="#">Privacy policy</a>
             <a href="#">Terms</a>
@@ -1423,6 +1977,45 @@
       </div>
     </footer>
 
-    <script src="assets/js/index1.js?v=3" defer></script>
+    <!-- ===================================================================
+         BOTTOM APP BAR — mobile only
+
+         Five destinations, the platform maximum, each with an icon AND a
+         label. It shares the scroll spy with the header and drawer, retracts
+         on scroll down and returns on scroll up, and reserves the gesture-bar
+         inset so nothing sits under the home indicator.
+         =================================================================== -->
+    <nav class="appbar" id="appbar" aria-label="Quick navigation">
+      <a class="appbar__item is-current" href="#top" data-nav="#top">
+        <span class="appbar__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home" /></svg></span>
+        <span class="appbar__label">Home</span>
+      </a>
+      <a class="appbar__item" href="#services" data-nav="#services">
+        <span class="appbar__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cap" /></svg></span>
+        <span class="appbar__label">Services</span>
+      </a>
+      <a class="appbar__item" href="#destinations" data-nav="#destinations">
+        <span class="appbar__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-plane" /></svg></span>
+        <span class="appbar__label">Study in</span>
+      </a>
+      <a class="appbar__item" href="#stories" data-nav="#stories">
+        <span class="appbar__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-star" /></svg></span>
+        <span class="appbar__label">Stories</span>
+      </a>
+      <a class="appbar__item appbar__item--cta" href="#contact" data-nav="#contact">
+        <span class="appbar__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-headset" /></svg></span>
+        <span class="appbar__label">Contact</span>
+      </a>
+    </nav>
+
+    <!--
+      GSAP drives the entrance and parallax motion. Both are deferred and load
+      before index1.js, which checks for them and falls back to an
+      IntersectionObserver if either is missing — nothing on the page depends
+      on the CDN being reachable.
+    -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="assets/js/index1.js?v=10" defer></script>
   </body>
 </html>
