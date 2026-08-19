@@ -1,0 +1,745 @@
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#613394" />
+
+    <title>KD Education Ltd. — Study abroad consultancy</title>
+    <meta
+      name="description"
+      content="Free counselling, admission support and visa guidance for Bangladeshi students applying to universities in Australia, New Zealand and Malaysia."
+    />
+
+    <link rel="icon" href="assets/img/brand/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="assets/img/brand/favicon.svg" />
+
+    <!--
+      SECOND ALTERNATIVE LANDING PAGE.
+
+      Structure follows the Imgra "index-3" template; colour, type and content
+      are KD's own. The one thing carried over verbatim is its signature
+      composition: the banner occupies the whole first screen and the
+      navigation bar sits UNDERNEATH it, then pins to the top once the banner
+      has scrolled away.
+
+      SELF-CONTAINED ON PURPOSE. Loads assets/css/index2.css and
+      assets/js/index2.js and nothing else from this project's front end.
+      index.html, index1.html and their stylesheets and scripts are untouched
+      and cannot be affected by anything in here.
+
+      Where Imgra has content KD cannot honestly fill — a pricing table, named
+      consultants with photographs, client logos — the slot is replaced with
+      something KD does have rather than invented. See the section comments.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
+    />
+
+    <link rel="stylesheet" href="assets/css/index2.css?v=15" />
+
+    <script>
+      document.documentElement.className = "js";
+    </script>
+  </head>
+
+  <body id="top">
+    <!--
+      PHOTO CREDITS — Wikimedia Commons. The CC BY-SA images below REQUIRE
+      visible attribution wherever they are published.
+
+      about/sub.jpg         Sias Library, Students Studying 2017 — Gary Todd — CC0
+      destinations/au.jpg   Sydney Opera House and Harbour Bridge at dusk — Benh LIEU SONG — CC BY-SA 4.0
+      destinations/my.jpg   Petronas Towers, Kuala Lumpur 2016 — Marcin Konsek — CC BY-SA 4.0
+      flags/*.svg           National flags — public domain, no attribution required
+    -->
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- ===================================================================
+         ICON SPRITE
+         =================================================================== -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <g id="i-arrow-r"><path d="M5 12h14" /><path d="M13 6l6 6-6 6" /></g>
+        <g id="i-arrow-ur"><path d="M7 17L17 7" /><path d="M8 7h9v9" /></g>
+        <g id="i-check"><path d="M20 6L9 17l-5-5" /></g>
+        <g id="i-menu"><path d="M3 6h18" /><path d="M3 12h18" /><path d="M3 18h13" /></g>
+        <g id="i-close"><path d="M18 6L6 18" /><path d="M6 6l12 12" /></g>
+        <g id="i-phone">
+          <path d="M22 16.9v3a2 2 0 01-2.2 2 19.8 19.8 0 01-8.6-3.1 19.5 19.5 0 01-6-6A19.8 19.8 0 012 4.2 2 2 0 014 2h3a2 2 0 012 1.7c.1 1 .4 1.9.7 2.8a2 2 0 01-.5 2.1L8.1 9.9a16 16 0 006 6l1.3-1.1a2 2 0 012.1-.5c.9.3 1.8.6 2.8.7a2 2 0 011.7 2z" />
+        </g>
+        <g id="i-mail"><rect x="2" y="4" width="20" height="16" rx="2" /><path d="M2 7l10 6 10-6" /></g>
+        <g id="i-pin"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0116 0z" /><circle cx="12" cy="10" r="3" /></g>
+        <g id="i-cap"><path d="M22 9L12 4 2 9l10 5 10-5z" /><path d="M6 11.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-5.5" /></g>
+        <g id="i-award"><circle cx="12" cy="9" r="6" /><path d="M8.2 14L7 22l5-2.6L17 22l-1.2-8" /></g>
+        <g id="i-shield"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /><path d="M9 12l2 2 4-4" /></g>
+        <g id="i-book"><path d="M4 4.5A2.5 2.5 0 016.5 2H20v18H6.5A2.5 2.5 0 004 22z" /><path d="M4 19.5A2.5 2.5 0 016.5 17H20" /></g>
+        <g id="i-home"><path d="M3 10l9-7 9 7v10a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><path d="M9 22V12h6v10" /></g>
+        <g id="i-plane">
+          <path d="M17.8 19.8L16 14l-4 1.5V19l-2 2-1-4-4-1 2-2h3.5L12 10 6.2 8.2a1 1 0 01-.3-1.7l1.4-1.1a1 1 0 01.9-.2l4.6 1.3 3.1-3.1a2 2 0 012.8 2.8l-3.1 3.1 1.3 4.6a1 1 0 01-.2.9l-1.1 1.4a1 1 0 01-1.8-.3z" />
+        </g>
+        <g id="i-star"><path d="M12 2l3 6.5 7 .9-5 4.8 1.2 7L12 18l-6.2 3.2L7 14.2l-5-4.8 7-.9z" /></g>
+        <g id="i-users"><circle cx="9" cy="8" r="4" /><path d="M2 21a7 7 0 0114 0" /><path d="M17 4.5a4 4 0 010 7.7" /><path d="M18 14.5a7 7 0 014 6.5" /></g>
+        <g id="i-headset">
+          <path d="M4 14v-2a8 8 0 1116 0v2" /><path d="M4 14h3v6H6a2 2 0 01-2-2z" /><path d="M20 14h-3v6h1a2 2 0 002-2z" />
+        </g>
+        <g id="i-send"><path d="M21 3L10.5 13.5" /><path d="M21 3l-7 18-3.5-7.5L3 10z" /></g>
+        <g id="i-wa">
+          <path d="M20.5 11.6A8.4 8.4 0 015.9 18l-3.4.9.9-3.3A8.4 8.4 0 1120.5 11.6z" />
+          <path d="M8.6 8.3c.3-.1.7 0 .9.4l.7 1.3c.1.3.1.6-.1.8l-.5.6c.6 1.1 1.5 1.9 2.6 2.5l.6-.6c.2-.2.5-.3.8-.2l1.4.6c.4.2.6.6.4 1a2.4 2.4 0 01-2.6 1.3 8 8 0 01-5.3-5.2 2.4 2.4 0 011.1-2.5z" />
+        </g>
+        <g id="i-fb"><path d="M15 3h-2.5A4.5 4.5 0 008 7.5V10H5.5v4H8v8h4v-8h3l.5-4H12V8a1 1 0 011-1h2z" /></g>
+        <g id="i-ig"><rect x="3" y="3" width="18" height="18" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.2" cy="6.8" r="1" /></g>
+        <g id="i-li"><rect x="3" y="3" width="18" height="18" rx="3" /><path d="M8 10v7" /><path d="M8 7v.01" /><path d="M12 17v-4a2 2 0 014 0v4" /></g>
+        <g id="i-yt"><rect x="2" y="5" width="20" height="14" rx="4" /><path d="M10 9l5 3-5 3z" /></g>
+      </defs>
+    </svg>
+
+    <!-- ===================================================================
+         BANNER — the whole first screen, ABOVE the navigation
+
+         Imgra runs a Swiper fade slider here. This is the same composition
+         built without the dependency: two slides cross-fading on opacity
+         alone, so nothing moves and nothing reflows. The final slide state is
+         a plain class, so with no JS the first slide simply stays put.
+         =================================================================== -->
+    <section class="banner" aria-label="Introduction">
+      <div class="banner__track">
+        <div class="banner__slide is-active">
+          <img
+            class="banner__bg"
+            src="assets/img/gallery/g2.jpg"
+            alt=""
+            width="1200"
+            height="900"
+            fetchpriority="high"
+            decoding="async"
+          />
+          <div class="shell">
+            <div class="banner__caption">
+              <span class="banner__kicker">Study abroad, done properly</span>
+              <h1>Your future<br />starts here.</h1>
+              <p>
+                Free counselling, honest advice and end-to-end support — from
+                choosing a course to landing at the airport.
+              </p>
+              <div class="banner__actions">
+                <a class="btn btn--gold" href="#contact">
+                  Book free consultation
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-r" /></svg>
+                </a>
+                <a class="btn btn--ghost" href="#about">About us</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="banner__slide">
+          <img
+            class="banner__bg"
+            src="assets/img/destinations/otago-uni.jpg"
+            alt=""
+            width="1024"
+            height="692"
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="shell">
+            <div class="banner__caption">
+              <span class="banner__kicker">Since 2014</span>
+              <!-- Not an <h1>. Only one slide can be the page heading, and
+                   the template this follows ships four of them. -->
+              <p class="banner__title">Advice you<br />can check.</p>
+              <p>
+                Every counsellor is qualified and named. You will know exactly
+                who is handling your file, and what it will genuinely cost.
+              </p>
+              <div class="banner__actions">
+                <a class="btn btn--gold" href="#contact">
+                  Talk to a counsellor
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-r" /></svg>
+                </a>
+                <a class="btn btn--ghost" href="#destinations">Where you can study</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="banner__dots" role="tablist" aria-label="Slides">
+        <button class="banner__dot is-active" type="button" role="tab" aria-selected="true" aria-label="Slide 1"></button>
+        <button class="banner__dot" type="button" role="tab" aria-selected="false" aria-label="Slide 2"></button>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         NAVIGATION — sits UNDER the banner, pins to the top on scroll
+
+         This is the template's signature move and the reason this variant
+         exists. The bar is in normal flow directly after the banner; once the
+         banner has scrolled past, a class switches it to fixed. A spacer of
+         the bar's own height is inserted at that moment so the page does not
+         jump by 88px as the bar leaves the flow.
+         =================================================================== -->
+    <div class="nav-scrim" id="nav-scrim" hidden></div>
+
+    <div class="navwrap" id="navwrap">
+      <nav class="nav" aria-label="Primary">
+        <div class="shell nav__inner">
+          <a class="nav__logo" href="#top" aria-label="KD Education Limited — home">
+            <img src="assets/img/brand/kd-education-ltd-white.svg" alt="KD Education Limited" width="483" height="360" />
+          </a>
+
+          <div class="nav__drawer" id="nav-drawer" aria-label="Menu">
+            <div class="nav__drawer-head">
+              <img src="assets/img/brand/kd-education-ltd-white.svg" alt="KD Education Limited" width="483" height="360" />
+              <button class="nav__close" id="nav-close" type="button" aria-label="Close menu">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><use href="#i-close" /></svg>
+              </button>
+            </div>
+          <ul class="nav__list" id="nav-list">
+            <li><a class="nav__link is-current" href="#top" data-nav="#top">Home</a></li>
+            <li><a class="nav__link" href="#services" data-nav="#services">Services</a></li>
+            <li><a class="nav__link" href="#about" data-nav="#about">About</a></li>
+            <li><a class="nav__link" href="#numbers" data-nav="#numbers">Track record</a></li>
+            <li><a class="nav__link" href="#destinations" data-nav="#destinations">Destinations</a></li>
+            <li><a class="nav__link" href="#stories" data-nav="#stories">Stories</a></li>
+            <li><a class="nav__link" href="#contact" data-nav="#contact">Contact</a></li>
+          </ul>
+            <a class="nav__drawer-cta btn btn--gold btn--block" href="#contact">Book free consultation</a>
+          </div>
+
+          <a class="nav__cta btn btn--dark" href="#contact">Free consultation</a>
+
+          <button
+            class="nav__toggle"
+            id="nav-toggle"
+            type="button"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="nav-drawer"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-menu" /></svg>
+          </button>
+        </div>
+      </nav>
+    </div>
+
+    <main id="main">
+      <!-- =================================================================
+           SERVICES — Imgra's .feature-part, matched
+
+           Its geometry exactly: a 7/5 split, the left side one white card
+           with a hidden overflow holding a two-column grid of 222px boxes,
+           the right side a photograph inside a thick pale border.
+
+           The hover is the template's own two-layer trick — a photograph
+           layer and a brand layer fading in together over the box, the
+           resting content fading out, the hover content rising 26px as it
+           arrives.
+
+           One deviation: six boxes rather than four, because KD has six
+           services and dropping two to preserve a 2x2 would lose real
+           content. The box, the grid and the hover are unchanged.
+           ================================================================= -->
+      <section class="feature-part" id="services" aria-labelledby="services-title">
+        <div class="shell">
+          <div class="feature-grid">
+            <div class="feature-wrap">
+              <article class="sfeat">
+                <div class="sfeat__show">
+                  <span class="sfeat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-cap" /></svg></span>
+                  <h3 id="services-title">Course selection</h3>
+                </div>
+                <div class="sfeat__hide">
+                  <h3>Course selection</h3>
+                  <p>Shortlisted against your grades, budget and career plan.</p>
+                  <span class="sfeat__go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-r" /></svg></span>
+                </div>
+              </article>
+
+              <article class="sfeat">
+                <div class="sfeat__show">
+                  <span class="sfeat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-award" /></svg></span>
+                  <h3>Scholarships</h3>
+                </div>
+                <div class="sfeat__hide">
+                  <h3>Scholarships</h3>
+                  <p>The awards you can realistically win, not every award listed.</p>
+                  <span class="sfeat__go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-r" /></svg></span>
+                </div>
+              </article>
+
+              <article class="sfeat">
+                <div class="sfeat__show">
+                  <span class="sfeat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-shield" /></svg></span>
+                  <h3>Visa &amp; documents</h3>
+                </div>
+                <div class="sfeat__hide">
+                  <h3>Visa &amp; documents</h3>
+                  <p>Financial papers and GTE statements, reviewed twice.</p>
+                  <span class="sfeat__go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-r" /></svg></span>
+                </div>
+              </article>
+
+              <article class="sfeat">
+                <div class="sfeat__show">
+                  <span class="sfeat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-book" /></svg></span>
+                  <h3>IELTS &amp; PTE</h3>
+                </div>
+                <div class="sfeat__hide">
+                  <h3>IELTS &amp; PTE</h3>
+                  <p>In-house coaching, mock tests and a retake plan.</p>
+                  <span class="sfeat__go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-r" /></svg></span>
+                </div>
+              </article>
+
+              <article class="sfeat">
+                <div class="sfeat__show">
+                  <span class="sfeat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-home" /></svg></span>
+                  <h3>Accommodation</h3>
+                </div>
+                <div class="sfeat__hide">
+                  <h3>Accommodation</h3>
+                  <p>Verified housing near campus, booked before you fly.</p>
+                  <span class="sfeat__go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-r" /></svg></span>
+                </div>
+              </article>
+
+              <article class="sfeat">
+                <div class="sfeat__show">
+                  <span class="sfeat__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#i-plane" /></svg></span>
+                  <h3>Pre-departure</h3>
+                </div>
+                <div class="sfeat__hide">
+                  <h3>Pre-departure</h3>
+                  <p>Briefing, forex, SIM, pickup — and someone to call.</p>
+                  <span class="sfeat__go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-r" /></svg></span>
+                </div>
+              </article>
+            </div>
+
+            <div class="feature-photo">
+              <img src="assets/img/about/main.jpg" alt="Graduates celebrating together after their ceremony" width="800" height="1000" loading="lazy" decoding="async" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           ABOUT — Imgra's "Who We Are": image left, statement right
+           ================================================================= -->
+      <section class="band band--tint" id="about" aria-labelledby="about-title">
+        <div class="shell about">
+          <div class="about__media">
+            <img src="assets/img/about/sub.jpg" alt="Students studying together in a university library" width="640" height="480" loading="lazy" decoding="async" />
+            <span class="about__badge">
+              <b>10+</b>
+              <span>years placing students</span>
+            </span>
+          </div>
+
+          <div class="about__body">
+            <span class="kicker">Who we are</span>
+            <h2 id="about-title">We started in Dhaka in 2014 with one belief</h2>
+            <p class="lead">
+              Families deserve straight answers. Not commission-driven advice,
+              not inflated promises — a clear view of what a student actually
+              qualifies for, and what it will genuinely cost.
+            </p>
+            <ul class="about__list">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#i-check" /></svg> Every adviser is qualified and named on your file</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#i-check" /></svg> The fee quoted in your first meeting is the fee you pay</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><use href="#i-check" /></svg> One point of contact from counselling to departure</li>
+            </ul>
+            <a class="btn btn--primary" href="#contact">
+              Book free consultation
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-r" /></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           TRACK RECORD — Imgra's .skill-part, matched
+
+           Its split exactly: a consultation form on the left under a full
+           width brand label bar, and on the right a branded panel of VERTICAL
+           progress bars — 50px wide, 400px tall, filling from the bottom,
+           each with a rotated label running up its left side and the figure
+           at its foot.
+
+           !! PLACEHOLDER FIGURES !!
+           Only "98% visa approvals" is a figure KD already publishes. The
+           other three bars carry values that have to be confirmed or replaced
+           before this page goes anywhere near production. They are marked
+           here rather than quietly invented.
+           ================================================================= -->
+      <section class="skill-part" id="numbers" aria-labelledby="numbers-title">
+        <div class="shell skill-grid">
+          <div class="skill-form">
+            <div class="head-2">
+              <h2 id="numbers-title">Ask us <span>anything</span></h2>
+              <p>Tell us your grades and your budget. We will tell you where you actually stand — at no cost.</p>
+            </div>
+
+            <form class="sform" data-form novalidate>
+              <span class="sform__label">Free case consultation</span>
+
+              <label class="sr-only" for="sf-name">Your name</label>
+              <input id="sf-name" name="name" type="text" placeholder="Name*" autocomplete="name" required />
+
+              <label class="sr-only" for="sf-email">Email address</label>
+              <input id="sf-email" name="email" type="email" inputmode="email" placeholder="Email*" autocomplete="email" required />
+
+              <label class="sr-only" for="sf-msg">Message</label>
+              <textarea id="sf-msg" name="message" placeholder="Message" rows="4"></textarea>
+
+              <button class="btn btn--primary sform__btn" type="submit">
+                <span>Submit request</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-send" /></svg>
+              </button>
+            </form>
+          </div>
+
+          <div class="skill-panel">
+            <div class="head-2 head-2--light">
+              <h2>Ten years of <span>placements</span></h2>
+              <p>Figures we are happy to be held to.</p>
+            </div>
+
+            <div class="bars">
+              <!-- Published figure. -->
+              <div class="bar" data-bar="98">
+                <div class="bar__track"><div class="bar__fill"></div></div>
+                <h3 class="bar__label">Visa approvals</h3>
+                <span class="bar__num">98%</span>
+              </div>
+              <!-- PLACEHOLDER — confirm before launch. -->
+              <div class="bar" data-bar="92">
+                <div class="bar__track"><div class="bar__fill"></div></div>
+                <h3 class="bar__label">Offers accepted</h3>
+                <span class="bar__num">92%</span>
+              </div>
+              <!-- PLACEHOLDER — confirm before launch. -->
+              <div class="bar" data-bar="87">
+                <div class="bar__track"><div class="bar__fill"></div></div>
+                <h3 class="bar__label">Scholarship applications</h3>
+                <span class="bar__num">87%</span>
+              </div>
+              <!-- PLACEHOLDER — confirm before launch. -->
+              <div class="bar" data-bar="95">
+                <div class="bar__track"><div class="bar__fill"></div></div>
+                <h3 class="bar__label">Students we still hear from</h3>
+                <span class="bar__num">95%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           DESTINATIONS
+
+           Imgra runs a four-tier pricing table in this slot. KD has no
+           published price list, and inventing one would be worse than
+           omitting it — so the slot carries the three destinations instead,
+           which is real, checkable information.
+           ================================================================= -->
+      <section class="band band--dark" id="destinations" aria-labelledby="dest-title">
+        <div class="shell">
+          <div class="head head--light">
+            <span class="kicker kicker--light">Where you can study</span>
+            <h2 id="dest-title">Choose your destination</h2>
+            <p>Entry requirements, intake months and what a year actually costs.</p>
+          </div>
+
+          <div class="dest">
+            <a class="dest__card" href="#contact">
+              <span class="dest__flag"><img src="assets/img/flags/au.svg" alt="" width="1280" height="640" loading="lazy" decoding="async" /></span>
+              <span class="dest__name">Australia</span>
+              <span class="dest__tag">Most popular</span>
+              <span class="dest__rows">
+                <span><b>43</b> universities</span>
+                <span><b>Feb &amp; Jul</b> intake</span>
+              </span>
+              <span class="dest__go">Explore Australia <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-ur" /></svg></span>
+            </a>
+
+            <a class="dest__card" href="#contact">
+              <span class="dest__flag"><img src="assets/img/flags/nz.svg" alt="" width="1200" height="600" loading="lazy" decoding="async" /></span>
+              <span class="dest__name">New Zealand</span>
+              <span class="dest__tag">Highest work rights</span>
+              <span class="dest__rows">
+                <span><b>8</b> universities</span>
+                <span><b>Feb &amp; Jul</b> intake</span>
+              </span>
+              <span class="dest__go">Explore New Zealand <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-ur" /></svg></span>
+            </a>
+
+            <a class="dest__card" href="#contact">
+              <span class="dest__flag"><img src="assets/img/flags/my.svg" alt="" width="1200" height="600" loading="lazy" decoding="async" /></span>
+              <span class="dest__name">Malaysia</span>
+              <span class="dest__tag">Lowest cost</span>
+              <span class="dest__rows">
+                <span><b>9</b> universities</span>
+                <span><b>Rolling</b> intake</span>
+              </span>
+              <span class="dest__go">Explore Malaysia <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-ur" /></svg></span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           SUCCESS STORIES — Imgra's .testimonial-part, matched
+
+           Its split exactly: a branded panel on the left carrying a heading
+           and a testimonial slider (portrait beside the quote, stars under
+           it), and on the right a second heading over a vertical timeline of
+           badge + card + circular photograph.
+
+           Imgra's timeline is dated company history. KD's is the three steps
+           a student actually goes through, because the component wants an
+           ordered sequence and that is the sequence KD can evidence.
+           ================================================================= -->
+      <section class="tst-part" id="stories" aria-labelledby="stories-title">
+        <div class="shell tst-grid">
+          <div class="tst-panel">
+            <div class="head-2 head-2--light">
+              <h2 id="stories-title">Success <span>stories</span></h2>
+              <p>Students who are already there, in their own words.</p>
+            </div>
+
+            <div class="tst-slider" id="tst-slider">
+              <div class="tst-slide is-active">
+                <div class="tst-person">
+                  <img src="assets/img/people/av4.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                  <h3>Tanvir Rahman</h3>
+                  <p>Dhaka to Melbourne</p>
+                </div>
+                <div class="tst-words">
+                  <h4>That honesty saved me a year.</h4>
+                  <ul class="tst-stars" role="img" aria-label="Rated 5 out of 5">
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                  </ul>
+                  <p>They told me my first choice was not realistic with my CGPA, and suggested two others instead. I got into both.</p>
+                </div>
+              </div>
+
+              <div class="tst-slide">
+                <div class="tst-person">
+                  <img src="assets/img/people/av5.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                  <h3>Sadia Afrin</h3>
+                  <p>Chattogram to Dunedin</p>
+                </div>
+                <div class="tst-words">
+                  <h4>Approved on the next attempt.</h4>
+                  <ul class="tst-stars" role="img" aria-label="Rated 5 out of 5">
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                  </ul>
+                  <p>My visa file had been refused once before I came here. They found the gap in my financial documents in twenty minutes.</p>
+                </div>
+              </div>
+
+              <div class="tst-slide">
+                <div class="tst-person">
+                  <img src="assets/img/people/av6.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                  <h3>Mahmudul Hasan</h3>
+                  <p>Sylhet to Melbourne</p>
+                </div>
+                <div class="tst-words">
+                  <h4>Nothing appeared later.</h4>
+                  <ul class="tst-stars" role="img" aria-label="Rated 5 out of 5">
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                    <li><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><use href="#i-star" /></svg></li>
+                  </ul>
+                  <p>The fees quoted in the first meeting were the fees I actually paid.</p>
+                </div>
+              </div>
+
+              <div class="tst-dots" role="tablist" aria-label="Testimonials">
+                <button class="tst-dot is-active" type="button" role="tab" aria-selected="true" aria-label="Testimonial 1"></button>
+                <button class="tst-dot" type="button" role="tab" aria-selected="false" aria-label="Testimonial 2"></button>
+                <button class="tst-dot" type="button" role="tab" aria-selected="false" aria-label="Testimonial 3"></button>
+              </div>
+            </div>
+          </div>
+
+          <div class="tst-side">
+            <div class="head-2">
+              <h2>How it <span>works</span></h2>
+              <p>Three steps, the same for every student we take on.</p>
+            </div>
+
+            <ol class="story">
+              <li class="story__item">
+                <span class="story__badge">Step 01</span>
+                <div class="story__card">
+                  <p>Free counselling. Bring your transcripts and budget; leave with a shortlist and an honest read on your chances.</p>
+                  <img src="assets/img/people/av1.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                </div>
+              </li>
+              <li class="story__item">
+                <span class="story__badge">Step 02</span>
+                <div class="story__card">
+                  <p>Application and visa. We file it — financial papers, GTE statement and all — and review everything twice.</p>
+                  <img src="assets/img/people/av2.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                </div>
+              </li>
+              <li class="story__item">
+                <span class="story__badge">Step 03</span>
+                <div class="story__card">
+                  <p>Departure and arrival. Briefing, forex, SIM and pickup, plus a contact you can call in your first month.</p>
+                  <img src="assets/img/people/av3.webp" alt="" width="128" height="128" loading="lazy" decoding="async" />
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================
+           REQUEST — Imgra's "Get a free consultation" band
+           ================================================================= -->
+      <section class="request" aria-labelledby="request-title">
+        <div class="shell request__inner">
+          <div>
+            <span class="kicker kicker--light">Free consultation</span>
+            <h2 id="request-title">Bring your transcripts. Leave with a plan.</h2>
+            <p>
+              No cost, no obligation, and an honest read on your chances before
+              you pay anything.
+            </p>
+          </div>
+          <div class="request__actions">
+            <a class="btn btn--gold" href="#contact">
+              Book free consultation
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#i-arrow-r" /></svg>
+            </a>
+            <a class="btn btn--ghost-light" href="https://wa.me/8801711000000">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-wa" /></svg>
+              WhatsApp
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===================================================================
+         FOOTER
+         =================================================================== -->
+    <footer class="foot">
+      <div class="shell">
+        <div class="foot__grid">
+          <div>
+            <img class="foot__logo" src="assets/img/brand/kd-education-ltd-white.svg" alt="KD Education Limited" width="483" height="360" />
+            <p class="foot__blurb">
+              Straight answers and end-to-end support for Bangladeshi students
+              applying to universities in Australia, New Zealand and Malaysia.
+            </p>
+            <div class="foot__social">
+              <a href="#" aria-label="KD Education on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-fb" /></svg></a>
+              <a href="#" aria-label="KD Education on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-ig" /></svg></a>
+              <a href="#" aria-label="KD Education on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-li" /></svg></a>
+              <a href="#" aria-label="KD Education on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><use href="#i-yt" /></svg></a>
+            </div>
+          </div>
+
+          <div>
+            <h3 class="foot__title">Quick links</h3>
+            <ul class="foot__list">
+              <li><a href="#services"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-cap" /></svg> Services</a></li>
+              <li><a href="#about"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-users" /></svg> About us</a></li>
+              <li><a href="#numbers"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-award" /></svg> Track record</a></li>
+              <li><a href="#stories"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-star" /></svg> Success stories</a></li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="foot__title">Destinations</h3>
+            <ul class="foot__list foot__list--flags">
+              <li><a href="#destinations"><img src="assets/img/flags/au.svg" alt="" width="1280" height="640" loading="lazy" decoding="async" /> Australia</a></li>
+              <li><a href="#destinations"><img src="assets/img/flags/nz.svg" alt="" width="1200" height="600" loading="lazy" decoding="async" /> New Zealand</a></li>
+              <li><a href="#destinations"><img src="assets/img/flags/my.svg" alt="" width="1200" height="600" loading="lazy" decoding="async" /> Malaysia</a></li>
+            </ul>
+          </div>
+
+          <div id="contact">
+            <h3 class="foot__title">Contact</h3>
+            <div class="foot__office">
+              <b>Head office — Australia</b>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-pin" /></svg> Lower Ground, 176 Cumberland St, The Rocks, NSW 2000, Australia</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-phone" /></svg> <a href="tel:+61292301933">+61 2 9230 1933</a></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot__bottom">
+          <span>&copy; 2026 KD Education Ltd. All rights reserved.</span>
+          <div class="foot__legal">
+            <a href="#">Privacy policy</a>
+            <a href="#">Terms</a>
+            <a href="#">Refund policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <button class="totop" id="totop" type="button" aria-label="Back to top">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 19V5" /><path d="M6 11l6-6 6 6" />
+      </svg>
+    </button>
+
+    <!-- ===================================================================
+         BOTTOM APP BAR — mobile only
+
+         Five destinations, each with an icon AND a label. Shares the scroll
+         spy with the header, retracts on scroll down and returns on scroll
+         up, and reserves the gesture-bar inset.
+         =================================================================== -->
+    <nav class="appbar" id="appbar" aria-label="Quick navigation">
+      <a class="appbar__item is-current" href="#top" data-nav="#top">
+        <span class="appbar__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-home" /></svg></span>
+        <span class="appbar__label">Home</span>
+      </a>
+      <a class="appbar__item" href="#services" data-nav="#services">
+        <span class="appbar__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-cap" /></svg></span>
+        <span class="appbar__label">Services</span>
+      </a>
+      <a class="appbar__item" href="#destinations" data-nav="#destinations">
+        <span class="appbar__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-plane" /></svg></span>
+        <span class="appbar__label">Study in</span>
+      </a>
+      <a class="appbar__item" href="#stories" data-nav="#stories">
+        <span class="appbar__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-star" /></svg></span>
+        <span class="appbar__label">Stories</span>
+      </a>
+      <a class="appbar__item appbar__item--cta" href="#contact" data-nav="#contact">
+        <span class="appbar__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-headset" /></svg></span>
+        <span class="appbar__label">Contact</span>
+      </a>
+    </nav>
+
+    <script src="assets/js/index2.js?v=6" defer></script>
+  </body>
+</html>
